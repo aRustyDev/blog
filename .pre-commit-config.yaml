@@ -3,4 +3,30 @@ repos:
     rev: v5.0.0  # Use the ref you want to point at
     hooks:
     -   id: trailing-whitespace
-    # -   id: ...
+    -   id: check-json
+    -   id: check-executables-have-shebangs
+    -   id: check-added-large-files
+    -   id: check-symlinks
+    -   id: check-shebang-scripts-are-executable
+    -   id: no-commit-to-branch
+        args: [--branch, main, --branch, dependabot-*]
+-   repo: https://github.com/pre-commit/sync-pre-commit-deps
+    rev: v0.0.3
+    hooks:
+    -   id: sync-pre-commit-deps
+-   repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.88.29
+    hooks:
+      -   id: trufflehog
+-   repo: https://github.com/biomejs/pre-commit
+    rev: v0.6.1
+    hooks:
+      - id: biome-check
+-   repo: https://github.com/standard/standard
+    rev: v17.1.2
+    hooks:
+      - id: standard
+-   repo: https://github.com/shssoichiro/oxipng
+    rev: v9.1.5
+    hooks:
+      - id: oxipng
