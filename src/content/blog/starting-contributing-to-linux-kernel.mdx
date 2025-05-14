@@ -20,3 +20,44 @@ So far I see the following hurdles
 - How much work is reasonable to put in myself before I should reach out to the community?
   - Before I submit a patch
   - Before I beg for aid (and how would I do that?)
+
+
+## Eudyptula Challenge
+
+- [Vincent Bernat](https://vincent.bernat.ch/en/blog/2014-eudyptula-boot)
+- [Challenges + Solutions](https://github.com/agelastic/eudyptula)
+- [Similar ^](https://github.com/sinedoke/eudyptula)
+
+## General Atmosphere
+
+> I answered that given my current level of knowledge the best for me would be to work with one of the maintainers who could tell me what shall be done and later review my work so that I could learn and do something useful at the same time. Can you guess the answer? It was:
+> 
+> “No maintainer has that time, sorry.”
+> 
+> In this particular moment I understood what my attitude should be. I immediately saw that I need to be proactive because no one will do any kind of work for me. This reminded me of a quote from one of the hacker movies that I enjoyed as a teenager; it fits:
+> 
+> “This business is all about bits. It is up to us if we are one or zero.”
+
+## Getting Started TODOs
+
+### Target 'code quality' tasks
+- [ ] Read the Kernel [Style Guide](https://www.kernel.org/doc/Documentation/CodingStyle)
+- [ ] Use `checkpatch.pl`
+> There is a tool called *checkpatch.pl* which resides in the *scripts* directory of the kernel repository
+- [ ] Use [sparse](https://sparse.wiki.kernel.org/index.php/Main_Page) to fix broken code
+> `sudo apt-get install sparse`
+
+- [ ] Read the TODOs
+> `% echo "" > /tmp/todolist-kernel.txt; count=0; for entry in `find . -name "*TODO*"`; do echo $count". "$entry`git log --pretty=format:" Last edited %ar" $entry | head -1` >> /tmp/todolist-kernel.txt; echo "" >> /tmp/todolist-kernel.txt; sed 's/^/        /' $entry >> /tmp/todolist-kernel.txt; echo "" >> /tmp/todolist-kernel.txt; ((count=$count+1)); done`
+> the information in the TODOs, at least in the staging area, should be accurate.
+> The code in staging does not meet the quality standards and the job is to make it good enough to be promoted as a ‘real’ kernel driver. This makes it a perfect place to start from especially when combined with the information from TODOs.
+
+- [ ] Read about the [Linux Driver Project](http://www.linuxdriverproject.org/mediawiki/index.php/Main_Page)
+- [ ] Kernel bugs are tracked using [Bugzilla](http://bugzilla.kernel.org/)
+
+## Kernel Contribution Methods
+
+- start in the drivers/staging area
+- improve the code quality
+- find inspiration in the TODOs
+- fix an actual bug in the kernel.
