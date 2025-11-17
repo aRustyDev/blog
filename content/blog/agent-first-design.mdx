@@ -1,0 +1,55 @@
+---
+title: 'Agent-First Design'
+description: 'TODO(AGENT)'
+pubDate: 'Nov 16 2025'
+heroImage: '../../assets/images/placeholder-about.jpg' # TODO(AGENT): Generate / Identify a placeholder image
+category: 'AI-Design'
+tags: ['agentic-design', 'ai', 'system-design', 'claude']
+author: '@aRustyDev'
+---
+
+# Agent-First Design
+
+This year has been a transformative one for me as I've become increasingly reliant on AI agents to engineer products. This has caused me to fundamentally rethink how I develop, and how I design.
+Beyond just using agents to fix small bugs in the code, its proven invaluable in designing and planning the entire architecture stack.
+While far from perfect, I have been increasingly leveraging AI agents to improve my product development, and feature design, to deliver higher quality products and develop more efficient design processes.
+
+## The Paradigm Shift
+
+Today's software is engineered for human teams—optimized for readability, maintainability, and developer productivity. But the most successful products of tomorrow will treat AI agents as first-class participants in creation, iteration, and scaling. This isn't a minor adjustment; it's a fundamental rethinking of product architecture, feature design, business models, and go-to-market strategies.
+
+Agent-first design builds on human-first principles but extends them with a critical question: **Can an AI agent understand, modify, and scale this without breaking it?** The architecture becomes enabling infrastructure—structured not just for human comprehension, but for machine interpretation, modification, and safe extension at scale.
+
+This shift is already underway. Companies that ignore it risk building products that are increasingly difficult to iterate on, personalize, or scale as AI capabilities advance. Agent-first design is rapidly moving from competitive advantage to competitive necessity.
+
+## From Optional Feature to Strategic Imperative
+
+The transition mirrors other technological shifts: mobile-first design, cloud-native architecture, API-first development. What begins as an edge case becomes the dominant paradigm. Products engineered to maximize what AI agents can create, customize, and distribute unlock business models impossible with purely human-driven approaches.
+
+**Mass personalization** becomes economically viable when agents can generate tailored experiences. **Rapid feature iteration** becomes sustainable when agents can safely extend core functionality. **Dynamic content generation** scales infinitely when agents understand the product's underlying patterns and constraints.
+
+The competitive moat isn't just having AI features—it's having a product architecture that lets agents move faster than human teams ever could.
+
+Ever since coming to grips with Claude Code, I find myself asking:
+
+> What aspects of products have patterns such that an LLM can generate derivations which are still valuable to users?
+
+This question cuts to the heart of agent-first product design. It is not just about making features easier to build, but rather identifying the fundamental product patterns that AI agents can meaningfully extend, customize, and scale for individual users. The value lies not in the initial product, but in the infinite variations and personalizations that agents can generate from well-designed foundations.
+
+## Agent First Product Principles
+
+- **Templates are critical**: Design patterns that agents can recognize, replicate, and meaningfully vary. Not just reusable components, but documented patterns with clear parameters for variation. The goal is agent-driven customization that maintains product coherence without human review of every output.
+
+- **Scalable personalization**: Architecture that makes per-user variations cheap, not exponentially expensive. Agents should be able to generate unique experiences without spinning up new infrastructure, duplicating data, or requiring custom deployment pipelines for each variation.
+
+- **Modular architecture**: Systems composed of discrete components with explicit interfaces and dependencies. Agents need to understand what they're modifying and what depends on it. Clear boundaries between modules enable safe extension; tangled dependencies create unpredictable failures.
+
+- **Constraint-driven design**: Explicit boundaries that define what agents can freely modify versus what must remain invariant. Rather than documenting limitations, the system architecture enforces them—making safe paths obvious and unsafe paths impossible.
+
+- **Composability over customization**: Products designed as primitives that agents combine rather than monoliths they modify. Agents excel at assembling well-defined building blocks; they struggle with safely editing complex, stateful systems. Design for composition, not configuration.
+
+- **Automated validation**: The system itself verifies that agent-generated changes work correctly. Schema validation, type checking, integration tests, and behavioral assertions run automatically—because agents can't manually QA their own output at scale.
+
+- **Safe failure modes**: Agent-generated variations must fail gracefully without cascading errors or data corruption. Sandboxing, rollback mechanisms, and circuit breakers aren't just operational concerns—they're product requirements that enable agents to experiment safely.
+
+- **Deterministic foundations for probabilistic agents**: LLMs are inherently probabilistic, but they operate best with deterministic tools and predictable outcomes. Idempotent operations, pure functions, and explicit state transitions give agents stable ground to build on. The creativity comes from the agent; the reliability comes from the architecture.
