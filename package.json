@@ -5,6 +5,9 @@
   "description": "A template for creating a blog with Astro",
   "author": "danielcgilibert",
   "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=20.18.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/danielcgilibert/blog-template"
