@@ -1,0 +1,13 @@
+- Use the **Memory** MCP Server to persist project-specific knowledge across sessions:
+  - **CRITICAL: All entities MUST be prefixed with `{PROJECT_ID}::`** based on the current working directory
+  - Automatically detect project id from `git config --get project.id`
+    - if not present, set with `git config --local project.id "$(uuidgen)"`, then create `.meta.json` in the project root, with the `id` key set to the project id to allow persisting this id to version control
+  - Example prefix: `1E883314-E3B4-4453-BFCF-098BE37CAF79::`
+  - Create entities for important project decisions, architecture choices, and design patterns
+  - Add observations to track changes, bugs discovered, and solutions implemented
+  - Create relations to link related concepts within the same project namespace
+  - Search memory with `{PROJECT_ID}::` prefix before making major changes to check for prior decisions
+  - Store user preferences, configuration choices, and project-specific conventions
+  - When starting a session, search for `{PROJECT_ID}::` entities to understand project context
+  - Before closing a session, add key learnings and decisions to memory with `{PROJECT_ID}::` prefix
+  - **NEVER query or modify entities without the current project's namespace prefix** - they belong to other projects
