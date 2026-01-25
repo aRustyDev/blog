@@ -1,33 +1,43 @@
 ---
-import ArrowLeft from './icons/ArrowLeft.astro'
-import ArrowRight from './icons/ArrowRight.astro'
+import type { Page } from "astro";
+import type { CollectionEntry } from "astro:content";
+import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import LinkButton from "./LinkButton.astro";
 
-const { page } = Astro.props
+type Props = {
+  page: Page<CollectionEntry<"blog">>;
+};
+
+const { page } = Astro.props;
 ---
 
-<div class='flex gap-5 md:gap-1 justify-around md:justify-end'>
-	<!-- Previous Button -->
-	{
-		page.start > 0 && (
-			<a
-				href={page.url.prev}
-				class='flex items-center justify-center px-8 md:px-4 h-10 text-base font-medium text-black bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-transparent dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-			>
-				<ArrowLeft />
-			</a>
-		)
-	}
-
-	<!-- Next Button -->
-
-	{
-		page.currentPage < page.lastPage && (
-			<a
-				href={page.url.next}
-				class='flex items-center justify-center px-8 md:px-4 h-10 ml-3 text-base font-medium text-black bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-transparent dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-			>
-				<ArrowRight />
-			</a>
-		)
-	}
-</div>
+{
+  page.lastPage > 1 && (
+    <nav
+      class="mt-auto mb-8 flex justify-center"
+      role="navigation"
+      aria-label="Pagination Navigation"
+    >
+      <LinkButton
+        disabled={!page.url.prev}
+        href={page.url.prev as string}
+        class:list={["me-4 select-none", { "opacity-50": !page.url.prev }]}
+        aria-label="Goto Previous Page"
+      >
+        <IconArrowLeft class="inline-block rtl:rotate-180" />
+        Prev
+      </LinkButton>
+      {page.currentPage} / {page.lastPage}
+      <LinkButton
+        disabled={!page.url.next}
+        href={page.url.next as string}
+        class:list={["ms-4 select-none", { "opacity-50": !page.url.next }]}
+        aria-label="Goto Next Page"
+      >
+        Next
+        <IconArrowRight class="inline-block rtl:rotate-180" />
+      </LinkButton>
+    </nav>
+  )
+}
