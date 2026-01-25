@@ -2,15 +2,12 @@
   "name": "blog-worker",
   "compatibility_date": "2025-11-15",
   "assets": {
-    "directory": "./dist",
+    "directory": "./dist"
   },
   "routes": [
     {
       "pattern": "blog.arusty.dev",
-      "custom_domain": true,
-    },
-  ],
-  "exclude": [
-    "dist/admin/**"
+      "custom_domain": true
+    }
   ]
 }

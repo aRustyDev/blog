@@ -1,0 +1,131 @@
+---
+title: "How do I start contributing to the linux kernel?"
+description: "A blog post about how I got started contributing to the linux kernel, this is getting updated overtime, and is more about the journey than the destination"
+pubDatetime: 2025-05-13T00:00:00Z
+featured: true
+draft: false
+tags:
+  - kernel
+  - linux
+  - opensource
+  - c
+  - rust
+  - lowlevel
+  - tutorial
+  - guide
+  - beginner
+  - contribution
+---
+
+So as you probably already know (or are in the process of finding out), the linux kernel is pretty intense to get started with. I am finding a number of challenges in getting to my first contribution.
+So far I see the following hurdles
+- how do I know what needs doing? (issue tracking/browsing)
+- How do I make a contribution once I've found something to add/fix?
+  - A: To contribute you need to send an e-mail to mailing lists and individuals specified by scripts/get_maintainer.pl
+- How can I develop the kernel locally?
+  - Do I need a VM or can I build it straight on my host?
+  - Do I need linux or just linux like tools
+  - Is there a specific build process I need to be aware of?
+  - Are there existing `.pre-commit` ish things I need to be running?
+- How much work is reasonable to put in myself before I should reach out to the community?
+  - Before I submit a patch
+  - Before I beg for aid (and how would I do that?)
+- What Happens After You Submit a Patch?
+- Tips for New Linux Kernel Contributors
+
+## Table of contents
+
+## Eudyptula Challenge
+
+- [Vincent Bernat](https://vincent.bernat.ch/en/blog/2014-eudyptula-boot)
+- [Challenges + Solutions](https://github.com/agelastic/eudyptula)
+- [Similar ^](https://github.com/sinedoke/eudyptula)
+
+## General Atmosphere
+
+> I answered that given my current level of knowledge the best for me would be to work with one of the maintainers who could tell me what shall be done and later review my work so that I could learn and do something useful at the same time. Can you guess the answer? It was:
+>
+> "No maintainer has that time, sorry."
+>
+> In this particular moment I understood what my attitude should be. I immediately saw that I need to be proactive because no one will do any kind of work for me. This reminded me of a quote from one of the hacker movies that I enjoyed as a teenager; it fits:
+>
+> "This business is all about bits. It is up to us if we are one or zero."
+
+## Getting Started TODOs
+
+### Target 'code quality' tasks
+- [ ] Read the Kernel [Style Guide](https://www.kernel.org/doc/Documentation/CodingStyle)
+- [ ] Use `checkpatch.pl`
+> There is a tool called *checkpatch.pl* which resides in the *scripts* directory of the kernel repository
+> `scripts/checkpatch.pl -f <file>`
+- [ ] Use [sparse](https://sparse.wiki.kernel.org/index.php/Main_Page) to fix broken code
+> `sudo apt-get install sparse`
+
+- [ ] Read the TODOs
+> `% echo "" > /tmp/todolist-kernel.txt; count=0; for entry in `find . -name "*TODO*"`; do echo $count". "$entry`git log --pretty=format:" Last edited %ar" $entry | head -1` >> /tmp/todolist-kernel.txt; echo "" >> /tmp/todolist-kernel.txt; sed 's/^/        /' $entry >> /tmp/todolist-kernel.txt; echo "" >> /tmp/todolist-kernel.txt; ((count=$count+1)); done`
+> the information in the TODOs, at least in the staging area, should be accurate.
+> The code in staging does not meet the quality standards and the job is to make it good enough to be promoted as a 'real' kernel driver. This makes it a perfect place to start from especially when combined with the information from TODOs.
+
+- [ ] Read about the [Linux Driver Project](http://www.linuxdriverproject.org/mediawiki/index.php/Main_Page)
+- [ ] Kernel bugs are tracked using [Bugzilla](http://bugzilla.kernel.org/)
+- [ ] Start from reading files in Documentation/process directory in Linux tree and watch [this](https://www.youtube.com/watch?v=vyenmLqJQjs) Linux Kernel Development, Greg Kroah-Hartman - Git Merge 2016 video
+- [ ] Learn `Linux System Programming Open Source Development` (William Patterson)
+- [ ] Understand the Basics of Linux and C Programming
+- [ ] Set Up Your Development Environment
+  - **Install Linux**: If you don't already use Linux, it's time to install it. Ubuntu or Fedora are good choices for beginners. You can install it directly on your machine or use a virtual machine like VirtualBox.
+  - **Get the Kernel Source Code**: To contribute, you need the kernel's source code. You can get it by cloning the Linux Git repository:
+  git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+  - **Configure Your Development Environment**: Ensure you have the necessary tools installed, like GCC (GNU Compiler Collection), Make, and Git. You'll also want an editor like Vim or Visual Studio Code for writing and editing code.
+  - **Build the Kernel**: Before making any changes, practice building the kernel from source. This ensures your environment is correctly set up. You can do this by running the following commands in your kernel source directory:
+    - `make defconfig`
+    - `make -j$(nproc)`
+  - After a successful build, install the new kernel:
+    - `sudo make modules_install install`
+  - Reboot your machine to run the kernel you just built!
+
+- [ ] Identify Your First Contribution
+  - **Check the 'Kernel Janitors' Project**: This project highlights simple tasks and cleanups that new contributors can work on. These are usually small patches, like fixing coding style issues or renaming variables for better readability.
+  - **Fix Coding Style Issues**: One of the easiest ways to start contributing is by fixing coding style issues in the kernel. You can find these by running the checkpatch.pl script, which is part of the kernel source, against the code:
+  - **Find 'Easy' Bugs**: The kernel bug tracker sometimes tags bugs as 'easy,' which are meant for new contributors. This is a great place to start because it lets you get familiar with how the kernel works while making a meaningful contribution.
+- [ ] Make Your Changes and Test Them
+  - **Write Clean Code**: Follow the Linux kernel coding style guide, which can be found in the kernel's documentation (Documentation/process/coding-style.rst).
+  - **Test Thoroughly**: Testing is critical when working with the kernel. After making your changes, recompile the kernel and test your changes thoroughly to ensure they work as expected and don't introduce any regressions.
+
+- [ ] Format Your Patch
+  - To create a patch, use git to generate the difference between your changes and the original code `git format-patch -1` This will generate a patch file for the most recent commit. Make sure your patch is well-documented and includes a clear explanation of what it fixes or improves.
+- [ ] Send Your Patch to the Maintainers
+  - The next step is to send your patch to the appropriate maintainers. Kernel development is divided into subsystems, each with its own maintainers. You'll need to find the right maintainer to send your patch to.
+  - Find the Maintainer: Use the scripts/get_maintainer.pl script to find the correct maintainers for the part of the kernel you modified:
+    - `./scripts/get_maintainer.pl <file you modified>`
+  - **Email Your Patch**: Once you have the list of maintainers, send your patch via email using git send-email. Make sure to follow the patch submission guidelines closely (found in Documentation/process/submitting-patches.rst).
+- [ ] What Happens After You Submit a Patch?
+  - Once your patch is sent, maintainers and other contributors will review it. Don't be discouraged if your patch isn't accepted right away! You'll likely receive feedback on things you need to improve or changes that need to be made.
+  - This feedback is invaluable. It helps you become a better developer and shows you how to align your contributions with the expectations of the Linux kernel community. Take it as part of the learning process, and don't be afraid to submit revisions based on the feedback you receive.
+- [ ] Look into `CommunityBridge` by the Linux Foundation
+- [ ] Check out this tutorial https://kernelnewbies.org/KernelBuild
+- [ ] Get familiar with the Kernel Documentation https://www.kernel.org/doc/html/latest/
+- [ ] Write Your First Kernel Module
+  - Kernel modules are pieces of code that can be loaded into the kernel at runtime—they're one of the easiest ways to interact with the kernel without needing to recompile the entire thing. Start with simple "Hello World" modules that log messages to the kernel log. This hands-on approach will help you understand how the kernel interacts with hardware and manages resources in real-time.
+  - Use tools like insmod and rmmod to load and unload your modules, and dmesg to see the messages your module generates. This experience will prepare you for bigger contributions and help you become comfortable working directly in kernel space.
+- [ ] Check out this resource https://kernelnewbies.org/
+
+## Kernel Contribution Methods
+
+- start in the drivers/staging area
+- improve the code quality
+- find inspiration in the TODOs
+- fix an actual bug in the kernel.
+
+### Why Contribute to the Linux Kernel?
+
+- **Giving Back to Open Source**: Linux is open-source, and it exists because thousands of developers have contributed their time and skills over the years. By contributing, you're helping keep this movement alive and making a real difference.
+- **Sharpen Your Skills**: Contributing to the kernel gives you hands-on experience with real-world code. It's a great way to sharpen your C programming skills, learn more about system-level programming, and become familiar with the intricacies of operating systems.
+- **Community and Networking**: When you contribute to the Linux kernel, you become part of a global community of developers. You'll have the chance to work with some of the best minds in software development.
+- **Career Opportunities**: Having Linux kernel contributions on your resume is a huge plus. Employers in the tech industry, especially companies working with infrastructure, cloud, and embedded systems, highly value Linux expertise.
+
+
+## Tips for New Linux Kernel Contributors
+- Start Small: Don't aim to solve huge bugs or add major features right away. It's okay to start with small patches, especially when you're still learning the kernel's codebase and processes.
+- Be Patient: Contributing to the Linux kernel can take time, especially if you're learning as you go. Be patient, and don't get discouraged if things don't go perfectly the first time.
+- Learn from Others: The Linux kernel community is vast, and there's always someone willing to help. Read mailing lists, look at other patches, and don't hesitate to ask questions if you're unsure about something.
+- Focus on Quality: Kernel maintainers value high-quality code. It's better to submit fewer, well-tested patches than many untested ones. Always make sure your code works and is well-documented.
