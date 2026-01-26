@@ -67,11 +67,16 @@ If Workers Builds fails after configuring `wrangler.jsonc`:
   "routes": [
     {
       "pattern": "example.com",
-      "custom_domain": true
+      "custom_domain": true,
+      "override_existing_dns_record": true
     }
   ]
 }
 ```
+
+### DNS Override
+
+If the hostname already has externally managed DNS records (A, CNAME, etc), deployment will fail with error code `100117`. Add `override_existing_dns_record: true` to allow the Worker to take over the domain.
 
 ## SSR/Hybrid Sites
 
