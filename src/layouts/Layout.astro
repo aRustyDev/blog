@@ -149,18 +149,33 @@ const structuredData = {
     <!-- Initialize BrandTheme early to prevent FOUC -->
     <script is:inline>
       (function () {
-        // Initialize BrandTheme with forest-night, respecting stored mode
+        // Parse URL query parameters for theme overrides
+        // Supports: ?theme=twilight&mode=dark
+        const params = new URLSearchParams(window.location.search);
+        const urlTheme = params.get("theme");
+        const urlMode = params.get("mode");
+
+        // Initialize BrandTheme with forest-night default
         if (typeof BrandTheme !== "undefined") {
           BrandTheme.init({
             theme: "forest-night",
             persist: true,
           });
+
+          // Apply URL overrides (don't persist URL-based changes)
+          if (urlTheme && BrandTheme.themes.includes(urlTheme)) {
+            BrandTheme.theme(urlTheme);
+          }
+          if (urlMode && ["light", "dark", "auto"].includes(urlMode)) {
+            BrandTheme.mode(urlMode);
+          }
         }
 
         // Export minimal API for AstroPaper theme.ts compatibility
-        const mode = typeof BrandTheme !== "undefined"
-          ? BrandTheme.getEffectiveMode()
-          : "dark";
+        const mode =
+          typeof BrandTheme !== "undefined"
+            ? BrandTheme.getEffectiveMode()
+            : "dark";
         window.theme = {
           themeValue: mode,
           getTheme: () => window.theme.themeValue,
