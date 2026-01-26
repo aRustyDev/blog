@@ -61,6 +61,15 @@ const structuredData = {
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Brand Theme (loaded early to prevent FOUC) -->
+    <link
+      id="brand-theme-stylesheet"
+      rel="stylesheet"
+      href="https://brand.arusty.dev/assets/colors/themes/forest-night.css"
+    />
+    <script is:inline src="https://brand.arusty.dev/assets/js/theme-switcher.js"
+    ></script>
+
     <!-- Load Font -->
     <Font
       cssVariable="--font-jetbrains-mono"
@@ -137,28 +146,38 @@ const structuredData = {
 
     <ClientRouter />
 
-    <!-- Minimal inline script to prevent FOUC - sets theme immediately -->
+    <!-- Initialize BrandTheme early to prevent FOUC -->
     <script is:inline>
       (function () {
-        const initialColorScheme = ""; // "light" | "dark"
-        const currentTheme = localStorage.getItem("theme");
+        // Parse URL query parameters for theme overrides
+        // Supports: ?theme=twilight&mode=dark
+        const params = new URLSearchParams(window.location.search);
+        const urlTheme = params.get("theme");
+        const urlMode = params.get("mode");
 
-        function getPreferTheme() {
-          if (currentTheme) return currentTheme;
-          if (initialColorScheme) return initialColorScheme;
-          return window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
+        // Initialize BrandTheme with forest-night default
+        if (typeof BrandTheme !== "undefined") {
+          BrandTheme.init({
+            theme: "forest-night",
+            persist: true,
+          });
+
+          // Apply URL overrides (don't persist URL-based changes)
+          if (urlTheme && BrandTheme.themes.includes(urlTheme)) {
+            BrandTheme.theme(urlTheme);
+          }
+          if (urlMode && ["light", "dark", "auto"].includes(urlMode)) {
+            BrandTheme.mode(urlMode);
+          }
         }
 
-        const themeValue = getPreferTheme();
-
-        // Set theme immediately to prevent flash
-        document.firstElementChild?.setAttribute("data-theme", themeValue);
-
-        // Export minimal API for external script
+        // Export minimal API for AstroPaper theme.ts compatibility
+        const mode =
+          typeof BrandTheme !== "undefined"
+            ? BrandTheme.getEffectiveMode()
+            : "dark";
         window.theme = {
-          themeValue: themeValue,
+          themeValue: mode,
           getTheme: () => window.theme.themeValue,
           setTheme: val => {
             window.theme.themeValue = val;

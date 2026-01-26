@@ -4,38 +4,15 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /*
- * Forest Night Theme (from brand.arusty.dev)
- * Light/Dark variants mapped to AstroPaper's data-theme values
+ * Map brand.arusty.dev tokens to AstroPaper theme variables.
+ * Colors are loaded via BrandTheme CDN (see Layout.astro).
  */
-
-/* Light theme (Forest Night Light) */
-:root,
-html[data-theme="light"] {
-  --background: #ffffff;
-  --foreground: #1f2328;
-  --accent: #2ea043;
-  --muted: #f6f8fa;
-  --border: #d0d7de;
-}
-
-/* Dark theme (Forest Night Dark) */
-html[data-theme="dark"] {
-  --background: #0d1117;
-  --foreground: #e6edf3;
-  --accent: #3fb950;
-  --muted: #161b22;
-  --border: #30363d;
-}
-
-/* System preference fallback (when no data-theme set) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --background: #0d1117;
-    --foreground: #e6edf3;
-    --accent: #3fb950;
-    --muted: #161b22;
-    --border: #30363d;
-  }
+:root {
+  --background: var(--color-background);
+  --foreground: var(--color-text);
+  --accent: var(--color-accent);
+  --muted: var(--color-surface);
+  --border: var(--color-border);
 }
 
 @theme inline {
