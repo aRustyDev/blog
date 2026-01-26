@@ -13,8 +13,7 @@
   "routes": [
     {
       "pattern": "blog.arusty.dev",
-      "custom_domain": true,
-      "override_existing_dns_record": true
+      "custom_domain": true
     }
   ]
 }

@@ -67,16 +67,19 @@ If Workers Builds fails after configuring `wrangler.jsonc`:
   "routes": [
     {
       "pattern": "example.com",
-      "custom_domain": true,
-      "override_existing_dns_record": true
+      "custom_domain": true
     }
   ]
 }
 ```
 
-### DNS Override
+### DNS Record Conflicts
 
-If the hostname already has externally managed DNS records (A, CNAME, etc), deployment will fail with error code `100117`. Add `override_existing_dns_record: true` to allow the Worker to take over the domain.
+Custom Domains **cannot** be created on hostnames with existing DNS records. If deployment fails with error code `100117`:
+
+1. Go to Cloudflare Dashboard → DNS → Records
+2. Delete the existing A/CNAME record for the hostname
+3. Re-run the deployment - Cloudflare will create the correct DNS record automatically
 
 ## SSR/Hybrid Sites
 
