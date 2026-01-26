@@ -73,6 +73,14 @@ If Workers Builds fails after configuring `wrangler.jsonc`:
 }
 ```
 
+### DNS Record Conflicts
+
+Custom Domains **cannot** be created on hostnames with existing DNS records. If deployment fails with error code `100117`:
+
+1. Go to Cloudflare Dashboard → DNS → Records
+2. Delete the existing A/CNAME record for the hostname
+3. Re-run the deployment - Cloudflare will create the correct DNS record automatically
+
 ## SSR/Hybrid Sites
 
 For server-rendered sites, add a `main` entry point:
