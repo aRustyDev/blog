@@ -30,14 +30,14 @@ interface Social {
 export const SOCIALS: Social[] = [
   {
     name: "GitHub",
-    href: "https://github.com/arustydev/",
+    href: "https://github.com/aRustyDev/",
     linkTitle: `${SITE.title} on GitHub`,
     icon: IconGitHub,
     enabled: true,
   },
   {
     name: "GitLab",
-    href: "https://gitlab.com/arustydev",
+    href: "https://gitlab.com/aRustyDev",
     linkTitle: `${SITE.title} on GitLab`,
     icon: IconGitLab,
     enabled: false,
@@ -54,7 +54,7 @@ export const SOCIALS: Social[] = [
     href: "https://x.com/aRustyDev",
     linkTitle: `${SITE.title} on X`,
     icon: IconBrandX,
-    enabled: true,
+    enabled: false,
   },
   {
     name: "Twitter",
