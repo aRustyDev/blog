@@ -1,24 +1,25 @@
-/* Brand colors from CDN - forest-night theme */
-@import url("https://brand.arusty.dev/assets/colors/tokens.css");
-
 @import "tailwindcss";
 @import "./typography.css";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-/* Map brand tokens to AstroPaper theme variables */
+/*
+ * Forest Night Theme (from brand.arusty.dev)
+ * Light/Dark variants mapped to AstroPaper's data-theme values
+ */
+
+/* Light theme (Forest Night Light) */
 :root,
 html[data-theme="light"] {
-  /* Forest Night Light */
-  --background: var(--color-background, #ffffff);
-  --foreground: var(--color-text, #1f2328);
-  --accent: var(--color-accent, #2ea043);
-  --muted: var(--color-surface, #f6f8fa);
-  --border: var(--color-border, #d0d7de);
+  --background: #ffffff;
+  --foreground: #1f2328;
+  --accent: #2ea043;
+  --muted: #f6f8fa;
+  --border: #d0d7de;
 }
 
+/* Dark theme (Forest Night Dark) */
 html[data-theme="dark"] {
-  /* Forest Night Dark */
   --background: #0d1117;
   --foreground: #e6edf3;
   --accent: #3fb950;
@@ -26,7 +27,7 @@ html[data-theme="dark"] {
   --border: #30363d;
 }
 
-/* System preference auto-detection */
+/* System preference fallback (when no data-theme set) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --background: #0d1117;
