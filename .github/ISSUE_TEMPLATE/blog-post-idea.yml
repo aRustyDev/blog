@@ -1,7 +1,7 @@
 name: Blog Post Idea
 description: Track a blog post topic or idea for future writing
 title: "[Post] "
-labels: ["content", "blog-post"]
+labels: ["content", "idea"]
 body:
   - type: markdown
     attributes:
