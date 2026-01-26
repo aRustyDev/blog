@@ -1,46 +1,69 @@
-# directories
+# Directories
 
-📁 **`/tina`** - TinaCMS Configuration
+## `/src` - Source Code
 
-This directory contains the configuration for **Tina CMS** (Content Management System). 
+Main application source directory.
 
-- **File**: `tina/config.ts` - Defines the CMS schema and settings
-- **Purpose**: Tina CMS provides a visual editor interface for managing your blog content
-- **Key Features**:
-  - Defines content structure for blog posts (title, description, cover image, tags, category, etc.)
-  - Outputs admin interface to `/public/admin` 
-  - Manages media files in `/src/assets/images`
-  - When you run `pnpm dev`, it launches the Tina CMS dev server alongside Astro
-- **Access**: The admin UI is available at `/admin` when running locally
+| Directory | Purpose |
+|-----------|---------|
+| `src/data/blog/` | Blog posts (Markdown files) |
+| `src/pages/` | Astro pages that become routes |
+| `src/components/` | Reusable UI components |
+| `src/layouts/` | Page layout templates |
+| `src/styles/` | CSS files (global.css, typography.css) |
+| `src/utils/` | Utility functions (slugify, OG image generation, etc.) |
+| `src/assets/` | Images and icons processed by Astro |
+| `src/scripts/` | Client-side scripts (theme toggle) |
 
-## 📁 **`/public`** - Static Assets
+### Key Files in `/src`
 
-This directory contains static files that are **copied directly** to the build output without processing.
+- `config.ts` - Site configuration (title, author, social links behavior)
+- `constants.ts` - Social links and share buttons
+- `content.config.ts` - Blog post schema definition
+- `env.d.ts` - TypeScript environment declarations
 
-- **Contents**:
-  - `favicon.svg` - Site icon
-  - `robots.txt` - Search engine crawling instructions
-  - `open-graph.png` - Social media preview image
-  - `demo.gif`, `project.png` - Images/demos
-  - `/fonts` - Web fonts
-  - `/admin` - TinaCMS admin interface (built by Tina)
-- **Purpose**: These files are served as-is at the root URL (e.g., `/favicon.svg`, `/robots.txt`)
-- **Deployment**: Copied directly to the Cloudflare Worker's static assets
+## `/public` - Static Assets
 
-## 📁 **`/src`** - Source Code & Content
+Files copied directly to build output without processing.
 
-This is the main application source directory containing all your Astro components, pages, and content.
+| File/Directory | Purpose |
+|----------------|---------|
+| `favicon.svg` | Site icon |
+| `robots.txt` | Search engine crawling instructions |
+| `fonts/` | Web fonts (JetBrains Mono) |
+| `pagefind/` | Generated search index (gitignored) |
 
-- **Structure**:
-  - `/content/blog/` - Your blog posts (MDX files) - this is what Tina CMS edits
-  - `/pages/` - Astro pages that become routes
-  - `/components/` - Reusable UI components
-  - `/layouts/` - Page layout templates
-  - `/styles/` - CSS/styling files
-  - `/utils/` - Utility functions
-  - `/data/` - Configuration data (like categories, site config)
-  - `/assets/` - Images and assets that get processed/optimized by Astro
-- **Purpose**: All code that gets compiled, bundled, and transformed by Astro during build
-- **Deployment**: Processed by Astro and bundled for the Cloudflare Worker
+## `/docs` - Documentation
 
-**In summary**: `/tina` = CMS config, `/public` = static files, `/src` = your application code and blog content.
+MDBook-based project documentation.
+
+| File | Purpose |
+|------|---------|
+| `book.toml` | MDBook configuration |
+| `src/SUMMARY.md` | Documentation table of contents |
+| `src/repo/` | Repository documentation |
+
+## `/content` - Draft Content
+
+| Directory | Purpose |
+|-----------|---------|
+| `content/.todo/` | Draft blog posts and content plans |
+
+## `/.github` - GitHub Configuration
+
+| Directory | Purpose |
+|-----------|---------|
+| `workflows/` | GitHub Actions (Cloudflare Pages deployment) |
+| `dependabot.yml` | Dependency update configuration |
+
+## `/.todo` - Project Planning
+
+Project-level planning and TODO items (tracked as GitHub issues).
+
+## `/.vscode` - Editor Configuration
+
+VS Code workspace settings and recommended extensions.
+
+## `/dist` - Build Output
+
+Generated static site (gitignored). Created by `npm run build`.

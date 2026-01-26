@@ -6,71 +6,62 @@ default:
 
 # Install dependencies
 install:
-    pnpm install
+    npm install
 
-# Run local development server (without Tina CMS)
+# Run local development server
 dev:
-    pnpm start
-
-# Run local development server with Tina CMS admin interface
-dev-cms:
-    pnpm dev
+    npm run dev
 
 # Preview production build locally
 preview:
-    pnpm preview
+    npm run preview
 
 # Format code
 format:
-    pnpm format
+    npm run format
 
 # Check code formatting
 format-check:
-    pnpm format:check
+    npm run format:check
 
 # Lint code
 lint:
-    pnpm lint
+    npm run lint
 
 # Run all checks (format, lint)
 check: format-check lint
 
 # Build the site for production
 build:
-    pnpm build
+    npm run build
     @echo "Build complete. Output in ./dist"
 
-# Build and remove admin interface
-build-prod: build
-    @echo "Removing /admin interface from production build..."
-    rm -rf dist/admin
-    @echo "Production build ready for deployment"
-
 # Test build locally
-test: build-prod preview
+test: build preview
 
-# Deploy to Cloudflare Workers
-deploy: build-prod
-    @echo "Deploying to Cloudflare Workers..."
-    npx wrangler deploy
+# Deploy to Cloudflare Pages
+deploy: build
+    @echo "Deploying to Cloudflare Pages..."
+    npx wrangler pages deploy dist --project-name=blog
 
 # Deploy without building (use existing dist/)
 deploy-only:
-    @echo "Deploying existing build to Cloudflare Workers..."
-    npx wrangler deploy
+    @echo "Deploying existing build to Cloudflare Pages..."
+    npx wrangler pages deploy dist --project-name=blog
 
 # Clean build artifacts
 clean:
     rm -rf dist/
     rm -rf .astro/
+    rm -rf public/pagefind/
     @echo "Cleaned build artifacts"
 
 # Full clean including node_modules
 clean-all: clean
     rm -rf node_modules/
-    rm -rf pnpm-lock.yaml
+    rm -rf package-lock.json
     @echo "Cleaned everything"
 
 # Sync Astro types
 sync:
-    pnpm sync
+    npm run sync
