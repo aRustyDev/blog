@@ -1,3 +1,6 @@
+/* Brand colors from CDN - forest-night theme */
+@import url("https://brand.arusty.dev/assets/colors/themes/forest-night.css");
+
 @import "tailwindcss";
 @import "./typography.css";
 
@@ -5,7 +8,7 @@
 
 /*
  * Map brand.arusty.dev tokens to AstroPaper theme variables.
- * Colors are loaded via BrandTheme CDN (see Layout.astro).
+ * Theme file provides light/dark via data-theme attribute.
  */
 :root {
   --background: var(--color-background);
@@ -13,6 +16,17 @@
   --accent: var(--color-accent);
   --muted: var(--color-surface);
   --border: var(--color-border);
+}
+
+/* System preference auto-detection */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --background: #0d1117;
+    --foreground: #e6edf3;
+    --accent: #3fb950;
+    --muted: #161b22;
+    --border: #30363d;
+  }
 }
 
 @theme inline {
