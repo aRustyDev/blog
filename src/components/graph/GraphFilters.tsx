@@ -1,75 +1,7 @@
 // src/components/graph/GraphFilters.tsx
 
 import { useState, type FC } from "react";
-import { CATEGORY_COLORS, CATEGORY_LABELS } from "./GraphView";
-
-// Topic groups — content topics only, NOT content types
-const TOPIC_GROUPS: { label: string; categories: string[] }[] = [
-  {
-    label: "Programming",
-    categories: [
-      "deep-dive-programming-c", "deep-dive-programming-swift",
-      "deep-dive-programming-rust", "deep-dive-programming-go",
-      "deep-dive-programming-zig", "deep-dive-programming-comparing",
-    ],
-  },
-  {
-    label: "DFIR",
-    categories: [
-      "deep-dive-host-forensics", "deep-dive-memory-forensics",
-      "deep-dive-mobile-forensics", "deep-dive-cloud-forensics",
-      "deep-dive-filesystem-forensics", "deep-dive-database-forensics",
-    ],
-  },
-  {
-    label: "Tools",
-    categories: ["deep-dive-editors", "deep-dive-nix"],
-  },
-  {
-    label: "Systems",
-    categories: ["deep-dive-kernels", "deep-dive-ebpf"],
-  },
-  {
-    label: "Hardware",
-    categories: ["deep-dive-pcb-design", "keebs"],
-  },
-  {
-    label: "Security",
-    categories: [
-      "deep-dive-reverse-engineering", "deep-dive-llm-backdoor",
-      "deep-dive-indirect-prompt",
-    ],
-  },
-  {
-    label: "AI / ML",
-    categories: [
-      "deep-dive-benchmarking", "deep-dive-graph-agent",
-      "deep-dive-semantic-testing",
-    ],
-  },
-];
-
-// Content types under Node Type
-const CONTENT_TYPE_LABELS: Record<string, string> = {
-  "deep-dive": "Deep Dive",
-  "eli5": "ELI5",
-  "dev-blog": "Dev Blog",
-  "blog-post": "Blog Post",
-  "feature": "Feature",
-  "project": "Project",
-  "other": "Other",
-};
-
-// Derive content type from category
-function contentTypeFromCategory(category: string): string {
-  if (category.startsWith("deep-dive")) return "deep-dive";
-  if (category === "eli5") return "eli5";
-  if (category === "keebs") return "dev-blog";
-  if (category === "blog-post") return "blog-post";
-  if (category === "feature") return "feature";
-  if (category === "project") return "project";
-  return "other";
-}
+import { CATEGORY_COLORS, CATEGORY_LABELS, TOPIC_GROUPS, CONTENT_TYPE_LABELS } from "./graph.shared";
 
 interface GraphFiltersProps {
   availableTags: string[];

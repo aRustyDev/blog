@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Graph from "graphology";
 import type { GraphData, GraphNode } from "./graph.types";
+import { EDGE_COLORS, deriveContentType } from "./graph.shared";
 
 interface UseGraphDataOptions {
   mode: "global" | "local";
@@ -16,26 +17,6 @@ interface UseGraphDataOptions {
   filterLanguages?: string[];
   tagMode?: "union" | "intersection" | "exclusion";
 }
-
-function deriveContentType(category: string): string {
-  if (category.startsWith("deep-dive")) return "deep-dive";
-  if (category === "eli5") return "eli5";
-  if (category === "keebs") return "dev-blog";
-  if (category === "blog-post") return "blog-post";
-  if (category === "feature") return "feature";
-  if (category === "project") return "project";
-  return "other";
-}
-
-export const EDGE_COLORS: Record<string, string> = {
-  parent: "#3fb950",
-  child: "#3fb950",
-  sibling: "#58a6ff",
-  prerequisite: "#d29922",
-  sequel: "#d29922",
-  related: "#8b949e",
-  "tag-shared": "#30363d80",
-};
 
 /** Tests whether a node passes the current filter criteria */
 function nodePassesFilters(node: GraphNode, options: UseGraphDataOptions): boolean {
