@@ -88,7 +88,7 @@ const GraphModal: FC<GraphModalProps> = ({ initialMode, focusNode, title, onClos
             focusNode={mode === "local" ? focusNode : undefined}
             depth={3}
             height="calc(90vh - 80px)"
-            showLegend={mode === "global"}
+            showToolbar={mode === "global"}
             showWatermark
           />
         </div>

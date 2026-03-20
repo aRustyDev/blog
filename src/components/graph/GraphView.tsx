@@ -35,7 +35,7 @@ export interface GraphViewProps {
   // Display
   height?: string;
   className?: string;
-  showLegend?: boolean;
+  showToolbar?: boolean;
   showWatermark?: boolean;
 }
 
@@ -57,7 +57,7 @@ export default function GraphView({
   hasActiveFilters: externalHasActiveFilters,
   height = "600px",
   className = "",
-  showLegend = false,
+  showToolbar = false,
   showWatermark = false,
 }: GraphViewProps) {
   // Always call useGraphData (React rules), but skip fetch when external data provided
@@ -181,7 +181,7 @@ export default function GraphView({
           <DragController />
           <ThemeObserver />
           <FilterController visibleNodes={visibleNodes} hasActiveFilters={hasActiveFilters} hoveredNode={hoveredNode} />
-          {showLegend && (
+          {showToolbar && (
             <>
               <GraphToolbar
                 categories={[...visibleCategories].sort()}

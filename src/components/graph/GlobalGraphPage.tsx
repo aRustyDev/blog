@@ -119,7 +119,7 @@ const GlobalGraphPage: FC = () => {
           focusNode={focusNode}
           tagMode={tagMode}
           height="calc(100vh - 80px)"
-          showLegend
+          showToolbar
           showWatermark
         />
       </div>
