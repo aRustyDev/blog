@@ -20,3 +20,5 @@
   - [0004: Interactive Graph Visualization](./adrs/0004-interactive-graph-visualization.md)
   - [0005: Graph Node Data Model](./adrs/0005-graph-node-data-model.md)
   - [0006: Graph Filter Architecture](./adrs/0006-graph-filter-architecture.md)
+  - [0007: Graph Component Architecture](./adrs/0007-graph-component-architecture.md)
+  - [0008: Brand Theming Strategy](./adrs/0008-brand-theming-strategy.md)
