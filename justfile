@@ -12,8 +12,9 @@ install:
 dev:
     npm run dev
 
-# Preview production build locally
+# Preview production build locally (builds first if dist/ missing)
 preview:
+    @test -d dist/ || just build
     npm run preview
 
 # Format code

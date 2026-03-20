@@ -48,8 +48,9 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
 
     // ForceAtlas2 with strong gravity for petri-dish shape
     import("graphology-layout-forceatlas2").then(mod => {
-      const settings = mod.inferSettings(graph);
-      mod.assign(graph, {
+      const fa2 = mod.default ?? mod;
+      const settings = fa2.inferSettings(graph);
+      fa2.assign(graph, {
         iterations: 120,
         settings: {
           ...settings,

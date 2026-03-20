@@ -53,10 +53,11 @@ export const LayoutController: FC = () => {
 
   useEffect(() => {
     import("graphology-layout-forceatlas2").then(mod => {
+      const fa2 = mod.default ?? mod;
       const graph = sigma.getGraph();
       if (graph.order === 0) return;
-      const settings = mod.inferSettings(graph);
-      mod.assign(graph, { iterations: 100, settings });
+      const settings = fa2.inferSettings(graph);
+      fa2.assign(graph, { iterations: 100, settings });
       sigma.refresh();
     });
   }, [sigma]);
