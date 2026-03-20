@@ -367,24 +367,23 @@ for (const dir of projectDirs) {
   const newFm = stringifyYaml(fm, { lineWidth: 0 });
   const newContent = `---\n${newFm}---` + content.slice(fmMatch[0].length);
 
+  const tagStr = meta.tags.length ? meta.tags.join(", ") : "(none)";
+  const langStr = meta.languages.length
+    ? meta.languages.join(", ")
+    : "(none)";
+
   if (DRY_RUN) {
-    const tagStr = meta.tags.length ? meta.tags.join(", ") : "(none)";
-    const langStr = meta.languages.length
-      ? meta.languages.join(", ")
-      : "(none)";
     console.log(`  DRY ${dir} → tags:[${tagStr}] langs:[${langStr}]`);
   } else {
     writeFileSync(indexPath, newContent);
-    const tagStr = meta.tags.length ? meta.tags.join(", ") : "(none)";
-    const langStr = meta.languages.length
-      ? meta.languages.join(", ")
-      : "(none)";
     console.log(`  SET ${dir} → tags:[${tagStr}] langs:[${langStr}]`);
+    updated++;
   }
-  updated++;
 }
 
-console.log(`\nDone: ${updated} updated, ${skipped} skipped`);
+console.log(
+  `\nDone: ${updated} ${DRY_RUN ? "would update" : "updated"}, ${skipped} skipped`
+);
 
 // Summary
 const allTags = new Set<string>();

@@ -39,15 +39,15 @@ build:
 # Test build locally
 test: build preview
 
-# Deploy to Cloudflare Pages
+# Deploy to Cloudflare Workers (uses wrangler.jsonc config)
 deploy: build
-    @echo "Deploying to Cloudflare Pages..."
-    npx wrangler pages deploy dist --project-name=blog
+    @echo "Deploying to Cloudflare Workers..."
+    npx wrangler deploy
 
 # Deploy without building (use existing dist/)
 deploy-only:
-    @echo "Deploying existing build to Cloudflare Pages..."
-    npx wrangler pages deploy dist --project-name=blog
+    @echo "Deploying existing build to Cloudflare Workers..."
+    npx wrangler deploy
 
 # Clean build artifacts
 clean:
