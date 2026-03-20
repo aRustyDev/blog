@@ -1,0 +1,19 @@
+/* src/styles/graph.css */
+
+.graph-container {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.graph-container .sigma-container {
+  background: transparent !important;
+}
+
+/* Floating graph widget — only show on desktop (>= 1024px) */
+@media (min-width: 1024px) {
+  .graph-widget {
+    display: block !important;
+  }
+}
