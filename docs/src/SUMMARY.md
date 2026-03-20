@@ -22,3 +22,4 @@
   - [0006: Graph Filter Architecture](./adrs/0006-graph-filter-architecture.md)
   - [0007: Graph Component Architecture](./adrs/0007-graph-component-architecture.md)
   - [0008: Brand Theming Strategy](./adrs/0008-brand-theming-strategy.md)
+  - [0009: Smoke Tests](./adrs/0009-smoke-tests.md)

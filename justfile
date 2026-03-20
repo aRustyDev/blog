@@ -78,3 +78,16 @@ graph-prod:
 # Tag projects with derived metadata
 tag-projects *FLAGS:
     npx tsx src/scripts/tag-projects.ts {{FLAGS}}
+
+# Run smoke tests (Tier 1: build integrity)
+smoke:
+    @echo "=== Smoke Tests (Tier 1) ==="
+    @echo "TypeScript check..."
+    npx astro check
+    @echo "Graph build (dev)..."
+    just graph-dev
+    @echo "Graph build (prod)..."
+    just graph-prod
+    @echo "Full build..."
+    just build
+    @echo "=== All smoke tests passed ==="
