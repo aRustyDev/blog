@@ -17,6 +17,9 @@ import IconArxiv from "@/assets/icons/IconArxiv.svg";
 import IconOrcid from "@/assets/icons/IconOrcid.svg";
 import IconResearchGate from "@/assets/icons/IconResearchGate.svg";
 import IconAlphaXiv from "@/assets/icons/IconAlphaXiv.svg";
+import IconHackerOne from "@/assets/icons/IconHackerOne.svg";
+import IconCve from "@/assets/icons/IconCve.svg";
+import IconAcm from "@/assets/icons/IconAcm.svg";
 import { SITE } from "@/config";
 
 interface Social {
@@ -54,7 +57,7 @@ export const SOCIALS: Social[] = [
     href: "https://x.com/aRustyDev",
     linkTitle: `${SITE.title} on X`,
     icon: IconBrandX,
-    enabled: false,
+    enabled: true,
   },
   {
     name: "Twitter",
@@ -117,6 +120,27 @@ export const SOCIALS: Social[] = [
     href: "https://alphaxiv.org/u/arustydev",
     linkTitle: `${SITE.title} on AlphaXiv`,
     icon: IconAlphaXiv,
+    enabled: false,
+  },
+  {
+    name: "HackerOne",
+    href: "https://hackerone.com/arustydev",
+    linkTitle: `${SITE.title} on HackerOne`,
+    icon: IconHackerOne,
+    enabled: false,
+  },
+  {
+    name: "CVE",
+    href: "https://cve.org",
+    linkTitle: `${SITE.title} on CVE`,
+    icon: IconCve,
+    enabled: false,
+  },
+  {
+    name: "ACM",
+    href: "https://dl.acm.org/profile/arustydev",
+    linkTitle: `${SITE.title} on ACM`,
+    icon: IconAcm,
     enabled: false,
   },
   {
