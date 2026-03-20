@@ -174,44 +174,39 @@ const nextPost =
 </Layout>
 
 <script is:inline data-astro-rerun>
-  /** Create a progress indicator
-   *  at the top */
+  // Abort previous listeners from prior navigations (prevents accumulation)
+  if (window.__postDetailsAC) window.__postDetailsAC.abort();
+  window.__postDetailsAC = new AbortController();
+  var __pdSignal = window.__postDetailsAC.signal;
+
+  /** Create a progress indicator at the top (guard: only create once) */
   function createProgressBar() {
-    // Create the main container div
-    const progressContainer = document.createElement("div");
+    if (document.querySelector(".progress-container")) return;
+    var progressContainer = document.createElement("div");
     progressContainer.className =
       "progress-container fixed top-0 z-10 h-1 w-full bg-bg";
-
-    // Create the progress bar div
-    const progressBar = document.createElement("div");
+    var progressBar = document.createElement("div");
     progressBar.className = "progress-bar h-1 w-0 bg-ac";
     progressBar.id = "myBar";
-
-    // Append the progress bar to the progress container
     progressContainer.appendChild(progressBar);
-
-    // Append the progress container to the document body or any other desired parent element
     document.body.appendChild(progressContainer);
   }
   createProgressBar();
 
-  /** Update the progress bar
-   *  when user scrolls */
+  /** Update the progress bar when user scrolls */
   function updateScrollProgress() {
-    document.addEventListener("scroll", () => {
-      const winScroll =
+    document.addEventListener("scroll", function() {
+      var winScroll =
         document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
+      var height =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (document) {
-        const myBar = document.getElementById("myBar");
-        if (myBar) {
-          myBar.style.width = scrolled + "%";
-        }
+      var scrolled = (winScroll / height) * 100;
+      var myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
       }
-    });
+    }, { signal: __pdSignal });
   }
   updateScrollProgress();
 
@@ -288,8 +283,8 @@ const nextPost =
   }
   attachCopyButtons();
 
-  /* Go to page start after page swap */
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
-  );
+  /* Go to page start after page swap (uses signal to prevent accumulation) */
+  document.addEventListener("astro:after-swap", function() {
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+  }, { signal: __pdSignal });
 </script>

@@ -59,16 +59,23 @@ if (window.theme) {
 // Ensure theme is reflected
 reflectPreference();
 
+// Named handler so we can remove before re-adding (prevents accumulation)
+function handleThemeToggle(): void {
+  if (window.BrandTheme) {
+    window.BrandTheme.toggle();
+  }
+  reflectPreference();
+}
+
 function setThemeFeature(): void {
   reflectPreference();
 
-  // Wire up theme button to BrandTheme.toggle()
-  document.querySelector("#theme-btn")?.addEventListener("click", () => {
-    if (window.BrandTheme) {
-      window.BrandTheme.toggle();
-    }
-    reflectPreference();
-  });
+  // Remove previous listener before adding (prevents accumulation on view transitions)
+  const btn = document.querySelector("#theme-btn");
+  if (btn) {
+    btn.removeEventListener("click", handleThemeToggle);
+    btn.addEventListener("click", handleThemeToggle);
+  }
 }
 
 // Set up theme features after page load

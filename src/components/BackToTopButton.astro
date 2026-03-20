@@ -33,36 +33,41 @@ import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
 </div>
 
 <script is:inline data-astro-rerun>
+  // Abort previous listeners from prior navigations (prevents accumulation)
+  if (window.__bttAC) window.__bttAC.abort();
+  window.__bttAC = new AbortController();
+  var __bttSignal = window.__bttAC.signal;
+
   /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */
   function backToTop() {
-    const rootElement = document.documentElement;
-    const btnContainer = document.querySelector("#btt-btn-container");
-    const backToTopBtn = document.querySelector("[data-button='back-to-top']");
-    const progressIndicator = document.querySelector("#progress-indicator");
+    var rootElement = document.documentElement;
+    var btnContainer = document.querySelector("#btt-btn-container");
+    var backToTopBtn = document.querySelector("[data-button='back-to-top']");
+    var progressIndicator = document.querySelector("#progress-indicator");
 
     if (!rootElement || !btnContainer || !backToTopBtn || !progressIndicator)
       return;
 
     // Attach click event handler for back-to-top button
-    backToTopBtn.addEventListener("click", () => {
+    backToTopBtn.addEventListener("click", function() {
       document.body.scrollTop = 0; // For Safari
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    });
+    }, { signal: __bttSignal });
 
     // Handle button visibility according to scroll position
-    let lastVisible = null;
+    var lastVisible = null;
     function handleScroll() {
-      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
-      const scrollTop = rootElement.scrollTop;
-      const scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
+      var scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
+      var scrollTop = rootElement.scrollTop;
+      var scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
 
       progressIndicator.style.setProperty(
         "background-image",
-        `conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`
+        "conic-gradient(var(--accent), var(--accent) " + scrollPercent + "%, transparent " + scrollPercent + "%)"
       );
 
-      const isVisible = scrollTop / scrollTotal > 0.3;
+      var isVisible = scrollTop / scrollTotal > 0.3;
 
       if (isVisible !== lastVisible) {
         btnContainer.classList.toggle("opacity-100", isVisible);
@@ -73,16 +78,16 @@ import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
       }
     }
 
-    let ticking = false;
-    document.addEventListener("scroll", () => {
+    var ticking = false;
+    document.addEventListener("scroll", function() {
       if (!ticking) {
-        window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(function() {
           handleScroll();
           ticking = false;
         });
         ticking = true;
       }
-    });
+    }, { signal: __bttSignal });
   }
   backToTop();
 </script>
