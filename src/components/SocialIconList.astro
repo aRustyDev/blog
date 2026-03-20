@@ -1,0 +1,43 @@
+---
+import type { Props as AstroProps } from "astro";
+import LinkButton from "./LinkButton.astro";
+
+interface Social {
+  name: string;
+  href: string;
+  linkTitle: string;
+  icon: (_props: AstroProps) => Element;
+  enabled: boolean;
+}
+
+type Props = {
+  links: readonly Social[];
+  urlSuffix?: URL;
+  class?: string;
+  iconClass?: string;
+};
+
+const {
+  links,
+  urlSuffix,
+  class: className = "flex flex-wrap items-center gap-1",
+  iconClass = "inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110",
+} = Astro.props;
+
+const enabledLinks = links.filter(s => s.enabled);
+---
+
+{enabledLinks.length > 0 && (
+  <div class={className}>
+    {enabledLinks.map(social => (
+      <LinkButton
+        href={urlSuffix ? `${social.href}${urlSuffix}` : social.href}
+        class="p-2 hover:rotate-6 sm:p-1"
+        title={social.linkTitle}
+      >
+        <social.icon class={iconClass} />
+        <span class="sr-only">{social.linkTitle}</span>
+      </LinkButton>
+    ))}
+  </div>
+)}
