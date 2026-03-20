@@ -5,7 +5,7 @@ import Graph from "graphology";
 import type { GraphData, GraphNode } from "./graph.types";
 import { EDGE_COLORS, deriveContentType } from "./graph.shared";
 
-interface UseGraphDataOptions {
+export interface UseGraphDataOptions {
   mode: "global" | "local";
   focusNode?: string;
   depth?: number;
@@ -16,6 +16,7 @@ interface UseGraphDataOptions {
   filterContentTypes?: string[];
   filterLanguages?: string[];
   tagMode?: "union" | "intersection" | "exclusion";
+  skip?: boolean; // when true, skip the fetch (data provided externally)
 }
 
 /** Tests whether a node passes the current filter criteria */
@@ -66,14 +67,15 @@ function nodePassesFilters(node: GraphNode, options: UseGraphDataOptions): boole
 export function useGraphData(options: UseGraphDataOptions) {
   const [graph, setGraph] = useState<Graph | null>(null);
   const [graphData, setGraphData] = useState<GraphData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!options.skip);
   const [error, setError] = useState<string | null>(null);
 
   // Store raw node data for filter checks (keyed by node id)
   const nodeDataRef = useRef<Map<string, GraphNode>>(new Map());
 
-  // Load graph ONCE — no filter dependencies
+  // Load graph ONCE — no filter dependencies. Skip if data provided externally.
   useEffect(() => {
+    if (options.skip) return;
     fetch("/graph.json")
       .then(r => r.json())
       .then((data: GraphData) => {
@@ -155,7 +157,7 @@ export function useGraphData(options: UseGraphDataOptions) {
         setError(e.message);
         setLoading(false);
       });
-  }, [options.mode, options.focusNode, options.depth]); // Only reload on mode/focus changes
+  }, [options.mode, options.focusNode, options.depth, options.skip]);
 
   // Compute the set of visible node IDs based on current filters
   const hasActiveFilters = !!(

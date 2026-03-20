@@ -1,19 +1,18 @@
 // src/components/graph/GraphView.tsx
 
 import { useEffect, useCallback, useState, useRef } from "react";
+import type Graph from "graphology";
 import {
   SigmaContainer,
 } from "@react-sigma/core";
 import "@react-sigma/core/lib/style.css";
 import { useGraphData } from "./useGraphData";
-import { CATEGORY_COLORS, CATEGORY_LABELS, getNodeColor } from "./graph.shared";
-import { resolveThemeColor, getSigmaBackground } from "./graph.constants";
+import { CATEGORY_LABELS, getNodeColor } from "./graph.shared";
+import { resolveThemeColor } from "./graph.constants";
 import GraphEvents, { type TooltipData } from "./GraphEvents";
 import { DragController, LayoutController, ThemeObserver, FilterController } from "./GraphControllers";
 import GraphToolbar from "./GraphToolbar";
 import GraphSearch from "./GraphSearch";
-// Re-export for files that still import from GraphView during transition
-export { CATEGORY_COLORS, CATEGORY_LABELS };
 
 // --- Main component ---
 export interface GraphViewProps {
@@ -27,6 +26,13 @@ export interface GraphViewProps {
   filterContentTypes?: string[];
   filterLanguages?: string[];
   tagMode?: "union" | "intersection" | "exclusion";
+  // External data (provided by GlobalGraphPage to avoid double-fetch)
+  graph?: Graph | null;
+  loading?: boolean;
+  error?: string;
+  visibleNodes?: () => Set<string> | null;
+  hasActiveFilters?: boolean;
+  // Display
   height?: string;
   className?: string;
   showLegend?: boolean;
@@ -44,12 +50,19 @@ export default function GraphView({
   filterContentTypes,
   filterLanguages,
   tagMode,
+  graph: externalGraph,
+  loading: externalLoading,
+  error: externalError,
+  visibleNodes: externalVisibleNodes,
+  hasActiveFilters: externalHasActiveFilters,
   height = "600px",
   className = "",
   showLegend = false,
   showWatermark = false,
 }: GraphViewProps) {
-  const { graph, loading, error, visibleNodes, hasActiveFilters } = useGraphData({
+  // Always call useGraphData (React rules), but skip fetch when external data provided
+  const hasExternalData = externalGraph !== undefined;
+  const internal = useGraphData({
     mode,
     focusNode,
     depth,
@@ -60,7 +73,15 @@ export default function GraphView({
     filterContentTypes,
     filterLanguages,
     tagMode,
+    skip: hasExternalData,
   });
+
+  // Use external data when available, fall back to internal
+  const graph = hasExternalData ? externalGraph : internal.graph;
+  const loading = hasExternalData ? (externalLoading ?? false) : internal.loading;
+  const error = hasExternalData ? (externalError ?? null) : internal.error;
+  const visibleNodes = externalVisibleNodes ?? internal.visibleNodes;
+  const hasActiveFilters = externalHasActiveFilters ?? internal.hasActiveFilters;
 
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
@@ -78,6 +99,15 @@ export default function GraphView({
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
+
+  // Apply category colors (in effect, not render path — avoids mutation hazard when graph is prop-owned)
+  useEffect(() => {
+    if (!graph) return;
+    graph.forEachNode((node) => {
+      const category = graph.getNodeAttribute(node, "category") as string;
+      graph.setNodeAttribute(node, "color", getNodeColor(category));
+    });
+  }, [graph]);
 
   // WebGL cleanup on unmount
   useEffect(() => {
@@ -104,7 +134,7 @@ export default function GraphView({
   if (error) {
     return (
       <div className={className} style={{ height, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ color: "#f85149" }}>Failed to load graph: {error}</span>
+        <span style={{ color: "var(--error, #f85149)" }}>Failed to load graph: {error}</span>
       </div>
     );
   }
@@ -117,12 +147,6 @@ export default function GraphView({
     );
   }
 
-  // Apply category colors
-  graph.forEachNode((node) => {
-    const category = graph.getNodeAttribute(node, "category") as string;
-    graph.setNodeAttribute(node, "color", getNodeColor(category));
-  });
-
   // Collect visible categories for legend
   const visibleCategories = new Set<string>();
   graph.forEachNode((node) => {
@@ -130,8 +154,6 @@ export default function GraphView({
     if (cat) visibleCategories.add(cat);
   });
 
-  // Resolve colors for sigma canvas
-  const bgColor = getSigmaBackground();
   const labelColor = resolveThemeColor("--foreground", "#e6edf3");
 
   return (

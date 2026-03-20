@@ -3,10 +3,9 @@
 import { useState, useEffect, type FC } from "react";
 import GraphView from "./GraphView";
 import GraphFilters from "./GraphFilters";
-import type { GraphData } from "./graph.types";
+import { useGraphData } from "./useGraphData";
 
 const GlobalGraphPage: FC = () => {
-  const [metadata, setMetadata] = useState<GraphData["metadata"] | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
@@ -16,11 +15,20 @@ const GlobalGraphPage: FC = () => {
   const [tagMode, setTagMode] = useState<"union" | "intersection" | "exclusion">("union");
   const [focusNode, setFocusNode] = useState<string | undefined>(undefined);
 
-  useEffect(() => {
-    fetch("/graph.json")
-      .then(r => r.json())
-      .then((data: GraphData) => setMetadata(data.metadata));
-  }, []);
+  // Single source of truth for graph data — eliminates double-fetch
+  const { graph, graphData, loading, error, visibleNodes, hasActiveFilters } = useGraphData({
+    mode: "global",
+    focusNode,
+    filterTags: selectedTags.length ? selectedTags : undefined,
+    filterCategories: selectedCategories.length ? selectedCategories : undefined,
+    filterTypes: selectedTypes.length ? selectedTypes : undefined,
+    filterStatuses: selectedStatuses.length ? selectedStatuses : undefined,
+    filterContentTypes: selectedContentTypes.length ? selectedContentTypes : undefined,
+    filterLanguages: selectedLanguages.length ? selectedLanguages : undefined,
+    tagMode,
+  });
+
+  const metadata = graphData?.metadata ?? null;
 
   // Sync filters to URL params
   useEffect(() => {
@@ -99,17 +107,16 @@ const GlobalGraphPage: FC = () => {
         )}
       </aside>
 
-      {/* Graph */}
+      {/* Graph — pass external data to avoid double-fetch */}
       <div style={{ flex: 1 }} className="graph-container">
         <GraphView
           mode="global"
+          graph={graph}
+          loading={loading}
+          error={error ?? undefined}
+          visibleNodes={visibleNodes}
+          hasActiveFilters={hasActiveFilters}
           focusNode={focusNode}
-          filterTags={selectedTags.length ? selectedTags : undefined}
-          filterCategories={selectedCategories.length ? selectedCategories : undefined}
-          filterTypes={selectedTypes.length ? selectedTypes : undefined}
-          filterStatuses={selectedStatuses.length ? selectedStatuses : undefined}
-          filterContentTypes={selectedContentTypes.length ? selectedContentTypes : undefined}
-          filterLanguages={selectedLanguages.length ? selectedLanguages : undefined}
           tagMode={tagMode}
           height="calc(100vh - 80px)"
           showLegend
