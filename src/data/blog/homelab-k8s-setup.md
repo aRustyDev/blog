@@ -17,16 +17,19 @@ Running Kubernetes at home started as a way to learn the platform without cloud 
 ## Hardware Evolution
 
 **Iteration 1**: Raspberry Pi 4 cluster (3 nodes)
+
 - Cheap, quiet, low power
 - ARM architecture caused constant compatibility issues
 - 4GB RAM per node was painfully limiting
 
 **Iteration 2**: Used Dell Optiplex micro PCs
+
 - x86_64, 16GB RAM each, way more practical
 - eBay finds for ~$100-150 each
 - Power draw still reasonable (~30W per node)
 
 **Iteration 3** (current): Mixed cluster
+
 - 3x Optiplex nodes for control plane + workloads
 - 1x larger workstation node for memory-heavy workloads
 - Total: ~24 cores, 96GB RAM across the cluster
@@ -49,6 +52,7 @@ Managed Switch (VLANs)
 ```
 
 Key decisions:
+
 - **MetalLB** for load balancing - simple L2 mode works fine for homelab
 - **Cilium** as CNI - eBPF-based, good observability, replaces kube-proxy
 - **External DNS + Pi-hole** - internal DNS for services
@@ -66,6 +70,7 @@ For databases needing fast storage, I use local NVMe with `nodeAffinity` to pin 
 ## What's Running
 
 Current workloads:
+
 - **Gitea** - Git hosting
 - **Drone CI** - Build pipelines
 - **Prometheus + Grafana** - Monitoring

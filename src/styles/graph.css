@@ -7,8 +7,11 @@
   background: var(--background);
 }
 
-.graph-container .sigma-container {
-  background: transparent !important;
+/* Force sigma container to use theme background.
+ * WebGL canvases are transparent — this CSS background shows through.
+ * ThemeObserver also sets this via JS for dynamic theme changes. */
+.sigma-container {
+  background: var(--background) !important;
 }
 
 /* Floating graph widget — only show on desktop (>= 1024px) */

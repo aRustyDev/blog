@@ -4,7 +4,12 @@
 
 import { useEffect, useRef, type FC } from "react";
 import { useSigma } from "@react-sigma/core";
-import { resolveThemeColor, getSigmaBackground, resolveDimColors, dimColorsRef } from "./graph.constants";
+import {
+  resolveThemeColor,
+  getSigmaBackground,
+  resolveDimColors,
+  dimColorsRef,
+} from "./graph.constants";
 
 // --- Drag ---
 export const DragController: FC = () => {
@@ -15,7 +20,10 @@ export const DragController: FC = () => {
     const graph = sigma.getGraph();
     let dragging = false;
 
-    const handleDownNode = (event: { node: string; event: { original: MouseEvent | TouchEvent } }) => {
+    const handleDownNode = (event: {
+      node: string;
+      event: { original: MouseEvent | TouchEvent };
+    }) => {
       dragging = true;
       dragStateRef.current = { node: event.node };
       sigma.getCamera().disable();
@@ -79,8 +87,14 @@ export const ThemeObserver: FC = () => {
       });
 
       // Default edge/node colors
-      sigma.setSetting("defaultEdgeColor", resolveThemeColor("--border", "#30363d"));
-      sigma.setSetting("defaultNodeColor", resolveThemeColor("--foreground", "#8b949e") + "60");
+      sigma.setSetting(
+        "defaultEdgeColor",
+        resolveThemeColor("--border", "#30363d")
+      );
+      sigma.setSetting(
+        "defaultNodeColor",
+        resolveThemeColor("--foreground", "#8b949e") + "60"
+      );
 
       // Canvas background
       const bg = getSigmaBackground();
@@ -118,7 +132,11 @@ interface FilterControllerProps {
   hoveredNode: string | null;
 }
 
-export const FilterController: FC<FilterControllerProps> = ({ visibleNodes, hasActiveFilters, hoveredNode }) => {
+export const FilterController: FC<FilterControllerProps> = ({
+  visibleNodes,
+  hasActiveFilters,
+  hoveredNode,
+}) => {
   const sigma = useSigma();
 
   useEffect(() => {
@@ -143,25 +161,33 @@ export const FilterController: FC<FilterControllerProps> = ({ visibleNodes, hasA
     // Capture dim colors at effect time (not per frame inside reducer)
     const dim = dimColorsRef.current;
 
-    sigma.setSetting("nodeReducer", (node: string, data: Record<string, unknown>) => {
-      const passesFilter = !visible || visible.has(node);
-      const passesHover = !hoverNeighbors || hoverNeighbors.has(node);
-      if (passesFilter && passesHover) return data;
-      if (!passesFilter) return { ...data, color: dim.nodeFiltered, label: "", size: 2 };
-      return { ...data, color: dim.nodeDimmed, label: "" };
-    });
+    sigma.setSetting(
+      "nodeReducer",
+      (node: string, data: Record<string, unknown>) => {
+        const passesFilter = !visible || visible.has(node);
+        const passesHover = !hoverNeighbors || hoverNeighbors.has(node);
+        if (passesFilter && passesHover) return data;
+        if (!passesFilter)
+          return { ...data, color: dim.nodeFiltered, label: "", size: 2 };
+        return { ...data, color: dim.nodeDimmed, label: "" };
+      }
+    );
 
-    sigma.setSetting("edgeReducer", (edge: string, data: Record<string, unknown>) => {
-      const src = graph.source(edge);
-      const tgt = graph.target(edge);
-      const srcVisible = !visible || visible.has(src);
-      const tgtVisible = !visible || visible.has(tgt);
-      const srcHover = !hoverNeighbors || hoverNeighbors.has(src);
-      const tgtHover = !hoverNeighbors || hoverNeighbors.has(tgt);
-      if (srcVisible && tgtVisible && srcHover && tgtHover) return data;
-      if (!srcVisible || !tgtVisible) return { ...data, color: dim.edgeFiltered, size: 0.5 };
-      return { ...data, color: dim.edgeDimmed };
-    });
+    sigma.setSetting(
+      "edgeReducer",
+      (edge: string, data: Record<string, unknown>) => {
+        const src = graph.source(edge);
+        const tgt = graph.target(edge);
+        const srcVisible = !visible || visible.has(src);
+        const tgtVisible = !visible || visible.has(tgt);
+        const srcHover = !hoverNeighbors || hoverNeighbors.has(src);
+        const tgtHover = !hoverNeighbors || hoverNeighbors.has(tgt);
+        if (srcVisible && tgtVisible && srcHover && tgtHover) return data;
+        if (!srcVisible || !tgtVisible)
+          return { ...data, color: dim.edgeFiltered, size: 0.5 };
+        return { ...data, color: dim.edgeDimmed };
+      }
+    );
 
     sigma.refresh();
   }, [visibleNodes, hasActiveFilters, hoveredNode, sigma]);

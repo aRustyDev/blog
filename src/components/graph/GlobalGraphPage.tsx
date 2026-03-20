@@ -10,23 +10,32 @@ const GlobalGraphPage: FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-  const [selectedContentTypes, setSelectedContentTypes] = useState<string[]>([]);
+  const [selectedContentTypes, setSelectedContentTypes] = useState<string[]>(
+    []
+  );
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-  const [tagMode, setTagMode] = useState<"union" | "intersection" | "exclusion">("union");
+  const [tagMode, setTagMode] = useState<
+    "union" | "intersection" | "exclusion"
+  >("union");
   const [focusNode, setFocusNode] = useState<string | undefined>(undefined);
 
   // Single source of truth for graph data — eliminates double-fetch
-  const { graph, graphData, loading, error, visibleNodes, hasActiveFilters } = useGraphData({
-    mode: "global",
-    focusNode,
-    filterTags: selectedTags.length ? selectedTags : undefined,
-    filterCategories: selectedCategories.length ? selectedCategories : undefined,
-    filterTypes: selectedTypes.length ? selectedTypes : undefined,
-    filterStatuses: selectedStatuses.length ? selectedStatuses : undefined,
-    filterContentTypes: selectedContentTypes.length ? selectedContentTypes : undefined,
-    filterLanguages: selectedLanguages.length ? selectedLanguages : undefined,
-    tagMode,
-  });
+  const { graph, graphData, loading, error, visibleNodes, hasActiveFilters } =
+    useGraphData({
+      mode: "global",
+      focusNode,
+      filterTags: selectedTags.length ? selectedTags : undefined,
+      filterCategories: selectedCategories.length
+        ? selectedCategories
+        : undefined,
+      filterTypes: selectedTypes.length ? selectedTypes : undefined,
+      filterStatuses: selectedStatuses.length ? selectedStatuses : undefined,
+      filterContentTypes: selectedContentTypes.length
+        ? selectedContentTypes
+        : undefined,
+      filterLanguages: selectedLanguages.length ? selectedLanguages : undefined,
+      tagMode,
+    });
 
   const metadata = graphData?.metadata ?? null;
 
@@ -34,17 +43,29 @@ const GlobalGraphPage: FC = () => {
   useEffect(() => {
     const params = new URLSearchParams();
     if (selectedTags.length) params.set("tags", selectedTags.join(","));
-    if (selectedCategories.length) params.set("categories", selectedCategories.join(","));
+    if (selectedCategories.length)
+      params.set("categories", selectedCategories.join(","));
     if (selectedTypes.length) params.set("types", selectedTypes.join(","));
-    if (selectedStatuses.length) params.set("statuses", selectedStatuses.join(","));
-    if (selectedContentTypes.length) params.set("contentTypes", selectedContentTypes.join(","));
-    if (selectedLanguages.length) params.set("languages", selectedLanguages.join(","));
+    if (selectedStatuses.length)
+      params.set("statuses", selectedStatuses.join(","));
+    if (selectedContentTypes.length)
+      params.set("contentTypes", selectedContentTypes.join(","));
+    if (selectedLanguages.length)
+      params.set("languages", selectedLanguages.join(","));
     if (tagMode !== "union") params.set("tagMode", tagMode);
     const newUrl = params.toString()
       ? `${window.location.pathname}?${params}`
       : window.location.pathname;
     window.history.replaceState({}, "", newUrl);
-  }, [selectedTags, selectedCategories, selectedTypes, selectedStatuses, selectedContentTypes, selectedLanguages, tagMode]);
+  }, [
+    selectedTags,
+    selectedCategories,
+    selectedTypes,
+    selectedStatuses,
+    selectedContentTypes,
+    selectedLanguages,
+    tagMode,
+  ]);
 
   // Read filters and focus from URL on mount
   useEffect(() => {
@@ -70,11 +91,23 @@ const GlobalGraphPage: FC = () => {
   return (
     <div style={{ display: "flex", gap: "1rem", height: "calc(100vh - 80px)" }}>
       {/* Sidebar */}
-      <aside style={{
-        width: "240px", flexShrink: 0, padding: "1rem",
-        borderRight: "1px solid var(--border)", overflowY: "auto",
-      }}>
-        <h2 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "1rem", color: "var(--foreground)" }}>
+      <aside
+        style={{
+          width: "240px",
+          flexShrink: 0,
+          padding: "1rem",
+          borderRight: "1px solid var(--border)",
+          overflowY: "auto",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "1rem",
+            fontWeight: 700,
+            marginBottom: "1rem",
+            color: "var(--foreground)",
+          }}
+        >
           Filters
         </h2>
         {metadata && (
@@ -100,7 +133,14 @@ const GlobalGraphPage: FC = () => {
               onLanguagesChange={setSelectedLanguages}
               onTagModeChange={setTagMode}
             />
-            <div style={{ marginTop: "1.5rem", fontSize: "0.7rem", color: "var(--foreground)", opacity: 0.5 }}>
+            <div
+              style={{
+                marginTop: "1.5rem",
+                fontSize: "0.7rem",
+                color: "var(--foreground)",
+                opacity: 0.5,
+              }}
+            >
               {metadata.nodeCount} nodes · {metadata.edgeCount} edges
             </div>
           </>

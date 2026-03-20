@@ -20,7 +20,10 @@ export interface UseGraphDataOptions {
 }
 
 /** Tests whether a node passes the current filter criteria */
-function nodePassesFilters(node: GraphNode, options: UseGraphDataOptions): boolean {
+function nodePassesFilters(
+  node: GraphNode,
+  options: UseGraphDataOptions
+): boolean {
   // Tags
   if (options.filterTags?.length) {
     const mode = options.tagMode || "union";
@@ -46,7 +49,8 @@ function nodePassesFilters(node: GraphNode, options: UseGraphDataOptions): boole
 
   // Status (projects only)
   if (options.filterStatuses?.length && node.type === "project") {
-    if (!options.filterStatuses.includes(node.status || "ideation")) return false;
+    if (!options.filterStatuses.includes(node.status || "ideation"))
+      return false;
   }
 
   // Content type
@@ -58,7 +62,11 @@ function nodePassesFilters(node: GraphNode, options: UseGraphDataOptions): boole
   // Languages
   if (options.filterLanguages?.length) {
     const nodeLangs = node.languages || [];
-    if (nodeLangs.length > 0 && !nodeLangs.some(l => options.filterLanguages!.includes(l))) return false;
+    if (
+      nodeLangs.length > 0 &&
+      !nodeLangs.some(l => options.filterLanguages!.includes(l))
+    )
+      return false;
   }
 
   return true;
@@ -146,7 +154,11 @@ export function useGraphData(options: UseGraphDataOptions) {
         // Size nodes by degree
         g.forEachNode(node => {
           const degree = g.degree(node);
-          g.setNodeAttribute(node, "size", Math.max(5, Math.min(14, 5 + degree * 0.8)));
+          g.setNodeAttribute(
+            node,
+            "size",
+            Math.max(5, Math.min(14, 5 + degree * 0.8))
+          );
         });
 
         nodeDataRef.current = nodeMap;
@@ -161,9 +173,12 @@ export function useGraphData(options: UseGraphDataOptions) {
 
   // Compute the set of visible node IDs based on current filters
   const hasActiveFilters = !!(
-    options.filterTags?.length || options.filterCategories?.length ||
-    options.filterTypes?.length || options.filterStatuses?.length ||
-    options.filterContentTypes?.length || options.filterLanguages?.length
+    options.filterTags?.length ||
+    options.filterCategories?.length ||
+    options.filterTypes?.length ||
+    options.filterStatuses?.length ||
+    options.filterContentTypes?.length ||
+    options.filterLanguages?.length
   );
 
   const visibleNodes = useCallback((): Set<string> | null => {
@@ -177,9 +192,12 @@ export function useGraphData(options: UseGraphDataOptions) {
     return visible;
   }, [
     hasActiveFilters,
-    JSON.stringify(options.filterTags), JSON.stringify(options.filterCategories),
-    JSON.stringify(options.filterTypes), JSON.stringify(options.filterStatuses),
-    JSON.stringify(options.filterContentTypes), JSON.stringify(options.filterLanguages),
+    JSON.stringify(options.filterTags),
+    JSON.stringify(options.filterCategories),
+    JSON.stringify(options.filterTypes),
+    JSON.stringify(options.filterStatuses),
+    JSON.stringify(options.filterContentTypes),
+    JSON.stringify(options.filterLanguages),
     options.tagMode,
   ]);
 

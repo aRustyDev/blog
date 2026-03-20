@@ -19,6 +19,7 @@ tags:
 
 So as you probably already know (or are in the process of finding out), the linux kernel is pretty intense to get started with. I am finding a number of challenges in getting to my first contribution.
 So far I see the following hurdles
+
 - how do I know what needs doing? (issue tracking/browsing)
 - How do I make a contribution once I've found something to add/fix?
   - A: To contribute you need to send an e-mail to mailing lists and individuals specified by scripts/get_maintainer.pl
@@ -54,17 +55,20 @@ So far I see the following hurdles
 ## Getting Started TODOs
 
 ### Target 'code quality' tasks
+
 - [ ] Read the Kernel [Style Guide](https://www.kernel.org/doc/Documentation/CodingStyle)
 - [ ] Use `checkpatch.pl`
-> There is a tool called *checkpatch.pl* which resides in the *scripts* directory of the kernel repository
-> `scripts/checkpatch.pl -f <file>`
+  > There is a tool called _checkpatch.pl_ which resides in the _scripts_ directory of the kernel repository
+  > `scripts/checkpatch.pl -f <file>`
 - [ ] Use [sparse](https://sparse.wiki.kernel.org/index.php/Main_Page) to fix broken code
-> `sudo apt-get install sparse`
+
+  > `sudo apt-get install sparse`
 
 - [ ] Read the TODOs
-> `% echo "" > /tmp/todolist-kernel.txt; count=0; for entry in `find . -name "*TODO*"`; do echo $count". "$entry`git log --pretty=format:" Last edited %ar" $entry | head -1` >> /tmp/todolist-kernel.txt; echo "" >> /tmp/todolist-kernel.txt; sed 's/^/        /' $entry >> /tmp/todolist-kernel.txt; echo "" >> /tmp/todolist-kernel.txt; ((count=$count+1)); done`
-> the information in the TODOs, at least in the staging area, should be accurate.
-> The code in staging does not meet the quality standards and the job is to make it good enough to be promoted as a 'real' kernel driver. This makes it a perfect place to start from especially when combined with the information from TODOs.
+
+  > `% echo "" > /tmp/todolist-kernel.txt; count=0; for entry in `find . -name "_TODO_"`; do echo $count". "$entry`git log --pretty=format:" Last edited %ar" $entry | head -1` >> /tmp/todolist-kernel.txt; echo "" >> /tmp/todolist-kernel.txt; sed 's/^/        /' $entry >> /tmp/todolist-kernel.txt; echo "" >> /tmp/todolist-kernel.txt; ((count=$count+1)); done`
+  > the information in the TODOs, at least in the staging area, should be accurate.
+  > The code in staging does not meet the quality standards and the job is to make it good enough to be promoted as a 'real' kernel driver. This makes it a perfect place to start from especially when combined with the information from TODOs.
 
 - [ ] Read about the [Linux Driver Project](http://www.linuxdriverproject.org/mediawiki/index.php/Main_Page)
 - [ ] Kernel bugs are tracked using [Bugzilla](http://bugzilla.kernel.org/)
@@ -74,7 +78,7 @@ So far I see the following hurdles
 - [ ] Set Up Your Development Environment
   - **Install Linux**: If you don't already use Linux, it's time to install it. Ubuntu or Fedora are good choices for beginners. You can install it directly on your machine or use a virtual machine like VirtualBox.
   - **Get the Kernel Source Code**: To contribute, you need the kernel's source code. You can get it by cloning the Linux Git repository:
-  git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+    git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
   - **Configure Your Development Environment**: Ensure you have the necessary tools installed, like GCC (GNU Compiler Collection), Make, and Git. You'll also want an editor like Vim or Visual Studio Code for writing and editing code.
   - **Build the Kernel**: Before making any changes, practice building the kernel from source. This ensures your environment is correctly set up. You can do this by running the following commands in your kernel source directory:
     - `make defconfig`
@@ -123,8 +127,8 @@ So far I see the following hurdles
 - **Community and Networking**: When you contribute to the Linux kernel, you become part of a global community of developers. You'll have the chance to work with some of the best minds in software development.
 - **Career Opportunities**: Having Linux kernel contributions on your resume is a huge plus. Employers in the tech industry, especially companies working with infrastructure, cloud, and embedded systems, highly value Linux expertise.
 
-
 ## Tips for New Linux Kernel Contributors
+
 - Start Small: Don't aim to solve huge bugs or add major features right away. It's okay to start with small patches, especially when you're still learning the kernel's codebase and processes.
 - Be Patient: Contributing to the Linux kernel can take time, especially if you're learning as you go. Be patient, and don't get discouraged if things don't go perfectly the first time.
 - Learn from Others: The Linux kernel community is vast, and there's always someone willing to help. Read mailing lists, look at other patches, and don't hesitate to ask questions if you're unsure about something.

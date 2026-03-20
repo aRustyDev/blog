@@ -27,11 +27,11 @@ export const CATEGORY_COLORS: Record<string, string> = {
   "deep-dive-llm-backdoor": "#f85149",
   "deep-dive-semantic-testing": "#7ee787",
   "deep-dive": "#8b949e",
-  "keebs": "#d2a8ff",
-  "eli5": "#3fb950",
-  "project": "#8b949e",
-  "feature": "#58a6ff",
-  "other": "#8b949e",
+  keebs: "#d2a8ff",
+  eli5: "#3fb950",
+  project: "#8b949e",
+  feature: "#58a6ff",
+  other: "#8b949e",
 };
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -60,11 +60,11 @@ export const CATEGORY_LABELS: Record<string, string> = {
   "deep-dive-llm-backdoor": "LLM Security",
   "deep-dive-semantic-testing": "Semantic Testing",
   "deep-dive": "Deep Dives (Other)",
-  "keebs": "Keyboards",
-  "eli5": "ELI5",
-  "project": "Projects",
-  "feature": "Features",
-  "other": "Other",
+  keebs: "Keyboards",
+  eli5: "ELI5",
+  project: "Projects",
+  feature: "Features",
+  other: "Other",
 };
 
 export const EDGE_COLORS: Record<string, string> = {
@@ -78,23 +78,57 @@ export const EDGE_COLORS: Record<string, string> = {
 };
 
 export const TOPIC_GROUPS: { label: string; categories: string[] }[] = [
-  { label: "Programming", categories: ["deep-dive-programming-c", "deep-dive-programming-swift", "deep-dive-programming-rust", "deep-dive-programming-go", "deep-dive-programming-zig", "deep-dive-programming-comparing"] },
-  { label: "DFIR", categories: ["deep-dive-host-forensics", "deep-dive-memory-forensics", "deep-dive-mobile-forensics", "deep-dive-cloud-forensics", "deep-dive-filesystem-forensics", "deep-dive-database-forensics"] },
+  {
+    label: "Programming",
+    categories: [
+      "deep-dive-programming-c",
+      "deep-dive-programming-swift",
+      "deep-dive-programming-rust",
+      "deep-dive-programming-go",
+      "deep-dive-programming-zig",
+      "deep-dive-programming-comparing",
+    ],
+  },
+  {
+    label: "DFIR",
+    categories: [
+      "deep-dive-host-forensics",
+      "deep-dive-memory-forensics",
+      "deep-dive-mobile-forensics",
+      "deep-dive-cloud-forensics",
+      "deep-dive-filesystem-forensics",
+      "deep-dive-database-forensics",
+    ],
+  },
   { label: "Tools", categories: ["deep-dive-editors", "deep-dive-nix"] },
   { label: "Systems", categories: ["deep-dive-kernels", "deep-dive-ebpf"] },
   { label: "Hardware", categories: ["deep-dive-pcb-design", "keebs"] },
-  { label: "Security", categories: ["deep-dive-reverse-engineering", "deep-dive-llm-backdoor", "deep-dive-indirect-prompt"] },
-  { label: "AI / ML", categories: ["deep-dive-benchmarking", "deep-dive-graph-agent", "deep-dive-semantic-testing"] },
+  {
+    label: "Security",
+    categories: [
+      "deep-dive-reverse-engineering",
+      "deep-dive-llm-backdoor",
+      "deep-dive-indirect-prompt",
+    ],
+  },
+  {
+    label: "AI / ML",
+    categories: [
+      "deep-dive-benchmarking",
+      "deep-dive-graph-agent",
+      "deep-dive-semantic-testing",
+    ],
+  },
 ];
 
 export const CONTENT_TYPE_LABELS: Record<string, string> = {
   "deep-dive": "Deep Dive",
-  "eli5": "ELI5",
+  eli5: "ELI5",
   "dev-blog": "Dev Blog",
   "blog-post": "Blog Post",
-  "feature": "Feature",
-  "project": "Project",
-  "other": "Other",
+  feature: "Feature",
+  project: "Project",
+  other: "Other",
 };
 
 export function deriveContentType(category: string): string {

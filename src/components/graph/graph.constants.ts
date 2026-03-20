@@ -6,7 +6,8 @@
 export function resolveThemeColor(varName: string, fallback: string): string {
   try {
     const val = getComputedStyle(document.documentElement)
-      .getPropertyValue(varName).trim();
+      .getPropertyValue(varName)
+      .trim();
     return val || fallback;
   } catch {
     return fallback;
@@ -25,8 +26,14 @@ export function adjustColor(hex: string, amount: number): string {
 /** Get a slightly offset background for the sigma canvas */
 export function getSigmaBackground(): string {
   const bg = resolveThemeColor("--background", "#0d1117");
+  // Guard against non-hex values (e.g., CSS var() not yet resolved)
+  if (!bg.startsWith("#") || bg.length < 7) return "#191f27"; // safe dark fallback
   const num = parseInt(bg.replace("#", ""), 16);
-  const lum = (((num >> 16) & 0xff) * 0.299 + ((num >> 8) & 0xff) * 0.587 + (num & 0xff) * 0.114);
+  if (isNaN(num)) return "#191f27";
+  const lum =
+    ((num >> 16) & 0xff) * 0.299 +
+    ((num >> 8) & 0xff) * 0.587 +
+    (num & 0xff) * 0.114;
   return adjustColor(bg, lum > 128 ? -12 : 12);
 }
 
@@ -38,10 +45,10 @@ export function getDimColor(alphaSuffix: string): string {
 
 /** Resolve all dim colors at once (call once per theme change, not per frame) */
 export interface DimColors {
-  nodeFiltered: string;   // very dim — filtered out
-  nodeDimmed: string;     // medium dim — not in hover neighborhood
-  edgeFiltered: string;   // very dim edge
-  edgeDimmed: string;     // medium dim edge
+  nodeFiltered: string; // very dim — filtered out
+  nodeDimmed: string; // medium dim — not in hover neighborhood
+  edgeFiltered: string; // very dim edge
+  edgeDimmed: string; // medium dim edge
 }
 
 export function resolveDimColors(): DimColors {

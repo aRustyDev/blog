@@ -74,22 +74,47 @@ function setThemeFeature(): void {
 // Set up theme features after page load
 setThemeFeature();
 
-// Runs on view transitions navigation
-document.addEventListener("astro:after-swap", setThemeFeature);
+// Store the current theme mode before any swap happens
+let _savedMode: string | null = null;
 
-// Set theme-color value before page transition
+// Capture theme state BEFORE swap — this runs before inline scripts in the new doc
 document.addEventListener("astro:before-swap", event => {
-  const astroEvent = event;
+  // Save the current effective mode
+  _savedMode = window.BrandTheme
+    ? window.BrandTheme.getEffectiveMode()
+    : document.documentElement.getAttribute("data-theme");
+
+
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro transition event lacks newDocument type
+  const newDoc = (event as any).newDocument as Document;
+
+  // Stamp the new document's <html> with current theme
+  if (_savedMode) {
+    newDoc.documentElement.setAttribute("data-theme", _savedMode);
+  }
+
+  // Preserve meta theme-color
   const bgColor = document
     .querySelector("meta[name='theme-color']")
     ?.getAttribute("content");
-
   if (bgColor) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro transition event lacks newDocument type
-    (astroEvent as any).newDocument
+    newDoc
       .querySelector("meta[name='theme-color']")
       ?.setAttribute("content", bgColor);
   }
+});
+
+// After swap: the new doc is live.
+document.addEventListener("astro:after-swap", () => {
+  if (_savedMode) {
+    // Force the correct mode on both DOM and BrandTheme
+    document.documentElement.setAttribute("data-theme", _savedMode);
+    if (window.BrandTheme) {
+      window.BrandTheme.mode(_savedMode);
+    }
+  }
+  setThemeFeature();
 });
 
 // Sync with system preference changes

@@ -5,14 +5,16 @@ import SocialIconList from "./SocialIconList.astro";
 const URL = Astro.url;
 ---
 
-{SHARE_LINKS.some(s => s.enabled) && (
-  <div class="flex flex-none flex-col items-center justify-center gap-1 md:items-start">
-    <span class="italic">Share this post on:</span>
-    <SocialIconList
-      links={SHARE_LINKS}
-      urlSuffix={URL}
-      class="text-center"
-      iconClass="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"
-    />
-  </div>
-)}
+{
+  SHARE_LINKS.some(s => s.enabled) && (
+    <div class="flex flex-none flex-col items-center justify-center gap-1 md:items-start">
+      <span class="italic">Share this post on:</span>
+      <SocialIconList
+        links={SHARE_LINKS}
+        urlSuffix={URL}
+        class="text-center"
+        iconClass="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110"
+      />
+    </div>
+  )
+}

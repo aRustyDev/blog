@@ -146,8 +146,10 @@ const structuredData = {
 
     <ClientRouter />
 
-    <!-- Initialize BrandTheme early to prevent FOUC -->
-    <script is:inline>
+    <!-- Initialize BrandTheme early to prevent FOUC.
+         data-astro-rerun forces this to re-execute on every view transition,
+         ensuring data-theme is set on <html> before the new page paints. -->
+    <script is:inline data-astro-rerun>
       (function () {
         // Parse URL query parameters for theme overrides
         // Supports: ?theme=twilight&mode=dark
@@ -183,6 +185,7 @@ const structuredData = {
             window.theme.themeValue = val;
           },
         };
+
       })();
     </script>
   </head>

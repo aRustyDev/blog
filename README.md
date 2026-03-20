@@ -32,15 +32,15 @@ Technical notes on security, systems, and software engineering.
 
 ## Stack
 
-| Technology | Purpose |
-|:-----------|:--------|
-| [Astro 5](https://astro.build/) + TypeScript | Static site framework |
-| [React](https://react.dev/) | Graph visualization islands |
-| [Tailwind CSS v4](https://tailwindcss.com/) | Utility-first styling |
+| Technology                                                                         | Purpose                     |
+| :--------------------------------------------------------------------------------- | :-------------------------- |
+| [Astro 5](https://astro.build/) + TypeScript                                       | Static site framework       |
+| [React](https://react.dev/)                                                        | Graph visualization islands |
+| [Tailwind CSS v4](https://tailwindcss.com/)                                        | Utility-first styling       |
 | [Sigma.js](https://www.sigmajs.org/) + [Graphology](https://graphology.github.io/) | Interactive graph rendering |
-| [Pagefind](https://pagefind.app/) | Static search |
-| [Shiki](https://shiki.style/) | Syntax highlighting |
-| [Cloudflare Workers](https://developers.cloudflare.com/workers/) | Deployment |
+| [Pagefind](https://pagefind.app/)                                                  | Static search               |
+| [Shiki](https://shiki.style/)                                                      | Syntax highlighting         |
+| [Cloudflare Workers](https://developers.cloudflare.com/workers/)                   | Deployment                  |
 
 ## Running Locally
 
@@ -62,18 +62,18 @@ just check      # Run format + lint checks
 
 All commands are run from the root of the project via [just](https://github.com/casey/just):
 
-| Command | Action |
-|:--------|:-------|
-| `just install` | Install dependencies |
-| `just dev` | Start local dev server |
-| `just build` | Production build to `./dist/` |
-| `just preview` | Preview build locally |
-| `just check` | Run format + lint checks |
-| `just format` | Format code with Prettier |
-| `just lint` | Lint with ESLint |
-| `just deploy` | Build and deploy to Cloudflare Workers |
-| `just clean` | Remove build artifacts |
-| `just sync` | Generate Astro TypeScript types |
+| Command        | Action                                 |
+| :------------- | :------------------------------------- |
+| `just install` | Install dependencies                   |
+| `just dev`     | Start local dev server                 |
+| `just build`   | Production build to `./dist/`          |
+| `just preview` | Preview build locally                  |
+| `just check`   | Run format + lint checks               |
+| `just format`  | Format code with Prettier              |
+| `just lint`    | Lint with ESLint                       |
+| `just deploy`  | Build and deploy to Cloudflare Workers |
+| `just clean`   | Remove build artifacts                 |
+| `just sync`    | Generate Astro TypeScript types        |
 
 ## Architecture
 

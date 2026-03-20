@@ -17,7 +17,11 @@ interface GraphEventsProps {
   onHoveredNodeChange?: (nodeId: string | null) => void;
 }
 
-const GraphEvents: FC<GraphEventsProps> = ({ onNodeClick, onHoverChange, onHoveredNodeChange }) => {
+const GraphEvents: FC<GraphEventsProps> = ({
+  onNodeClick,
+  onHoverChange,
+  onHoveredNodeChange,
+}) => {
   const sigma = useSigma();
   const registerEvents = useRegisterEvents();
 
