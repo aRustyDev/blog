@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync, readdirSync, statSync } from "fs";
 import { join, basename } from "path";
 import { parse as parseYaml } from "yaml";
 import type { GraphData, GraphNode, GraphEdge } from "../components/graph/graph.types";
+import { deriveContentType } from "../components/graph/graph.shared";
 
 const BLOG_DIR = "src/data/blog";
 const PROJECTS_DIR = "content/_projects";
@@ -91,16 +92,6 @@ function buildGraph(): GraphData {
   const allStatuses = new Set<string>();
   const allContentTypes = new Set<string>();
   const allLanguages = new Set<string>();
-
-  function deriveContentType(category: string): string {
-    if (category.startsWith("deep-dive")) return "deep-dive";
-    if (category === "eli5") return "eli5";
-    if (category === "keebs") return "dev-blog";
-    if (category === "blog-post") return "blog-post";
-    if (category === "feature") return "feature";
-    if (category === "project") return "project";
-    return "other";
-  }
 
   // --- Parse blog posts ---
   const postFiles = readdirSync(BLOG_DIR).filter(f => f.endsWith(".md"));
