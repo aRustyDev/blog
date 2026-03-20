@@ -37,13 +37,14 @@ export function getSigmaBackground(): string {
   return adjustColor(bg, lum > 128 ? -12 : 12);
 }
 
-/** Pre-resolve a dim color from --border for sigma WebGL reducers (hex + alpha suffix) */
-export function getDimColor(alphaSuffix: string): string {
-  const border = resolveThemeColor("--border", "#30363d");
-  return border + alphaSuffix;
+/** Guard: ensure a value is a valid 6-digit hex before appending alpha */
+function ensureHex(value: string, fallback: string): string {
+  if (value.startsWith("#") && value.length >= 7) return value.slice(0, 7);
+  return fallback;
 }
 
-/** Resolve all dim colors at once (call once per theme change, not per frame) */
+/** Resolve all dim colors at once (call once per theme change, not per frame).
+ *  All values are 8-digit hex (#RRGGBBAA) safe for sigma WebGL. */
 export interface DimColors {
   nodeFiltered: string; // very dim — filtered out
   nodeDimmed: string; // medium dim — not in hover neighborhood
@@ -52,13 +53,18 @@ export interface DimColors {
 }
 
 export function resolveDimColors(): DimColors {
-  const border = resolveThemeColor("--border", "#30363d");
+  const border = ensureHex(resolveThemeColor("--border", "#30363d"), "#30363d");
   return {
     nodeFiltered: border + "15",
     nodeDimmed: border + "40",
     edgeFiltered: border + "08",
     edgeDimmed: border + "20",
   };
+}
+
+/** Resolve a theme color with hex guard — safe for sigma WebGL alpha append */
+export function resolveHexColor(varName: string, fallback: string): string {
+  return ensureHex(resolveThemeColor(varName, fallback), fallback);
 }
 
 /** Shared mutable ref for cached dim colors — updated by ThemeObserver, read by FilterController and GraphSearch.

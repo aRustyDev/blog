@@ -6,6 +6,7 @@ import { useEffect, useRef, type FC } from "react";
 import { useSigma } from "@react-sigma/core";
 import {
   resolveThemeColor,
+  resolveHexColor,
   getSigmaBackground,
   resolveDimColors,
   dimColorsRef,
@@ -93,7 +94,7 @@ export const ThemeObserver: FC = () => {
       );
       sigma.setSetting(
         "defaultNodeColor",
-        resolveThemeColor("--foreground", "#8b949e") + "60"
+        resolveHexColor("--foreground", "#8b949e") + "60"
       );
 
       // Canvas background

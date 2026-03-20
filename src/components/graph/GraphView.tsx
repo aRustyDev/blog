@@ -6,7 +6,7 @@ import { SigmaContainer } from "@react-sigma/core";
 import "@react-sigma/core/lib/style.css";
 import { useGraphData } from "./useGraphData";
 import { CATEGORY_LABELS, getNodeColor } from "./graph.shared";
-import { resolveThemeColor, getSigmaBackground } from "./graph.constants";
+// graph.constants not imported here — ThemeObserver handles all live color resolution
 import GraphEvents, { type TooltipData } from "./GraphEvents";
 import {
   DragController,
@@ -192,7 +192,8 @@ export default function GraphView({
     if (cat) visibleCategories.add(cat);
   });
 
-  const labelColor = resolveThemeColor("--foreground", "#e6edf3");
+  // Initial label color — ThemeObserver updates this reactively on theme change
+  const labelColor = "#e6edf3";
 
   return (
     <div
