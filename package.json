@@ -15,8 +15,9 @@
     "url": "https://github.com/aRustyDev/blog"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
+    "dev": "npm run build:graph -- --dev && astro dev",
+    "build:graph": "tsx src/scripts/build-graph.ts",
+    "build": "npm run build:graph && astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
@@ -25,17 +26,25 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.1",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",
+    "@react-sigma/core": "^5.0.6",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.6",
     "dayjs": "^1.11.19",
+    "fuse.js": "^7.1.0",
+    "graphology": "^0.26.0",
+    "graphology-layout-forceatlas2": "^0.10.1",
     "lodash.kebabcase": "^4.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "remark-collapse": "^0.1.2",
     "remark-toc": "^9.0.0",
     "satori": "^0.18.3",
     "sharp": "^0.34.5",
+    "sigma": "^3.0.2",
     "slugify": "^1.6.6",
     "tailwindcss": "^4.1.18"
   },
@@ -53,7 +62,9 @@
     "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.51.0"
+    "typescript-eslint": "^8.51.0",
+    "yaml": "^2.8.2"
   }
 }
