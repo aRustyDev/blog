@@ -145,7 +145,7 @@ const META: Record<string, ProjectMeta> = {
 
   // -- Programming: C --
   "deep-dive-programming-c-overview": { tags: [], languages: ["c"] },
-  "deep-dive-programming-c-effective-c": { tags: ["book"], languages: ["c"] },
+  "deep-dive-programming-c-effective-c": { tags: [], languages: ["c"] },
   "deep-dive-programming-c-writing-a-compiler": {
     tags: ["compilers"],
     languages: ["c"],
@@ -253,7 +253,7 @@ const META: Record<string, ProjectMeta> = {
     languages: [],
   },
   "deep-dive-benchmarking-agent-memory": {
-    tags: ["ai", "agents", "benchmarking"],
+    tags: ["ai", "agents"],
     languages: [],
   },
   "deep-dive-graph-agent-memory-implementation": {

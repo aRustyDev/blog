@@ -76,6 +76,22 @@ function shortenLabel(title: string): string {
 }
 
 function deriveCategory(slug: string): string {
+  // Explicit remaps: slug prefix → category (when prefix !== desired category)
+  const remaps: [string, string][] = [
+    ["deep-dive-comparing-kernels", "deep-dive-kernels"],
+    ["deep-dive-llm-observability", "deep-dive-llm-observability"],
+    ["deep-dive-stack-based", "deep-dive-security"],
+    ["deep-dive-heap-based", "deep-dive-security"],
+    ["deep-dive-elastic", "deep-dive-infrastructure"],
+    ["deep-dive-git", "deep-dive-infrastructure"],
+    ["deep-dive-ipv6", "deep-dive-networking"],
+    ["deep-dive-tls", "deep-dive-networking"],
+  ];
+  for (const [prefix, category] of remaps) {
+    if (slug.startsWith(prefix)) return category;
+  }
+
+  // Standard prefix matching (prefix === category)
   const prefixes = [
     "deep-dive-programming-comparing",
     "deep-dive-programming-swift",
@@ -215,6 +231,14 @@ function buildGraph(): GraphData {
       });
     }
   }
+
+  // --- Filter out edges with missing targets ---
+  const nodeIds = new Set(nodes.map(n => n.id));
+  const validEdges = edges.filter(
+    e => nodeIds.has(e.source) && nodeIds.has(e.target)
+  );
+  edges.length = 0;
+  edges.push(...validEdges);
 
   // --- Generate tag-shared edges between nodes sharing tags ---
   // Require 2+ shared tags to avoid noisy edges (except between posts, where 1 suffices)

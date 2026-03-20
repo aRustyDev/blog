@@ -8,13 +8,11 @@ tags:
   - kernel
   - linux
   - opensource
-  - c
-  - rust
-  - lowlevel
-  - tutorial
-  - guide
   - beginner
   - contribution
+languages:
+  - c
+  - rust
 ---
 
 So as you probably already know (or are in the process of finding out), the linux kernel is pretty intense to get started with. I am finding a number of challenges in getting to my first contribution.
