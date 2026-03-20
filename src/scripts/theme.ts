@@ -85,6 +85,7 @@ document.addEventListener("astro:before-swap", event => {
     ?.getAttribute("content");
 
   if (bgColor) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro transition event lacks newDocument type
     (astroEvent as any).newDocument
       .querySelector("meta[name='theme-color']")
       ?.setAttribute("content", bgColor);

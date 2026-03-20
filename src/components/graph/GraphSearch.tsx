@@ -1,6 +1,13 @@
 // src/components/graph/GraphSearch.tsx
 
-import { useEffect, useCallback, useState, useRef, useMemo, type FC } from "react";
+import {
+  useEffect,
+  useCallback,
+  useState,
+  useRef,
+  useMemo,
+  type FC,
+} from "react";
 import Fuse from "fuse.js";
 import { useSigma } from "@react-sigma/core";
 import { CATEGORY_LABELS } from "./graph.shared";
@@ -28,16 +35,22 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
   const resultsRef = useRef<HTMLDivElement>(null);
 
   // Build search index from current graph nodes
-  const { fuse, items } = useMemo(() => {
+  const { fuse } = useMemo(() => {
     const graph = sigma.getGraph();
     const searchItems: SearchItem[] = [];
-    graph.forEachNode((node) => {
+    graph.forEachNode(node => {
       searchItems.push({
         id: node,
         label: graph.getNodeAttribute(node, "label") as string,
-        tags: ((graph.getNodeAttribute(node, "tags") as string[]) || []).join(" "),
-        languages: ((graph.getNodeAttribute(node, "languages") as string[]) || []).join(" "),
-        category: CATEGORY_LABELS[graph.getNodeAttribute(node, "category") as string] || "",
+        tags: ((graph.getNodeAttribute(node, "tags") as string[]) || []).join(
+          " "
+        ),
+        languages: (
+          (graph.getNodeAttribute(node, "languages") as string[]) || []
+        ).join(" "),
+        category:
+          CATEGORY_LABELS[graph.getNodeAttribute(node, "category") as string] ||
+          "",
       });
     });
     const f = new Fuse(searchItems, {
@@ -53,9 +66,7 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
     return { fuse: f, items: searchItems };
   }, [sigma, open]); // rebuild when opened (graph may have changed)
 
-  const results = query.length > 0
-    ? fuse.search(query).slice(0, 12)
-    : [];
+  const results = query.length > 0 ? fuse.search(query).slice(0, 12) : [];
 
   // Focus input on open
   useEffect(() => {
@@ -87,23 +98,37 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
 
     const matchIds = new Set(results.map(r => r.item.id));
 
-    sigma.setSetting("nodeReducer", (node: string, data: Record<string, unknown>) => {
-      if (matchIds.has(node)) return { ...data, highlighted: true };
-      return { ...data, color: dimColorsRef.current.nodeDimmed, label: "" };
-    });
-    sigma.setSetting("edgeReducer", (_edge: string, data: Record<string, unknown>) => {
-      return { ...data, color: dimColorsRef.current.edgeDimmed };
-    });
+    sigma.setSetting(
+      "nodeReducer",
+      (node: string, data: Record<string, unknown>) => {
+        if (matchIds.has(node)) return { ...data, highlighted: true };
+        return { ...data, color: dimColorsRef.current.nodeDimmed, label: "" };
+      }
+    );
+    sigma.setSetting(
+      "edgeReducer",
+      (_edge: string, data: Record<string, unknown>) => {
+        return { ...data, color: dimColorsRef.current.edgeDimmed };
+      }
+    );
     sigma.refresh();
   }, [query, results.length, open, sigma]);
 
-  const handleSelect = useCallback((nodeId: string) => {
-    const display = sigma.getNodeDisplayData(nodeId);
-    if (display) {
-      sigma.getCamera().animate({ x: display.x, y: display.y, ratio: 0.3 }, { duration: 300 });
-    }
-    onClose();
-  }, [sigma, onClose]);
+  const handleSelect = useCallback(
+    (nodeId: string) => {
+      const display = sigma.getNodeDisplayData(nodeId);
+      if (display) {
+        sigma
+          .getCamera()
+          .animate(
+            { x: display.x, y: display.y, ratio: 0.3 },
+            { duration: 300 }
+          );
+      }
+      onClose();
+    },
+    [sigma, onClose]
+  );
 
   if (!open) return null;
 
@@ -113,28 +138,44 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
       <div
         onClick={onClose}
         style={{
-          position: "absolute", inset: 0, zIndex: 20,
+          position: "absolute",
+          inset: 0,
+          zIndex: 20,
           background: "rgba(0,0,0,0.4)",
         }}
       />
       {/* Spotlight */}
-      <div style={{
-        position: "absolute", top: 24, left: "50%", transform: "translateX(-50%)",
-        zIndex: 21, width: "min(460px, 85%)",
-        background: "color-mix(in srgb, var(--muted, #161b22) 65%, transparent)",
-        backdropFilter: "blur(20px) saturate(1.4)",
-        WebkitBackdropFilter: "blur(20px) saturate(1.4)",
-        border: "1px solid color-mix(in srgb, var(--foreground, #e6edf3) 8%, transparent)",
-        borderRadius: "1.25rem",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
-        overflow: "hidden",
-      }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 24,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 21,
+          width: "min(460px, 85%)",
+          background:
+            "color-mix(in srgb, var(--muted, #161b22) 65%, transparent)",
+          backdropFilter: "blur(20px) saturate(1.4)",
+          WebkitBackdropFilter: "blur(20px) saturate(1.4)",
+          border:
+            "1px solid color-mix(in srgb, var(--foreground, #e6edf3) 8%, transparent)",
+          borderRadius: "1.25rem",
+          boxShadow:
+            "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
+          overflow: "hidden",
+        }}
+      >
         {/* Input */}
-        <div style={{
-          display: "flex", alignItems: "center", gap: "0.5rem",
-          padding: "0.75rem 1rem",
-          borderBottom: results.length > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
-        }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.75rem 1rem",
+            borderBottom:
+              results.length > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
+          }}
+        >
           <span style={{ opacity: 0.5, fontSize: "1rem" }}>🔍</span>
           <input
             ref={inputRef}
@@ -146,7 +187,9 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
                 onClose();
               } else if (e.key === "ArrowDown") {
                 e.preventDefault();
-                setSelectedIndex(prev => Math.min(prev + 1, results.length - 1));
+                setSelectedIndex(prev =>
+                  Math.min(prev + 1, results.length - 1)
+                );
               } else if (e.key === "ArrowUp") {
                 e.preventDefault();
                 setSelectedIndex(prev => Math.max(prev - 1, 0));
@@ -157,18 +200,33 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
             }}
             placeholder="Search nodes..."
             style={{
-              flex: 1, background: "none", border: "none", outline: "none",
-              color: "var(--foreground, #e6edf3)", fontSize: "0.9rem",
+              flex: 1,
+              background: "none",
+              border: "none",
+              outline: "none",
+              color: "var(--foreground, #e6edf3)",
+              fontSize: "0.9rem",
               fontFamily: "monospace",
             }}
           />
-          <span style={{ opacity: 0.4, fontSize: "0.65rem", border: "1px solid var(--border)", borderRadius: "0.25rem", padding: "0.1rem 0.3rem" }}>
+          <span
+            style={{
+              opacity: 0.4,
+              fontSize: "0.65rem",
+              border: "1px solid var(--border)",
+              borderRadius: "0.25rem",
+              padding: "0.1rem 0.3rem",
+            }}
+          >
             ESC
           </span>
         </div>
         {/* Results */}
         {results.length > 0 && (
-          <div ref={resultsRef} style={{ maxHeight: "320px", overflowY: "auto" }}>
+          <div
+            ref={resultsRef}
+            style={{ maxHeight: "320px", overflowY: "auto" }}
+          >
             {results.map((r, i) => (
               <button
                 key={r.item.id}
@@ -180,14 +238,21 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
                   }
                 }}
                 style={{
-                  display: "flex", flexDirection: "column", gap: "0.1rem",
-                  width: "100%", textAlign: "left",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.1rem",
+                  width: "100%",
+                  textAlign: "left",
                   padding: "0.5rem 1rem",
-                  background: i === selectedIndex ? "rgba(255,255,255,0.08)" : "none",
+                  background:
+                    i === selectedIndex ? "rgba(255,255,255,0.08)" : "none",
                   border: "none",
                   color: "var(--foreground, #e6edf3)",
                   cursor: "pointer",
-                  borderBottom: i < results.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                  borderBottom:
+                    i < results.length - 1
+                      ? "1px solid rgba(255,255,255,0.04)"
+                      : "none",
                   fontSize: "0.8rem",
                 }}
               >
@@ -202,7 +267,14 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
           </div>
         )}
         {query.length > 0 && results.length === 0 && (
-          <div style={{ padding: "1rem", textAlign: "center", opacity: 0.5, fontSize: "0.8rem" }}>
+          <div
+            style={{
+              padding: "1rem",
+              textAlign: "center",
+              opacity: 0.5,
+              fontSize: "0.8rem",
+            }}
+          >
             No matches
           </div>
         )}

@@ -1,7 +1,12 @@
 // src/components/graph/GraphFilters.tsx
 
 import { useState, type FC } from "react";
-import { CATEGORY_COLORS, CATEGORY_LABELS, TOPIC_GROUPS, CONTENT_TYPE_LABELS } from "./graph.shared";
+import {
+  CATEGORY_COLORS,
+  CATEGORY_LABELS,
+  TOPIC_GROUPS,
+  CONTENT_TYPE_LABELS,
+} from "./graph.shared";
 
 interface GraphFiltersProps {
   availableTags: string[];
@@ -26,14 +31,25 @@ interface GraphFiltersProps {
 }
 
 const sectionBtn: React.CSSProperties = {
-  background: "none", border: "none", color: "var(--foreground)",
-  cursor: "pointer", fontWeight: 600, fontSize: "0.8rem", padding: 0,
-  display: "flex", alignItems: "center", gap: "0.25rem",
+  background: "none",
+  border: "none",
+  color: "var(--foreground)",
+  cursor: "pointer",
+  fontWeight: 600,
+  fontSize: "0.8rem",
+  padding: 0,
+  display: "flex",
+  alignItems: "center",
+  gap: "0.25rem",
 };
 
 const checkLabel: React.CSSProperties = {
-  display: "flex", alignItems: "center", gap: "0.5rem",
-  cursor: "pointer", fontSize: "0.8rem", padding: "0.1rem 0",
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+  cursor: "pointer",
+  fontSize: "0.8rem",
+  padding: "0.1rem 0",
 };
 
 const GraphFilters: FC<GraphFiltersProps> = ({
@@ -57,13 +73,16 @@ const GraphFilters: FC<GraphFiltersProps> = ({
   onLanguagesChange,
   onTagModeChange,
 }) => {
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(["nodeType", "topics"]));
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    new Set(["nodeType", "topics"])
+  );
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => {
       const next = new Set(prev);
-      next.has(section) ? next.delete(section) : next.add(section);
+      if (next.has(section)) next.delete(section);
+      else next.add(section);
       return next;
     });
   };
@@ -71,27 +90,42 @@ const GraphFilters: FC<GraphFiltersProps> = ({
   const toggleGroup = (group: string) => {
     setExpandedGroups(prev => {
       const next = new Set(prev);
-      next.has(group) ? next.delete(group) : next.add(group);
+      if (next.has(group)) next.delete(group);
+      else next.add(group);
       return next;
     });
   };
 
-  const toggleItem = (item: string, selected: string[], onChange: (v: string[]) => void) => {
-    onChange(selected.includes(item) ? selected.filter(i => i !== item) : [...selected, item]);
+  const toggleItem = (
+    item: string,
+    selected: string[],
+    onChange: (v: string[]) => void
+  ) => {
+    onChange(
+      selected.includes(item)
+        ? selected.filter(i => i !== item)
+        : [...selected, item]
+    );
   };
 
   const toggleGroupAll = (groupCats: string[]) => {
     const available = groupCats.filter(c => availableCategories.includes(c));
     const allSelected = available.every(c => selectedCategories.includes(c));
     if (allSelected) {
-      onCategoriesChange(selectedCategories.filter(c => !available.includes(c)));
+      onCategoriesChange(
+        selectedCategories.filter(c => !available.includes(c))
+      );
     } else {
       onCategoriesChange([...new Set([...selectedCategories, ...available])]);
     }
   };
 
-  const activeCount = selectedCategories.length + selectedTags.length +
-    selectedTypes.length + selectedStatuses.length + selectedContentTypes.length +
+  const activeCount =
+    selectedCategories.length +
+    selectedTags.length +
+    selectedTypes.length +
+    selectedStatuses.length +
+    selectedContentTypes.length +
     selectedLanguages.length;
 
   // Filter topic groups to only show those with available categories
@@ -106,28 +140,58 @@ const GraphFilters: FC<GraphFiltersProps> = ({
       <div style={{ marginBottom: "1rem" }}>
         <button onClick={() => toggleSection("nodeType")} style={sectionBtn}>
           {expandedSections.has("nodeType") ? "▾" : "▸"} Node Type
-          {(selectedTypes.length + selectedContentTypes.length + selectedStatuses.length) > 0 &&
+          {selectedTypes.length +
+            selectedContentTypes.length +
+            selectedStatuses.length >
+            0 &&
             ` (${selectedTypes.length + selectedContentTypes.length + selectedStatuses.length})`}
         </button>
         {expandedSections.has("nodeType") && (
-          <div style={{ marginTop: "0.375rem", marginLeft: "0.5rem", display: "flex", flexDirection: "column", gap: "0.375rem" }}>
+          <div
+            style={{
+              marginTop: "0.375rem",
+              marginLeft: "0.5rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.375rem",
+            }}
+          >
             {/* Blog Posts */}
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.375rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.375rem",
+                }}
+              >
                 <input
                   type="checkbox"
                   checked={selectedTypes.includes("post")}
-                  onChange={() => toggleItem("post", selectedTypes, onTypesChange)}
+                  onChange={() =>
+                    toggleItem("post", selectedTypes, onTypesChange)
+                  }
                 />
                 <button
                   onClick={() => toggleGroup("blogPosts")}
-                  style={{ ...sectionBtn, fontSize: "0.775rem", fontWeight: 500 }}
+                  style={{
+                    ...sectionBtn,
+                    fontSize: "0.775rem",
+                    fontWeight: 500,
+                  }}
                 >
                   {expandedGroups.has("blogPosts") ? "▾" : "▸"} Blog Posts
                 </button>
               </div>
               {expandedGroups.has("blogPosts") && (
-                <div style={{ marginLeft: "1.5rem", marginTop: "0.25rem", fontSize: "0.75rem", opacity: 0.7 }}>
+                <div
+                  style={{
+                    marginLeft: "1.5rem",
+                    marginTop: "0.25rem",
+                    fontSize: "0.75rem",
+                    opacity: 0.7,
+                  }}
+                >
                   <em>Published posts — filter by content type below</em>
                 </div>
               )}
@@ -135,27 +199,62 @@ const GraphFilters: FC<GraphFiltersProps> = ({
 
             {/* Projects */}
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.375rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.375rem",
+                }}
+              >
                 <input
                   type="checkbox"
                   checked={selectedTypes.includes("project")}
-                  onChange={() => toggleItem("project", selectedTypes, onTypesChange)}
+                  onChange={() =>
+                    toggleItem("project", selectedTypes, onTypesChange)
+                  }
                 />
                 <button
                   onClick={() => toggleGroup("projects")}
-                  style={{ ...sectionBtn, fontSize: "0.775rem", fontWeight: 500 }}
+                  style={{
+                    ...sectionBtn,
+                    fontSize: "0.775rem",
+                    fontWeight: 500,
+                  }}
                 >
                   {expandedGroups.has("projects") ? "▾" : "▸"} Projects
                 </button>
               </div>
               {expandedGroups.has("projects") && (
-                <div style={{ marginLeft: "1.5rem", marginTop: "0.25rem", display: "flex", flexDirection: "column", gap: "0.375rem" }}>
+                <div
+                  style={{
+                    marginLeft: "1.5rem",
+                    marginTop: "0.25rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.375rem",
+                  }}
+                >
                   {/* Content Type */}
                   <div>
-                    <div style={{ fontSize: "0.7rem", fontWeight: 600, opacity: 0.7, marginBottom: "0.25rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    <div
+                      style={{
+                        fontSize: "0.7rem",
+                        fontWeight: 600,
+                        opacity: 0.7,
+                        marginBottom: "0.25rem",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.05em",
+                      }}
+                    >
                       Content Type
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.125rem",
+                      }}
+                    >
                       {availableContentTypes
                         .filter(ct => ct !== "blog-post") // blog-post is under Blog Posts
                         .map(ct => (
@@ -163,7 +262,13 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                             <input
                               type="checkbox"
                               checked={selectedContentTypes.includes(ct)}
-                              onChange={() => toggleItem(ct, selectedContentTypes, onContentTypesChange)}
+                              onChange={() =>
+                                toggleItem(
+                                  ct,
+                                  selectedContentTypes,
+                                  onContentTypesChange
+                                )
+                              }
                             />
                             {CONTENT_TYPE_LABELS[ct] || ct}
                           </label>
@@ -174,16 +279,37 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                   {/* Status */}
                   {availableStatuses.length > 0 && (
                     <div>
-                      <div style={{ fontSize: "0.7rem", fontWeight: 600, opacity: 0.7, marginBottom: "0.25rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                      <div
+                        style={{
+                          fontSize: "0.7rem",
+                          fontWeight: 600,
+                          opacity: 0.7,
+                          marginBottom: "0.25rem",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.05em",
+                        }}
+                      >
                         Status
                       </div>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "0.125rem",
+                        }}
+                      >
                         {availableStatuses.map(s => (
                           <label key={s} style={checkLabel}>
                             <input
                               type="checkbox"
                               checked={selectedStatuses.includes(s)}
-                              onChange={() => toggleItem(s, selectedStatuses, onStatusesChange)}
+                              onChange={() =>
+                                toggleItem(
+                                  s,
+                                  selectedStatuses,
+                                  onStatusesChange
+                                )
+                              }
                             />
                             {s.charAt(0).toUpperCase() + s.slice(1)}
                           </label>
@@ -205,40 +331,91 @@ const GraphFilters: FC<GraphFiltersProps> = ({
           {selectedCategories.length > 0 && ` (${selectedCategories.length})`}
         </button>
         {expandedSections.has("topics") && (
-          <div style={{ marginTop: "0.375rem", display: "flex", flexDirection: "column", gap: "0.375rem" }}>
+          <div
+            style={{
+              marginTop: "0.375rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.375rem",
+            }}
+          >
             {visibleGroups.map(group => {
-              const selectedInGroup = group.categories.filter(c => selectedCategories.includes(c)).length;
+              const selectedInGroup = group.categories.filter(c =>
+                selectedCategories.includes(c)
+              ).length;
               return (
                 <div key={group.label}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.375rem", marginLeft: "0.5rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.375rem",
+                      marginLeft: "0.5rem",
+                    }}
+                  >
                     <input
                       type="checkbox"
-                      checked={selectedInGroup === group.categories.length && group.categories.length > 0}
-                      ref={el => { if (el) el.indeterminate = selectedInGroup > 0 && selectedInGroup < group.categories.length; }}
+                      checked={
+                        selectedInGroup === group.categories.length &&
+                        group.categories.length > 0
+                      }
+                      ref={el => {
+                        if (el)
+                          el.indeterminate =
+                            selectedInGroup > 0 &&
+                            selectedInGroup < group.categories.length;
+                      }}
                       onChange={() => toggleGroupAll(group.categories)}
                     />
                     <button
                       onClick={() => toggleGroup(group.label)}
-                      style={{ ...sectionBtn, fontSize: "0.775rem", fontWeight: 500 }}
+                      style={{
+                        ...sectionBtn,
+                        fontSize: "0.775rem",
+                        fontWeight: 500,
+                      }}
                     >
-                      {expandedGroups.has(group.label) ? "▾" : "▸"} {group.label}
-                      <span style={{ opacity: 0.5, fontWeight: 400 }}>({group.categories.length})</span>
+                      {expandedGroups.has(group.label) ? "▾" : "▸"}{" "}
+                      {group.label}
+                      <span style={{ opacity: 0.5, fontWeight: 400 }}>
+                        ({group.categories.length})
+                      </span>
                     </button>
                   </div>
                   {expandedGroups.has(group.label) && (
-                    <div style={{ marginLeft: "1.75rem", marginTop: "0.25rem", display: "flex", flexDirection: "column", gap: "0.125rem" }}>
+                    <div
+                      style={{
+                        marginLeft: "1.75rem",
+                        marginTop: "0.25rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.125rem",
+                      }}
+                    >
                       {group.categories.map(cat => (
                         <label key={cat} style={checkLabel}>
                           <input
                             type="checkbox"
                             checked={selectedCategories.includes(cat)}
-                            onChange={() => toggleItem(cat, selectedCategories, onCategoriesChange)}
+                            onChange={() =>
+                              toggleItem(
+                                cat,
+                                selectedCategories,
+                                onCategoriesChange
+                              )
+                            }
                           />
-                          <span style={{
-                            width: 8, height: 8, borderRadius: "50%",
-                            backgroundColor: CATEGORY_COLORS[cat] || "#8b949e",
-                            display: "inline-block", flexShrink: 0,
-                          }} />
+                          <span
+                            style={{
+                              width: 8,
+                              height: 8,
+                              borderRadius: "50%",
+                              backgroundColor:
+                                CATEGORY_COLORS[cat] || "#8b949e",
+                              display: "inline-block",
+                              flexShrink: 0,
+                            }}
+                          />
                           {CATEGORY_LABELS[cat] || cat}
                         </label>
                       ))}
@@ -259,19 +436,35 @@ const GraphFilters: FC<GraphFiltersProps> = ({
             {selectedLanguages.length > 0 && ` (${selectedLanguages.length})`}
           </button>
           {expandedSections.has("languages") && (
-            <div style={{ marginTop: "0.375rem", marginLeft: "0.75rem", display: "flex", flexWrap: "wrap", gap: "0.25rem" }}>
+            <div
+              style={{
+                marginTop: "0.375rem",
+                marginLeft: "0.75rem",
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "0.25rem",
+              }}
+            >
               {availableLanguages.map(lang => {
                 const active = selectedLanguages.includes(lang);
                 return (
                   <button
                     key={lang}
-                    onClick={() => toggleItem(lang, selectedLanguages, onLanguagesChange)}
+                    onClick={() =>
+                      toggleItem(lang, selectedLanguages, onLanguagesChange)
+                    }
                     style={{
-                      background: active ? "var(--accent, #3fb950)" : "var(--muted, #161b22)",
+                      background: active
+                        ? "var(--accent, #3fb950)"
+                        : "var(--muted, #161b22)",
                       border: "1px solid var(--border, #30363d)",
-                      color: active ? "var(--background, #0d1117)" : "var(--foreground, #e6edf3)",
-                      cursor: "pointer", padding: "0.15rem 0.5rem",
-                      borderRadius: "1rem", fontSize: "0.7rem",
+                      color: active
+                        ? "var(--background, #0d1117)"
+                        : "var(--foreground, #e6edf3)",
+                      cursor: "pointer",
+                      padding: "0.15rem 0.5rem",
+                      borderRadius: "1rem",
+                      fontSize: "0.7rem",
                       fontFamily: "monospace",
                     }}
                   >
@@ -293,31 +486,62 @@ const GraphFilters: FC<GraphFiltersProps> = ({
         {expandedSections.has("tags") && (
           <div style={{ marginTop: "0.375rem", marginLeft: "0.75rem" }}>
             {/* Tag mode toggle */}
-            <div style={{ display: "flex", gap: "0.125rem", marginBottom: "0.5rem", width: "100%" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.125rem",
+                marginBottom: "0.5rem",
+                width: "100%",
+              }}
+            >
               {(["union", "intersection", "exclusion"] as const).map(mode => (
                 <button
                   key={mode}
                   onClick={() => onTagModeChange(mode)}
                   style={{
                     flex: 1,
-                    background: tagMode === mode ? "var(--accent, #3fb950)" : "var(--muted, #161b22)",
+                    background:
+                      tagMode === mode
+                        ? "var(--accent, #3fb950)"
+                        : "var(--muted, #161b22)",
                     border: "1px solid var(--border, #30363d)",
-                    color: tagMode === mode ? "var(--background, #0d1117)" : "var(--foreground, #e6edf3)",
-                    cursor: "pointer", padding: "0.2rem 0.375rem",
-                    borderRadius: "0.25rem", fontSize: "0.65rem",
+                    color:
+                      tagMode === mode
+                        ? "var(--background, #0d1117)"
+                        : "var(--foreground, #e6edf3)",
+                    cursor: "pointer",
+                    padding: "0.2rem 0.375rem",
+                    borderRadius: "0.25rem",
+                    fontSize: "0.65rem",
                     fontWeight: tagMode === mode ? 600 : 400,
                     textAlign: "center" as const,
                   }}
-                  title={mode === "union" ? "Show nodes with ANY selected tag" :
-                         mode === "intersection" ? "Show nodes with ALL selected tags" :
-                         "Exclude nodes with selected tags"}
+                  title={
+                    mode === "union"
+                      ? "Show nodes with ANY selected tag"
+                      : mode === "intersection"
+                        ? "Show nodes with ALL selected tags"
+                        : "Exclude nodes with selected tags"
+                  }
                 >
-                  {mode === "union" ? "ANY" : mode === "intersection" ? "ALL" : "NOT"}
+                  {mode === "union"
+                    ? "ANY"
+                    : mode === "intersection"
+                      ? "ALL"
+                      : "NOT"}
                 </button>
               ))}
             </div>
             {/* Tag pills */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem", maxHeight: "200px", overflowY: "auto" }}>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "0.25rem",
+                maxHeight: "200px",
+                overflowY: "auto",
+              }}
+            >
               {availableTags.map(tag => {
                 const active = selectedTags.includes(tag);
                 return (
@@ -326,12 +550,18 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                     onClick={() => toggleItem(tag, selectedTags, onTagsChange)}
                     style={{
                       background: active
-                        ? tagMode === "exclusion" ? "var(--error, #f85149)" : "var(--accent, #3fb950)"
+                        ? tagMode === "exclusion"
+                          ? "var(--error, #f85149)"
+                          : "var(--accent, #3fb950)"
                         : "var(--muted, #161b22)",
                       border: "1px solid var(--border, #30363d)",
-                      color: active ? "var(--background, #0d1117)" : "var(--foreground, #e6edf3)",
-                      cursor: "pointer", padding: "0.15rem 0.5rem",
-                      borderRadius: "1rem", fontSize: "0.7rem",
+                      color: active
+                        ? "var(--background, #0d1117)"
+                        : "var(--foreground, #e6edf3)",
+                      cursor: "pointer",
+                      padding: "0.15rem 0.5rem",
+                      borderRadius: "1rem",
+                      fontSize: "0.7rem",
                     }}
                   >
                     {tag}
@@ -347,14 +577,23 @@ const GraphFilters: FC<GraphFiltersProps> = ({
       {activeCount > 0 && (
         <button
           onClick={() => {
-            onTagsChange([]); onCategoriesChange([]);
-            onTypesChange([]); onStatusesChange([]);
-            onContentTypesChange([]); onLanguagesChange([]);
+            onTagsChange([]);
+            onCategoriesChange([]);
+            onTypesChange([]);
+            onStatusesChange([]);
+            onContentTypesChange([]);
+            onLanguagesChange([]);
           }}
           style={{
-            marginTop: "0.5rem", background: "none", border: "1px solid var(--border)",
-            color: "var(--foreground)", cursor: "pointer", padding: "0.25rem 0.5rem",
-            borderRadius: "0.25rem", fontSize: "0.75rem", width: "100%",
+            marginTop: "0.5rem",
+            background: "none",
+            border: "1px solid var(--border)",
+            color: "var(--foreground)",
+            cursor: "pointer",
+            padding: "0.25rem 0.5rem",
+            borderRadius: "0.25rem",
+            fontSize: "0.75rem",
+            width: "100%",
           }}
         >
           Clear All Filters ({activeCount})

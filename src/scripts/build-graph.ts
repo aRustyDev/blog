@@ -1,9 +1,14 @@
+/* eslint-disable no-console */
 // src/scripts/build-graph.ts
 
 import { readFileSync, writeFileSync, readdirSync, statSync } from "fs";
 import { join, basename } from "path";
 import { parse as parseYaml } from "yaml";
-import type { GraphData, GraphNode, GraphEdge } from "../components/graph/graph.types";
+import type {
+  GraphData,
+  GraphNode,
+  GraphEdge,
+} from "../components/graph/graph.types";
 import { deriveContentType } from "../components/graph/graph.shared";
 
 const BLOG_DIR = "src/data/blog";
@@ -21,14 +26,21 @@ function parseFrontmatter(content: string): Record<string, unknown> {
   }
 }
 
-function parseRelatedProjects(content: string): { project: string; relationship: string }[] {
-  const tableMatch = content.match(/## Related Projects\s*\n\n\|[^\n]+\n\|[^\n]+\n((?:\|[^\n]+\n?)*)/);
+function parseRelatedProjects(
+  content: string
+): { project: string; relationship: string }[] {
+  const tableMatch = content.match(
+    /## Related Projects\s*\n\n\|[^\n]+\n\|[^\n]+\n((?:\|[^\n]+\n?)*)/
+  );
   if (!tableMatch) return [];
   return tableMatch[1]
     .split("\n")
     .filter(line => line.startsWith("|"))
     .map(line => {
-      const cells = line.split("|").map(c => c.trim()).filter(Boolean);
+      const cells = line
+        .split("|")
+        .map(c => c.trim())
+        .filter(Boolean);
       if (cells.length < 2) return null;
       return { project: cells[0], relationship: cells[1] };
     })
@@ -65,18 +77,34 @@ function shortenLabel(title: string): string {
 
 function deriveCategory(slug: string): string {
   const prefixes = [
-    "deep-dive-programming-comparing", "deep-dive-programming-swift",
-    "deep-dive-programming-rust", "deep-dive-programming-c",
-    "deep-dive-programming-go", "deep-dive-programming-zig",
-    "deep-dive-kernels", "deep-dive-editors", "deep-dive-reverse-engineering",
-    "deep-dive-pcb-design", "deep-dive-nix", "deep-dive-ebpf",
-    "deep-dive-host-forensics", "deep-dive-memory-forensics",
-    "deep-dive-mobile-forensics", "deep-dive-cloud-forensics",
-    "deep-dive-filesystem-forensics", "deep-dive-database-forensics",
-    "deep-dive-benchmarking", "deep-dive-graph-agent",
-    "deep-dive-indirect-prompt", "deep-dive-llm-backdoor",
+    "deep-dive-programming-comparing",
+    "deep-dive-programming-swift",
+    "deep-dive-programming-rust",
+    "deep-dive-programming-c",
+    "deep-dive-programming-go",
+    "deep-dive-programming-zig",
+    "deep-dive-kernels",
+    "deep-dive-editors",
+    "deep-dive-reverse-engineering",
+    "deep-dive-pcb-design",
+    "deep-dive-nix",
+    "deep-dive-ebpf",
+    "deep-dive-host-forensics",
+    "deep-dive-memory-forensics",
+    "deep-dive-mobile-forensics",
+    "deep-dive-cloud-forensics",
+    "deep-dive-filesystem-forensics",
+    "deep-dive-database-forensics",
+    "deep-dive-benchmarking",
+    "deep-dive-graph-agent",
+    "deep-dive-indirect-prompt",
+    "deep-dive-llm-backdoor",
     "deep-dive-semantic-testing",
-    "deep-dive", "eli5", "keebs", "project", "feature",
+    "deep-dive",
+    "eli5",
+    "keebs",
+    "project",
+    "feature",
   ];
   for (const prefix of prefixes) {
     if (slug.startsWith(prefix)) return prefix;
@@ -108,7 +136,9 @@ function buildGraph(): GraphData {
     const postContentType = deriveContentType("blog-post");
     allContentTypes.add(postContentType);
 
-    const postLangs = Array.isArray(fm.languages) ? (fm.languages as string[]) : [];
+    const postLangs = Array.isArray(fm.languages)
+      ? (fm.languages as string[])
+      : [];
     postLangs.forEach(l => allLanguages.add(l));
 
     nodes.push({
@@ -126,7 +156,9 @@ function buildGraph(): GraphData {
 
   // --- Parse projects (dev mode only) ---
   if (!DEV_MODE) {
-    console.log("Production mode: skipping project nodes (use --dev to include)");
+    console.log(
+      "Production mode: skipping project nodes (use --dev to include)"
+    );
   }
   const projectDirs = DEV_MODE
     ? readdirSync(PROJECTS_DIR).filter(d =>
@@ -156,7 +188,9 @@ function buildGraph(): GraphData {
     const projectTags = Array.isArray(fm.tags) ? (fm.tags as string[]) : [];
     projectTags.forEach(t => allTags.add(t));
 
-    const projectLangs = Array.isArray(fm.languages) ? (fm.languages as string[]) : [];
+    const projectLangs = Array.isArray(fm.languages)
+      ? (fm.languages as string[])
+      : [];
     projectLangs.forEach(l => allLanguages.add(l));
 
     nodes.push({
@@ -187,8 +221,13 @@ function buildGraph(): GraphData {
   const taggedNodes = nodes.filter(n => n.tags.length > 0);
   for (let i = 0; i < taggedNodes.length; i++) {
     for (let j = i + 1; j < taggedNodes.length; j++) {
-      const shared = taggedNodes[i].tags.filter(t => taggedNodes[j].tags.includes(t));
-      const threshold = (taggedNodes[i].type === "post" && taggedNodes[j].type === "post") ? 1 : 2;
+      const shared = taggedNodes[i].tags.filter(t =>
+        taggedNodes[j].tags.includes(t)
+      );
+      const threshold =
+        taggedNodes[i].type === "post" && taggedNodes[j].type === "post"
+          ? 1
+          : 2;
       if (shared.length >= threshold) {
         edges.push({
           source: taggedNodes[i].id,
