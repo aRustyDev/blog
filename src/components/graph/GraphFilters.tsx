@@ -326,7 +326,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                     onClick={() => toggleItem(tag, selectedTags, onTagsChange)}
                     style={{
                       background: active
-                        ? tagMode === "exclusion" ? "#f85149" : "var(--accent, #3fb950)"
+                        ? tagMode === "exclusion" ? "var(--error, #f85149)" : "var(--accent, #3fb950)"
                         : "var(--muted, #161b22)",
                       border: "1px solid var(--border, #30363d)",
                       color: active ? "var(--background, #0d1117)" : "var(--foreground, #e6edf3)",

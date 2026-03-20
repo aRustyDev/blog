@@ -89,7 +89,7 @@ export function useGraphData(options: UseGraphDataOptions) {
           g.addNode(node.id, {
             label: node.label,
             size: 5,
-            color: "#3fb950",
+            color: "#8b949e",
             nodeType: node.type,
             url: node.url,
             tags: node.tags,
