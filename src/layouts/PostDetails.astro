@@ -7,6 +7,8 @@ import Tag from "@/components/Tag.astro";
 import Datetime from "@/components/Datetime.astro";
 import EditPost from "@/components/EditPost.astro";
 import ShareLinks from "@/components/ShareLinks.astro";
+import LocalGraphWidget from "@/components/graph/LocalGraphWidget";
+import "@/styles/graph.css";
 import BackButton from "@/components/BackButton.astro";
 import BackToTopButton from "@/components/BackToTopButton.astro";
 import { getPath } from "@/utils/getPath";
@@ -160,6 +162,14 @@ const nextPost =
       }
     </div>
   </main>
+
+  <!-- Floating graph widget (desktop only, fixed position) -->
+  <LocalGraphWidget
+    client:only="react"
+    nodeId={`post:${post.id}`}
+    title={title}
+  />
+
   <Footer />
 </Layout>
 

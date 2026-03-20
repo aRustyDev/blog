@@ -1,0 +1,21 @@
+---
+// src/pages/graph.astro
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import GlobalGraphPage from "@/components/graph/GlobalGraphPage";
+import "@/styles/graph.css";
+---
+
+<Layout title="Graph | aRustyDev's Blog">
+  <Header />
+  <main id="main-content" class="w-full px-4" style="flex: 1; overflow: hidden;">
+    <GlobalGraphPage client:only="react" />
+  </main>
+</Layout>
+
+<style>
+  /* Prevent page scroll on graph page */
+  :global(body) {
+    overflow: hidden;
+  }
+</style>
