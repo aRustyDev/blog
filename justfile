@@ -8,7 +8,7 @@ default:
 install:
     npm install
 
-# Run local development server
+# Run local development server (builds graph data first)
 dev:
     npm run dev
 
@@ -65,3 +65,15 @@ clean-all: clean
 # Sync Astro types
 sync:
     npm run sync
+
+# Build graph data only (dev mode with projects)
+graph-dev:
+    npm run build:graph -- --dev
+
+# Build graph data only (production mode, posts only)
+graph-prod:
+    npm run build:graph
+
+# Tag projects with derived metadata
+tag-projects *FLAGS:
+    npx tsx src/scripts/tag-projects.ts {{FLAGS}}
