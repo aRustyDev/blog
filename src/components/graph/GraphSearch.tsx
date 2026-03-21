@@ -146,6 +146,9 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
       />
       {/* Spotlight */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search graph nodes"
         style={{
           position: "absolute",
           top: 24,

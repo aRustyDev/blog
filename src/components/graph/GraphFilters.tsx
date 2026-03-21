@@ -138,7 +138,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
     <div style={{ color: "var(--foreground)", fontSize: "0.8rem" }}>
       {/* Node Type */}
       <div style={{ marginBottom: "1rem" }}>
-        <button onClick={() => toggleSection("nodeType")} style={sectionBtn}>
+        <button onClick={() => toggleSection("nodeType")} aria-expanded={expandedSections.has("nodeType")} style={sectionBtn}>
           {expandedSections.has("nodeType") ? "▾" : "▸"} Node Type
           {selectedTypes.length +
             selectedContentTypes.length +
@@ -167,6 +167,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
               >
                 <input
                   type="checkbox"
+                  aria-label="Filter Blog Posts"
                   checked={selectedTypes.includes("post")}
                   onChange={() =>
                     toggleItem("post", selectedTypes, onTypesChange)
@@ -174,6 +175,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                 />
                 <button
                   onClick={() => toggleGroup("blogPosts")}
+                  aria-expanded={expandedGroups.has("blogPosts")}
                   style={{
                     ...sectionBtn,
                     fontSize: "0.775rem",
@@ -208,6 +210,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
               >
                 <input
                   type="checkbox"
+                  aria-label="Filter Projects"
                   checked={selectedTypes.includes("project")}
                   onChange={() =>
                     toggleItem("project", selectedTypes, onTypesChange)
@@ -215,6 +218,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                 />
                 <button
                   onClick={() => toggleGroup("projects")}
+                  aria-expanded={expandedGroups.has("projects")}
                   style={{
                     ...sectionBtn,
                     fontSize: "0.775rem",
@@ -326,7 +330,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
 
       {/* Topic Groups */}
       <div style={{ marginBottom: "1rem" }}>
-        <button onClick={() => toggleSection("topics")} style={sectionBtn}>
+        <button onClick={() => toggleSection("topics")} aria-expanded={expandedSections.has("topics")} style={sectionBtn}>
           {expandedSections.has("topics") ? "▾" : "▸"} Topics
           {selectedCategories.length > 0 && ` (${selectedCategories.length})`}
         </button>
@@ -365,10 +369,12 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                             selectedInGroup > 0 &&
                             selectedInGroup < group.categories.length;
                       }}
+                      aria-label={`Filter all ${group.label}`}
                       onChange={() => toggleGroupAll(group.categories)}
                     />
                     <button
                       onClick={() => toggleGroup(group.label)}
+                      aria-expanded={expandedGroups.has(group.label)}
                       style={{
                         ...sectionBtn,
                         fontSize: "0.775rem",
@@ -431,7 +437,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
       {/* Languages */}
       {availableLanguages.length > 0 && (
         <div style={{ marginBottom: "1rem" }}>
-          <button onClick={() => toggleSection("languages")} style={sectionBtn}>
+          <button onClick={() => toggleSection("languages")} aria-expanded={expandedSections.has("languages")} style={sectionBtn}>
             {expandedSections.has("languages") ? "▾" : "▸"} Languages
             {selectedLanguages.length > 0 && ` (${selectedLanguages.length})`}
           </button>
@@ -480,7 +486,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
 
       {/* Tags */}
       <div style={{ marginBottom: "0.5rem" }}>
-        <button onClick={() => toggleSection("tags")} style={sectionBtn}>
+        <button onClick={() => toggleSection("tags")} aria-expanded={expandedSections.has("tags")} style={sectionBtn}>
           {expandedSections.has("tags") ? "▾" : "▸"} Tags
           {selectedTags.length > 0 && ` (${selectedTags.length})`}
         </button>
