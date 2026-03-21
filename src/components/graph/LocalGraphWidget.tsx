@@ -48,8 +48,8 @@ const LocalGraphWidget: FC<LocalGraphWidgetProps> = ({ nodeId, title }) => {
           right: 16,
           zIndex: 30,
           width: collapsed ? "auto" : "280px",
-          background:
-            "color-mix(in srgb, var(--muted, #161b22) 85%, transparent)",
+          background: "var(--muted, #161b22)",
+          opacity: 0.95,
           backdropFilter: "blur(16px) saturate(1.3)",
           WebkitBackdropFilter: "blur(16px) saturate(1.3)",
           border: "1px solid var(--border, #30363d)",

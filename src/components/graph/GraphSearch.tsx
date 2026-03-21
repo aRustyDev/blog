@@ -153,12 +153,11 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
           transform: "translateX(-50%)",
           zIndex: 21,
           width: "min(460px, 85%)",
-          background:
-            "color-mix(in srgb, var(--muted, #161b22) 65%, transparent)",
+          background: "var(--muted, #161b22)",
+          opacity: 0.95,
           backdropFilter: "blur(20px) saturate(1.4)",
           WebkitBackdropFilter: "blur(20px) saturate(1.4)",
-          border:
-            "1px solid color-mix(in srgb, var(--foreground, #e6edf3) 8%, transparent)",
+          border: "1px solid var(--border, #30363d)",
           borderRadius: "1.25rem",
           boxShadow:
             "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
@@ -173,7 +172,7 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
             gap: "0.5rem",
             padding: "0.75rem 1rem",
             borderBottom:
-              results.length > 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
+              results.length > 0 ? "1px solid var(--border, #30363d)" : "none",
           }}
         >
           <span style={{ opacity: 0.5, fontSize: "1rem" }}>🔍</span>
@@ -245,13 +244,13 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
                   textAlign: "left",
                   padding: "0.5rem 1rem",
                   background:
-                    i === selectedIndex ? "rgba(255,255,255,0.08)" : "none",
+                    i === selectedIndex ? "var(--border, #30363d)" : "none",
                   border: "none",
                   color: "var(--foreground, #e6edf3)",
                   cursor: "pointer",
                   borderBottom:
                     i < results.length - 1
-                      ? "1px solid rgba(255,255,255,0.04)"
+                      ? "1px solid var(--border, #30363d)"
                       : "none",
                   fontSize: "0.8rem",
                 }}
