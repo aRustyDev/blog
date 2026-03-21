@@ -202,6 +202,9 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
             }}
             placeholder="Search nodes..."
             aria-label="Search graph nodes"
+            aria-haspopup="listbox"
+            aria-controls="graph-search-results"
+            aria-activedescendant={results.length > 0 ? `graph-search-result-${selectedIndex}` : undefined}
             style={{
               flex: 1,
               background: "none",
@@ -228,11 +231,17 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
         {results.length > 0 && (
           <div
             ref={resultsRef}
+            id="graph-search-results"
+            role="listbox"
+            aria-label="Search results"
             style={{ maxHeight: "320px", overflowY: "auto" }}
           >
             {results.map((r, i) => (
               <button
                 key={r.item.id}
+                id={`graph-search-result-${i}`}
+                role="option"
+                aria-selected={i === selectedIndex}
                 onClick={() => handleSelect(r.item.id)}
                 onMouseEnter={() => setSelectedIndex(i)}
                 ref={el => {

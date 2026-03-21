@@ -203,7 +203,11 @@ export default function GraphView({
       ref={containerRef}
     >
       {/* Wrapper uses CSS var() directly — always matches current theme instantly, no race condition */}
-      <div style={{ height, position: "relative", background: "var(--background, #0d1117)" }}>
+      <div
+        style={{ height, position: "relative", background: "var(--background, #0d1117)" }}
+        role="img"
+        aria-label="Interactive knowledge graph. Use the search button (Ctrl+K) to find and navigate to nodes."
+      >
         <SigmaContainer
           graph={graph}
           style={{ width: "100%", height: "100%" }}
@@ -290,6 +294,24 @@ export default function GraphView({
             reserved.
           </div>
         )}
+      </div>
+
+      {/* Screen reader live region for node info (updates on hover) */}
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        style={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {tooltip
+          ? `${tooltip.label}, ${CATEGORY_LABELS[tooltip.category] || tooltip.category}, ${tooltip.type === "post" ? "Published" : "Project"}`
+          : ""}
       </div>
     </div>
   );

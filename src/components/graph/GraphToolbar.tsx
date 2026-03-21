@@ -4,6 +4,11 @@ import { useCallback, useState, type FC } from "react";
 import { useSigma } from "@react-sigma/core";
 import { CATEGORY_COLORS, CATEGORY_LABELS } from "./graph.shared";
 
+/** Animation duration respecting prefers-reduced-motion */
+function animDuration(): number {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 300;
+}
+
 interface GraphToolbarProps {
   categories: string[];
   onSearchOpen: () => void;
@@ -72,12 +77,12 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
       sigma.refresh();
       sigma
         .getCamera()
-        .animate({ x: 0.5, y: 0.5, ratio: 1 }, { duration: 300 });
+        .animate({ x: 0.5, y: 0.5, ratio: 1 }, { duration: animDuration() });
     });
   }, [sigma]);
 
   const handleResetView = useCallback(() => {
-    sigma.getCamera().animate({ x: 0.5, y: 0.5, ratio: 1 }, { duration: 300 });
+    sigma.getCamera().animate({ x: 0.5, y: 0.5, ratio: 1 }, { duration: animDuration() });
   }, [sigma]);
 
   const handleCategoryClick = useCallback(
@@ -101,7 +106,7 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
         );
         ratio = Math.min(1, Math.max(0.1, maxDist * 3));
       }
-      sigma.getCamera().animate({ x: cx, y: cy, ratio }, { duration: 300 });
+      sigma.getCamera().animate({ x: cx, y: cy, ratio }, { duration: animDuration() });
     },
     [sigma]
   );
