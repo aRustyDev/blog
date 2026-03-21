@@ -15,8 +15,11 @@ function getEffectiveMode(): string {
 function reflectPreference(): void {
   const mode = getEffectiveMode();
 
-  // Update aria-label on theme button
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", mode);
+  // Update aria-label on theme button with actionable description
+  const nextMode = mode === "dark" ? "light" : "dark";
+  document
+    .querySelector("#theme-btn")
+    ?.setAttribute("aria-label", `Switch to ${nextMode} mode`);
 
   // Update window.theme for compatibility
   if (window.theme) {

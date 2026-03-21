@@ -92,6 +92,7 @@ const GlobalGraphPage: FC = () => {
     <div style={{ display: "flex", gap: "1rem", height: "calc(100vh - 80px)" }}>
       {/* Sidebar */}
       <aside
+        aria-label="Graph filters"
         style={{
           width: "240px",
           flexShrink: 0,

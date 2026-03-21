@@ -197,6 +197,7 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
             padding: "0.1rem 0.375rem",
           }}
           title="Search nodes (Ctrl+K)"
+          aria-label="Search nodes"
         >
           ⌕
         </button>
@@ -205,6 +206,7 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
       {/* Legend toggle */}
       <button
         onClick={() => setLegendOpen(!legendOpen)}
+        aria-expanded={legendOpen}
         style={{
           display: "flex",
           alignItems: "center",

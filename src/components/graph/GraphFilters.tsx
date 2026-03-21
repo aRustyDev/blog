@@ -450,6 +450,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                 return (
                   <button
                     key={lang}
+                    aria-pressed={active}
                     onClick={() =>
                       toggleItem(lang, selectedLanguages, onLanguagesChange)
                     }
@@ -547,6 +548,7 @@ const GraphFilters: FC<GraphFiltersProps> = ({
                 return (
                   <button
                     key={tag}
+                    aria-pressed={active}
                     onClick={() => toggleItem(tag, selectedTags, onTagsChange)}
                     style={{
                       background: active

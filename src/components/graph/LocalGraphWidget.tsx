@@ -74,6 +74,8 @@ const LocalGraphWidget: FC<LocalGraphWidgetProps> = ({ nodeId, title }) => {
         >
           <button
             onClick={() => setCollapsed(!collapsed)}
+            aria-expanded={!collapsed}
+            aria-label="Toggle graph widget"
             style={{
               background: "none",
               border: "none",
@@ -98,6 +100,7 @@ const LocalGraphWidget: FC<LocalGraphWidgetProps> = ({ nodeId, title }) => {
               }}
               style={iconBtn}
               title="Expand page graph"
+              aria-label="Expand page graph"
             >
               ⤢
             </button>
@@ -109,6 +112,7 @@ const LocalGraphWidget: FC<LocalGraphWidgetProps> = ({ nodeId, title }) => {
               }}
               style={iconBtn}
               title="Open site graph"
+              aria-label="Open site graph"
             >
               ◉
             </button>
@@ -130,13 +134,15 @@ const LocalGraphWidget: FC<LocalGraphWidgetProps> = ({ nodeId, title }) => {
                 opacity: 0.7,
               }}
             >
-              <span>Depth</span>
+              <label htmlFor="graph-depth-slider">Depth</label>
               <input
+                id="graph-depth-slider"
                 type="range"
                 min={1}
                 max={4}
                 value={depth}
                 onChange={e => setDepth(Number(e.target.value))}
+                aria-label="Graph depth"
                 style={{ flex: 1, height: "2px" }}
               />
               <span style={{ minWidth: "0.75rem", textAlign: "center" }}>

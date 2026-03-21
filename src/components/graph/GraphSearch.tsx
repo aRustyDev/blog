@@ -198,6 +198,7 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
               }
             }}
             placeholder="Search nodes..."
+            aria-label="Search graph nodes"
             style={{
               flex: 1,
               background: "none",

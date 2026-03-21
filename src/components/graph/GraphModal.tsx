@@ -118,6 +118,7 @@ const GraphModal: FC<GraphModalProps> = ({
               padding: "0.25rem",
             }}
             title="Close (Esc)"
+            aria-label="Close graph modal"
           >
             ✕
           </button>
