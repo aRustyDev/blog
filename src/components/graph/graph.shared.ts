@@ -162,3 +162,23 @@ export function getNodeColor(category?: string): string {
   if (!category) return "#8b949e";
   return CATEGORY_COLORS[category] || "#8b949e";
 }
+
+/** Dim color values for sigma WebGL reducers (8-digit hex #RRGGBBAA) */
+export interface DimColors {
+  nodeFiltered: string;
+  nodeDimmed: string;
+  edgeFiltered: string;
+  edgeDimmed: string;
+}
+
+/** Shared mutable ref for cached dim colors.
+ *  Updated by ThemeObserver (in GraphControllers), read by FilterController and GraphSearch.
+ *  Initialized with hardcoded fallbacks (SSR-safe, no DOM calls). */
+export const dimColorsRef: { current: DimColors } = {
+  current: {
+    nodeFiltered: "#30363d15",
+    nodeDimmed: "#30363d40",
+    edgeFiltered: "#30363d08",
+    edgeDimmed: "#30363d20",
+  },
+};

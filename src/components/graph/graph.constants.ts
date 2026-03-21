@@ -15,7 +15,7 @@ export function resolveThemeColor(varName: string, fallback: string): string {
 }
 
 /** Lighten or darken a hex color by an amount (+lighter, -darker) */
-export function adjustColor(hex: string, amount: number): string {
+function adjustColor(hex: string, amount: number): string {
   const num = parseInt(hex.replace("#", ""), 16);
   const r = Math.min(255, Math.max(0, ((num >> 16) & 0xff) + amount));
   const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + amount));
@@ -43,15 +43,10 @@ function ensureHex(value: string, fallback: string): string {
   return fallback;
 }
 
+import type { DimColors } from "./graph.shared";
+
 /** Resolve all dim colors at once (call once per theme change, not per frame).
  *  All values are 8-digit hex (#RRGGBBAA) safe for sigma WebGL. */
-export interface DimColors {
-  nodeFiltered: string; // very dim — filtered out
-  nodeDimmed: string; // medium dim — not in hover neighborhood
-  edgeFiltered: string; // very dim edge
-  edgeDimmed: string; // medium dim edge
-}
-
 export function resolveDimColors(): DimColors {
   const border = ensureHex(resolveThemeColor("--border", "#30363d"), "#30363d");
   return {
@@ -67,14 +62,3 @@ export function resolveHexColor(varName: string, fallback: string): string {
   return ensureHex(resolveThemeColor(varName, fallback), fallback);
 }
 
-/** Shared mutable ref for cached dim colors — updated by ThemeObserver, read by FilterController and GraphSearch.
- *  Initialized with hardcoded fallbacks (not DOM-resolved) to be SSR-safe.
- *  ThemeObserver calls resolveDimColors() on first frame to populate with live values. */
-export const dimColorsRef: { current: DimColors } = {
-  current: {
-    nodeFiltered: "#30363d15",
-    nodeDimmed: "#30363d40",
-    edgeFiltered: "#30363d08",
-    edgeDimmed: "#30363d20",
-  },
-};

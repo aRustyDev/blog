@@ -39,6 +39,8 @@ function setPreference(): void {
 }
 
 // Update the global theme API
+// Extend window.theme with functions (Layout.astro creates the base object)
+// setPreference/reflectPreference are exposed for potential external use
 if (window.theme) {
   window.theme.setPreference = setPreference;
   window.theme.reflectPreference = reflectPreference;

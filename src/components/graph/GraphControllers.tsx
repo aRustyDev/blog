@@ -9,8 +9,8 @@ import {
   resolveHexColor,
   getSigmaBackground,
   resolveDimColors,
-  dimColorsRef,
 } from "./graph.constants";
+import { dimColorsRef } from "./graph.shared";
 
 // --- Drag ---
 export const DragController: FC = () => {

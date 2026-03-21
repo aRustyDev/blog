@@ -11,7 +11,7 @@ import {
 import Fuse from "fuse.js";
 import { useSigma } from "@react-sigma/core";
 import { CATEGORY_LABELS } from "./graph.shared";
-import { dimColorsRef } from "./graph.constants";
+import { dimColorsRef } from "./graph.shared";
 
 // --- Search overlay (spotlight-style, inside SigmaContainer) ---
 interface SearchItem {
