@@ -115,12 +115,13 @@ export default function GraphView({
     });
   }, [graph]);
 
-  // WebGL cleanup on unmount
+  // WebGL cleanup on unmount — only clear internally-owned graphs
+  // SigmaContainer handles its own WebGL teardown
   useEffect(() => {
     return () => {
-      if (graph) graph.clear();
+      if (graph && !hasExternalData) graph.clear();
     };
-  }, [graph]);
+  }, [graph, hasExternalData]);
 
   const handleNodeClick = useCallback((_nodeId: string, url: string) => {
     if (!url) return;

@@ -13,9 +13,14 @@ import "@/styles/graph.css";
   </main>
 </Layout>
 
-<style>
-  /* Prevent page scroll on graph page */
-  :global(body) {
-    overflow: hidden;
-  }
-</style>
+<script>
+  // Apply overflow:hidden to body only on this page, clean up on navigation
+  document.addEventListener("astro:page-load", () => {
+    const isGraphPage = !!document.querySelector("#main-content .graph-container");
+    if (isGraphPage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  });
+</script>

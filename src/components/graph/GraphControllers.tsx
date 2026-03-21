@@ -113,14 +113,17 @@ export const ThemeObserver: FC = () => {
       sigma.refresh();
     };
 
-    requestAnimationFrame(updateColors);
+    const rafId = requestAnimationFrame(updateColors);
 
     const observer = new MutationObserver(updateColors);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(rafId);
+      observer.disconnect();
+    };
   }, [sigma]);
 
   return null;

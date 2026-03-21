@@ -178,13 +178,13 @@ const structuredData = {
           typeof BrandTheme !== "undefined"
             ? BrandTheme.getEffectiveMode()
             : "dark";
-        window.theme = {
+        window.theme = Object.assign(window.theme || {}, {
           themeValue: mode,
           getTheme: () => window.theme.themeValue,
           setTheme: val => {
             window.theme.themeValue = val;
           },
-        };
+        });
 
       })();
     </script>
