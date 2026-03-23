@@ -1,8 +1,10 @@
 ---
 id: "e4d70457-0519-4bf1-b6ff-78267823e70a"
 type: plan
-status: draft
+status: approved
 parent: ./idea.md
+children:
+  - ./research/plans/context-engineering-taxonomy.md
 created: "2026-03-15T00:00:00Z"
 updated: "2026-03-15T00:00:00Z"
 ---
