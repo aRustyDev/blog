@@ -9,7 +9,7 @@ children:
   - ./phase-3-example-gathering.md
   - ./phase-4-synthesis.md
 created: "2026-03-20T00:00:00Z"
-updated: "2026-03-20T00:00:00Z"
+updated: "2026-03-23T00:00:00Z"
 ---
 
 ## Primary Question
@@ -55,6 +55,7 @@ Each phase has its own detailed plan with search-term matrix, source strategy, a
 | Phase | Plan | Duration | Focus |
 |-------|------|----------|-------|
 | 1 | [Literature Survey](./phase-1-literature-survey.md) | 2-3 hours | Prior work, communities, verified bibliography |
+| 1f | [Follow-up Research](./phase-1-literature-survey.md#follow-up-research-plans) | 6.75-9.92 hours | 10 topic plans + 5 cross-term plans for coverage gaps |
 | 2 | [Lifecycle Mapping](./phase-2-lifecycle-mapping.md) | 1-2 hours | Claude Code context loading, ordering rules |
 | 3 | [Example Gathering](./phase-3-example-gathering.md) | 1-2 hours | Blog-workflow plugin examples per component type |
 | 4 | [Synthesis](./phase-4-synthesis.md) | 1-2 hours | Taxonomy finalization, pipeline validation, report |
@@ -96,18 +97,19 @@ Bibliography format per entry:
 
 | Phase | Duration | Output | Checkpoint |
 |-------|----------|--------|------------|
-| Literature Survey | 2-3 hours | Verified annotated bibliography (15+ sources), community map | Review bibliography quality + coverage |
+| Literature Survey | 2-3 hours | Verified annotated bibliography (19 sources), community map (5 communities) | **Complete** — review bibliography quality + coverage |
+| Follow-up Research | 6.75-9.92 hours | Fill coverage gaps across 10 topics (REVIEW + RESEARCH tiers), expand bibliography to 50+ sources | UMAP topic coverage all at REVIEW+ |
 | Lifecycle Mapping | 1-2 hours | Component lifecycle diagram data, ordering matrix | Verify against observed behavior |
 | Example Gathering | 1-2 hours | Example table with 6+ examples, code references | Confirm examples are illustrative |
 | Synthesis | 1-2 hours | Research report at `research/reports/main.md` | Final quality review |
-| **Total** | **6-9 hours** | | |
+| **Total** | **12.75-17.92 hours** | | |
 
 ## Quality Criteria
 
-- [ ] At least 15 relevant sources in verified annotated bibliography
-- [ ] Bibliography includes link graph (cites/cited-by) for at least 5 sources
-- [ ] Community landscape mapped (3+ communities identified)
-- [ ] Origin of component types documented
+- [x] At least 15 relevant sources in verified annotated bibliography (19 sources)
+- [x] Bibliography includes link graph (cites/cited-by) for at least 5 sources (13 edges, 11 sources)
+- [x] Community landscape mapped (3+ communities identified) (5 communities)
+- [x] Origin of component types documented (timeline in communities.md)
 - [ ] Complete lifecycle mapping with evidence (not speculation)
 - [ ] At least 1 concrete example per component type
 - [ ] Pipeline model validated against observed behavior
