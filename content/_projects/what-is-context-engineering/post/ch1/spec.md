@@ -2,6 +2,8 @@
 type: post-spec
 status: draft
 parent: ../../phase/1-what-is-context-engineering.md
+children:
+  - ./outline.md
 template: staff-eng.md
 persona: staff-engineer
 created: "2026-03-24T00:00:00Z"

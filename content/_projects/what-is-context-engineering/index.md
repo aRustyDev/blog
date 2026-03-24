@@ -45,6 +45,7 @@ tags:
 | Research Report | complete | ./research/reports/main.md |
 | Content Brainstorm | approved | ./content-brainstorm.md |
 | Post 1 Spec | draft | ./post/ch1/spec.md |
+| Post 1 Outline | draft | ./post/ch1/outline.md |
 
 ## Phases
 
