@@ -1,10 +1,29 @@
 ---
 id: "a1b2c3d4-1111-4aaa-b111-1111phase1001"
 type: research-plan
-status: draft
+status: complete
 parent: ./context-engineering-taxonomy.md
+children:
+  # Topic follow-up plans (REVIEW tier)
+  - ./phase-1-tool-use-mcp.md
+  - ./phase-1-memory-systems.md
+  - ./phase-1-rag.md
+  - ./phase-1-prompt-engineering.md
+  - ./phase-1-community-terminology.md
+  # Topic follow-up plans (RESEARCH tier)
+  - ./phase-1-production-engineering.md
+  - ./phase-1-se-patterns.md
+  - ./phase-1-multi-agent.md
+  - ./phase-1-in-context-learning.md
+  - ./phase-1-security-control.md
+  # Cross-term plans (shared search queries)
+  - ./phase-1-icl--prompt-eng.md
+  - ./phase-1-tool-use--multi-agent.md
+  - ./phase-1-production--se-patterns.md
+  - ./phase-1-memory--rag.md
+  - ./phase-1-tool-use--se-patterns.md
 created: "2026-03-20T00:00:00Z"
-updated: "2026-03-21T00:00:00Z"
+updated: "2026-03-23T00:00:00Z"
 ---
 
 # Phase 1: Literature Survey
@@ -174,9 +193,52 @@ Identify and document for each community:
 
 ## Quality Criteria
 
-- [ ] 15+ sources in bibliography
-- [ ] All URLs verified accessible
-- [ ] Link graph has cites/cited-by for 5+ sources
-- [ ] 3+ communities identified
-- [ ] Origin of "context engineering" term traced
-- [ ] Gap analysis identifies at least 2 gaps our work fills
+- [x] 15+ sources in bibliography (19 sources: 9 academic, 10 practitioner)
+- [x] All URLs verified accessible (all 19 verified 2026-03-23)
+- [x] Link graph has cites/cited-by for 5+ sources (13 edges across 11 sources)
+- [x] 3+ communities identified (5 communities mapped)
+- [x] Origin of "context engineering" term traced (Lutke → Karpathy → community adoption, June 2025)
+- [x] Gap analysis identifies at least 2 gaps our work fills (5 gaps identified)
+
+## Follow-up Research Plans
+
+UMAP coverage analysis (2026-03-23) identified 10 topics requiring additional research. Each has its own plan with a dedicated search-term matrix. Shared search queries between topic pairs are extracted into cross-term plans.
+
+### Topic Plans (REVIEW tier — moderate coverage, gap-filling)
+
+| Plan | Topic | Current Score | Target | Duration |
+|------|-------|--------------|--------|----------|
+| [phase-1-tool-use-mcp.md](./phase-1-tool-use-mcp.md) | Tool Use & MCP | 0.512 | READY | 45-60 min |
+| [phase-1-memory-systems.md](./phase-1-memory-systems.md) | Memory Systems | 0.497 | READY | 30-45 min |
+| [phase-1-rag.md](./phase-1-rag.md) | RAG | 0.466 | READY | 30-45 min |
+| [phase-1-prompt-engineering.md](./phase-1-prompt-engineering.md) | Prompt Engineering | 0.437 | READY | 30-45 min |
+| [phase-1-community-terminology.md](./phase-1-community-terminology.md) | Community & Terminology | 0.407 | READY | 30-45 min |
+
+### Topic Plans (RESEARCH tier — gaps, need substantive research)
+
+| Plan | Topic | Current Score | Target | Duration |
+|------|-------|--------------|--------|----------|
+| [phase-1-production-engineering.md](./phase-1-production-engineering.md) | Production Engineering | 0.327 | REVIEW+ | 45-60 min |
+| [phase-1-se-patterns.md](./phase-1-se-patterns.md) | SE Patterns | 0.288 | REVIEW+ | 45-60 min |
+| [phase-1-multi-agent.md](./phase-1-multi-agent.md) | Multi-Agent Systems | 0.218 | REVIEW | 30-45 min |
+| [phase-1-in-context-learning.md](./phase-1-in-context-learning.md) | In-Context Learning | 0.170 | REVIEW | 30-45 min |
+| [phase-1-security-control.md](./phase-1-security-control.md) | Security & Control | 0.000 | REVIEW | 45-60 min |
+
+### Cross-Term Plans (shared search queries)
+
+| Plan | Shared Between | Duration |
+|------|---------------|----------|
+| [phase-1-icl--prompt-eng.md](./phase-1-icl--prompt-eng.md) | ICL ↔ Prompt Engineering | 15-20 min |
+| [phase-1-tool-use--multi-agent.md](./phase-1-tool-use--multi-agent.md) | Tool Use ↔ Multi-Agent | 15-20 min |
+| [phase-1-production--se-patterns.md](./phase-1-production--se-patterns.md) | Production ↔ SE Patterns | 15-20 min |
+| [phase-1-memory--rag.md](./phase-1-memory--rag.md) | Memory ↔ RAG | 15-20 min |
+| [phase-1-tool-use--se-patterns.md](./phase-1-tool-use--se-patterns.md) | Tool Use ↔ SE Patterns | 15-20 min |
+
+### Estimated Total Follow-up Duration
+
+| Category | Plans | Duration |
+|----------|-------|----------|
+| REVIEW topics | 5 | 2.5-3.75 hours |
+| RESEARCH topics | 5 | 3-4.5 hours |
+| Cross-term searches | 5 | 1.25-1.67 hours |
+| **Total** | **15** | **6.75-9.92 hours** |

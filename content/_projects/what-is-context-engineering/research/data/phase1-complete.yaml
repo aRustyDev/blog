@@ -1,0 +1,246 @@
+label: "Phase 1 Complete (74 sources)"
+topics:
+  - "CE Definition"
+  - "In-Context Learning"
+  - "Prompt Engineering"
+  - "Agent Architecture"
+  - "Memory Systems"
+  - "Tool Use & MCP"
+  - "RAG"
+  - "Multi-Agent"
+  - "Security & Control"
+  - "Production Eng."
+  - "Community & Term."
+  - "SE Patterns"
+sources:
+  # ===== Original 19 sources (BIB-001 to BIB-019) =====
+  - name: "BIB-001 Mei et al. CE Survey"
+    type: academic
+    weights: [1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-002 Hua et al. CE 2.0"
+    type: academic
+    weights: [1.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "BIB-003 Rivasseau Invasive CE"
+    type: academic
+    weights: [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+  - name: "BIB-004 Dong et al. ICL Survey"
+    type: academic
+    weights: [0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-005 Li Prompt Design"
+    type: academic
+    weights: [0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-006 Chhikara et al. Mem0"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.5, 0.0, 0.0, 1.0, 0.0, 0.0]
+  - name: "BIB-007 Hu et al. Agent Memory"
+    type: academic
+    weights: [0.5, 0.0, 0.0, 1.0, 1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-008 Krishnan MCP Multi-Agent"
+    type: academic
+    weights: [0.5, 0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.5]
+  - name: "BIB-009 Singh et al. Agentic RAG"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 1.0, 0.0, 0.5, 1.0, 0.5, 0.0, 0.0, 0.0, 0.5]
+  - name: "BIB-010 Karpathy Tweet"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 1.0, 0.0]
+  - name: "BIB-011 Lutke Tweet"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "BIB-012 Willison Blog"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "BIB-013 Anthropic CE Framework"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 1.0, 0.5, 1.0, 0.0, 0.5, 0.0, 0.5, 0.0, 1.0]
+  - name: "BIB-014 LangChain 4-Strategy"
+    type: practitioner
+    weights: [1.0, 0.0, 0.0, 1.0, 0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.5, 1.0]
+  - name: "BIB-015 Schmid 7-Component"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 1.0, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.5, 0.0]
+  - name: "BIB-016 Weng Agent Blog"
+    type: practitioner
+    weights: [0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
+  - name: "BIB-017 Manus Production"
+    type: practitioner
+    weights: [1.0, 0.0, 0.0, 1.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0, 0.5]
+  - name: "BIB-018 Latent Space RAG is Dead"
+    type: practitioner
+    weights: [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.5, 0.0]
+  - name: "BIB-019 Anthropic Context Mgmt"
+    type: practitioner
+    weights: [0.5, 0.0, 0.0, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0]
+
+  # ===== G1: ICL + Prompt Engineering (BIB-020 to BIB-030) =====
+  - name: "BIB-020 Ye et al. ICL Explanations"
+    type: academic
+    weights: [0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-021 Gao et al. ICL Demonstrations"
+    type: academic
+    weights: [0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-022 Lakera ICL Guide"
+    type: practitioner
+    weights: [0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-023 Rouzegar Role Design ICL"
+    type: academic
+    weights: [0.0, 0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-024 Schulhoff Prompt Report"
+    type: academic
+    weights: [0.0, 0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-025 Sahoo PE Survey"
+    type: academic
+    weights: [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-026 Li Goal-oriented PE"
+    type: academic
+    weights: [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-027 Anthropic Prompting Guide"
+    type: practitioner
+    weights: [0.0, 0.0, 1.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-028 Wei et al. Chain-of-Thought"
+    type: academic
+    weights: [0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-029 Li Auto PE Survey"
+    type: academic
+    weights: [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-030 Brown et al. GPT-3"
+    type: academic
+    weights: [0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+  # ===== G2: Tool Use + Multi-Agent (BIB-031 to BIB-044) =====
+  - name: "BIB-031 Kim et al. LLMCompiler"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0]
+  - name: "BIB-032 Schlapbach SGD-MCP"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+  - name: "BIB-033 MCP Specification"
+    type: practitioner
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
+  - name: "BIB-034 Hasan et al. MCP Smells"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+  - name: "BIB-035 Fei et al. MCP-Zero"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0]
+  - name: "BIB-036 Chang et al. SagaLLM"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+  - name: "BIB-037 Orogat et al. MAFBench"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.5, 0.0, 0.0]
+  - name: "BIB-038 Sun et al. Context-Folding"
+    type: academic
+    weights: [0.5, 0.0, 0.0, 0.5, 0.0, 0.5, 0.0, 1.0, 0.0, 0.5, 0.0, 0.0]
+  - name: "BIB-039 Han et al. LLM MAS Challenges"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-040 Shu et al. GenAI Multi-Agent"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.0, 1.0, 0.0, 0.5, 0.0, 0.0]
+  - name: "BIB-041 Shen et al. Multi-LLM Agent"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-042 Haseeb CE Multi-Agent Code"
+    type: academic
+    weights: [0.5, 0.0, 0.0, 0.5, 0.0, 0.5, 0.5, 1.0, 0.0, 0.0, 0.5, 0.0]
+  - name: "BIB-043 Ding ToolRegistry"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+  - name: "BIB-044 OpenAI Agents SDK Handoffs"
+    type: practitioner
+    weights: [0.0, 0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.5]
+
+  # ===== G3: Memory + RAG + Community (BIB-045 to BIB-057) =====
+  - name: "BIB-045 Pink et al. Episodic Memory"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-046 Packer et al. MemGPT"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5]
+  - name: "BIB-047 Kang et al. MemoryOS"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
+  - name: "BIB-048 Ma et al. CAST"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-049 Rasmussen et al. Zep"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-050 Wampler et al. RAG Stack"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-051 Merola et al. Chunking"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-052 Lee et al. ReadAgent"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-053 RAGFlow RAG-to-Context"
+    type: practitioner
+    weights: [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "BIB-054 TDS Beyond RAG"
+    type: practitioner
+    weights: [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "BIB-055 NewStack RAG Not Dead"
+    type: practitioner
+    weights: [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "BIB-056 Letta Memory Blocks"
+    type: practitioner
+    weights: [0.0, 0.0, 0.0, 0.5, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "BIB-057 Cinar IEEE PE vs CE"
+    type: academic
+    weights: [0.5, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+
+  # ===== G4: Production + SE + Security (BIB-059 to BIB-075) =====
+  - name: "BIB-059 Xu et al. KV Cache Survey"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+  - name: "BIB-060 Shi et al. KV-Cache Review"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+  - name: "BIB-061 Wang et al. SqueezeAttention"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+  - name: "BIB-062 NVIDIA TensorRT-LLM KV Cache"
+    type: practitioner
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+  - name: "BIB-063 An et al. Utilize Context"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+  - name: "BIB-064 Sarkar SE Patterns MCP"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.0, 1.0, 0.0, 0.5, 0.0, 1.0]
+  - name: "BIB-065 Buschmann et al. POSA Vol.4"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+  - name: "BIB-066 Lazzari et al. EDA Study"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+  - name: "BIB-067 Guran Middleware for LLMs"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 1.0]
+  - name: "BIB-068 Mei et al. AIOS"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0]
+  - name: "BIB-069 OWASP LLM Top 10"
+    type: practitioner
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+  - name: "BIB-070 Chen et al. SecAlign"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+  - name: "BIB-071 Chen et al. StruQ"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.5]
+  - name: "BIB-072 Liu et al. HouYi"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+  - name: "BIB-073 Wei et al. ICA/ICD"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+  - name: "BIB-074 Han et al. GuardRail Pipeline"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]
+  - name: "BIB-075 Pankajakshan LLM Security Risk"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.5]
