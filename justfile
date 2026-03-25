@@ -100,3 +100,11 @@ smoke:
     @echo "Full build..."
     just build
     @echo "=== All smoke tests passed ==="
+
+# Run E2E tests (starts dev server automatically)
+test-e2e:
+    npx playwright test
+
+# Run E2E tests with interactive UI
+test-e2e-ui:
+    npx playwright test --ui
