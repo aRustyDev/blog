@@ -36,8 +36,16 @@ build:
     npm run build
     @echo "Build complete. Output in ./dist"
 
-# Test build locally
-test: build preview
+# Run unit tests
+test:
+    npx vitest run
+
+# Run unit tests in watch mode
+test-watch:
+    npx vitest
+
+# Test build locally (build + preview)
+test-build: build preview
 
 # Deploy to Cloudflare Workers (uses wrangler.jsonc config)
 deploy: build
@@ -83,6 +91,8 @@ smoke:
     @echo "=== Smoke Tests (Tier 1) ==="
     @echo "TypeScript check..."
     npx astro check
+    @echo "Unit tests..."
+    npx vitest run
     @echo "Graph build (dev)..."
     just graph-dev
     @echo "Graph build (prod)..."

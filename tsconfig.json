@@ -9,6 +9,7 @@
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["vitest/globals"]
   }
 }
