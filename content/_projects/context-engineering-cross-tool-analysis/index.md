@@ -15,7 +15,8 @@ tags:
 
 | Artifact | Status | Path |
 |----------|--------|------|
-| Idea | draft | ./idea.md |
+| Idea | approved | ./idea.md |
+| Plan | approved | ./plan.md |
 
 ## Phases
 

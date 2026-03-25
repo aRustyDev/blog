@@ -1,7 +1,9 @@
 ---
 id: "a7b8c9d0-6666-4fff-a666-crosstool00001"
 type: idea
-status: draft
+status: approved
+children:
+  - ./plan.md
 created: "2026-03-24T00:00:00Z"
 updated: "2026-03-24T00:00:00Z"
 ---
