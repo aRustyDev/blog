@@ -109,7 +109,6 @@ describe("createReducer", () => {
     });
 
     it("should stop playing on prev", () => {
-      const playing = { ...initial, isPlaying: true, currentStep: 2 };
       // Need to actually advance properly for replay
       let state = initial;
       state = reducer(state, { type: "NEXT" });

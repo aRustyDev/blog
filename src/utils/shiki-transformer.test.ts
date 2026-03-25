@@ -25,6 +25,18 @@ function createMockToken(opts?: {
   };
 }
 
+// Shiki span hook requires a `this` context of ShikiTransformerContext.
+// We provide a minimal mock since our transformer doesn't use `this`.
+const mockContext = {} as any;
+
+/** Helper to call span hook with proper `this` binding */
+function callSpan(
+  transformer: ReturnType<typeof transformerTokenMetadata>,
+  ...args: Parameters<NonNullable<typeof transformer.span>>
+) {
+  return transformer.span!.call(mockContext, ...args);
+}
+
 describe("transformerTokenMetadata", () => {
   describe("without includeScope", () => {
     const transformer = transformerTokenMetadata();
@@ -34,7 +46,7 @@ describe("transformerTokenMetadata", () => {
       const token = createMockToken();
       const lineEl = createMockNode();
 
-      transformer.span!(node as any, 3, 7, lineEl as any, token as any);
+      callSpan(transformer, node as any, 3, 7, lineEl as any, token as any);
 
       expect(node.properties["data-line"]).toBe("3");
       expect(node.properties["data-col"]).toBe("7");
@@ -55,7 +67,7 @@ describe("transformerTokenMetadata", () => {
       });
       const lineEl = createMockNode();
 
-      transformer.span!(node as any, 1, 0, lineEl as any, token as any);
+      callSpan(transformer, node as any, 1, 0, lineEl as any, token as any);
 
       expect(node.properties["data-scope"]).toBeUndefined();
     });
@@ -80,17 +92,17 @@ describe("transformerTokenMetadata", () => {
       });
       const lineEl = createMockNode();
 
-      transformer.span!(node as any, 1, 0, lineEl as any, token as any);
+      callSpan(transformer, node as any, 1, 0, lineEl as any, token as any);
 
       expect(node.properties["data-scope"]).toBe("storage.type.ts");
     });
 
     it("should handle token without explanation gracefully", () => {
       const node = createMockNode();
-      const token = createMockToken(); // no explanation
+      const token = createMockToken();
       const lineEl = createMockNode();
 
-      transformer.span!(node as any, 1, 0, lineEl as any, token as any);
+      callSpan(transformer, node as any, 1, 0, lineEl as any, token as any);
 
       expect(node.properties["data-scope"]).toBeUndefined();
       expect(node.properties["data-line"]).toBe("1");
@@ -103,7 +115,7 @@ describe("transformerTokenMetadata", () => {
       });
       const lineEl = createMockNode();
 
-      transformer.span!(node as any, 1, 0, lineEl as any, token as any);
+      callSpan(transformer, node as any, 1, 0, lineEl as any, token as any);
 
       expect(node.properties["data-scope"]).toBeUndefined();
     });

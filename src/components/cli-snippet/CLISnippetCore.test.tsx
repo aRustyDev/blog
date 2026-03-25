@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import CLISnippetCore from "./CLISnippetCore";
 import { SAMPLE_SHIKI_HTML } from "@/test/fixtures";
 

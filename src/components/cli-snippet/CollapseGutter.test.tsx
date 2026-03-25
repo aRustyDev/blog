@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import CollapseGutter from "./CollapseGutter";
 import type { BracketPair } from "./hooks/useCollapsing";
 
