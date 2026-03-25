@@ -1,0 +1,133 @@
+---
+type Props = {
+  src: string;
+  cols?: number;
+  rows?: number;
+  autoplay?: boolean;
+  collapsible?: boolean;
+  title?: string;
+  class?: string;
+};
+
+const {
+  src,
+  cols,
+  rows,
+  autoplay = false,
+  collapsible = true,
+  title,
+  class: className,
+} = Astro.props;
+
+const summaryLabel = title ?? "Terminal recording";
+---
+
+{collapsible ? (
+  <details class:list={["component-details", "asciinema-wrapper", className]} open>
+    <summary class="asciinema-title" aria-label={summaryLabel}>
+      <span class="asciinema-chevron" aria-hidden="true"></span>
+      {title && <span class="asciinema-title-text">{title}</span>}
+    </summary>
+    <div
+      class="asciinema-container"
+      data-src={src}
+      data-cols={cols}
+      data-rows={rows}
+      data-autoplay={autoplay}
+    ></div>
+  </details>
+) : (
+  <div class:list={["asciinema-wrapper", className]}>
+    {title && (
+      <div class="asciinema-title-static">
+        <span class="asciinema-title-text">{title}</span>
+      </div>
+    )}
+    <div
+      class="asciinema-container"
+      data-src={src}
+      data-cols={cols}
+      data-rows={rows}
+      data-autoplay={autoplay}
+    ></div>
+  </div>
+)}
+
+<style>
+  .component-details {
+    @apply block cursor-default select-auto;
+  }
+  .component-details p,
+  .component-details ul {
+    @apply block;
+  }
+
+  .asciinema-wrapper {
+    @apply border border-bd rounded-lg overflow-hidden my-4;
+  }
+
+  .asciinema-title,
+  .asciinema-title-static {
+    @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm border-b border-bd;
+  }
+  .asciinema-title {
+    @apply list-none cursor-pointer select-none;
+  }
+  .asciinema-title::-webkit-details-marker {
+    display: none;
+  }
+
+  .asciinema-chevron::before {
+    content: "▾";
+    @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+  }
+  details:not([open]) .asciinema-chevron::before {
+    content: "▸";
+  }
+
+  .asciinema-title-text {
+    @apply text-fg/70;
+  }
+
+  .asciinema-container {
+    @apply w-full min-h-[200px] bg-mt/50;
+  }
+</style>
+
+<script>
+  let observer: IntersectionObserver | null = null;
+
+  function setupAsciinemaObservers() {
+    observer?.disconnect();
+
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          const src = el.dataset.src;
+          if (!src) return;
+
+          Promise.all([
+            import("asciinema-player"),
+            import("asciinema-player/dist/bundle/asciinema-player.css"),
+          ]).then(([AsciinemaPlayer]) => {
+            AsciinemaPlayer.create(src, el, {
+              cols: el.dataset.cols ? Number(el.dataset.cols) : undefined,
+              rows: el.dataset.rows ? Number(el.dataset.rows) : undefined,
+              autoPlay: el.dataset.autoplay === "true",
+            });
+          });
+
+          observer?.unobserve(el);
+        }
+      });
+    });
+
+    document
+      .querySelectorAll(".asciinema-container")
+      .forEach(el => observer!.observe(el));
+  }
+
+  setupAsciinemaObservers();
+  document.addEventListener("astro:after-swap", setupAsciinemaObservers);
+</script>

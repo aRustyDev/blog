@@ -1,0 +1,221 @@
+---
+import dayjs from "dayjs";
+
+interface TimelineItem {
+  date: string;
+  label: string;
+  description?: string;
+  url?: string;
+  icon?: string;
+}
+
+type Props = {
+  items: TimelineItem[];
+  orientation?: "vertical" | "horizontal";
+  collapsible?: boolean;
+  class?: string;
+};
+
+const {
+  items,
+  orientation = "vertical",
+  collapsible = true,
+  class: className,
+} = Astro.props;
+
+function formatDate(date: string): string {
+  // Quarter format: "2025-Q3" → "Q3 2025"
+  if (date.includes("-Q")) {
+    const [year, quarter] = date.split("-");
+    return `${quarter} ${year}`;
+  }
+  return dayjs(date).format("MMM D, YYYY");
+}
+
+function formatShort(date: string): string {
+  if (date.includes("-Q")) {
+    const [, quarter] = date.split("-");
+    return quarter;
+  }
+  return dayjs(date).format("MMM D");
+}
+
+const firstDate = items.length > 0 ? formatDate(items[0].date) : "";
+const lastDate = items.length > 1 ? formatDate(items[items.length - 1].date) : firstDate;
+const summaryLabel = `Timeline: ${firstDate} — ${lastDate}`;
+const isVertical = orientation === "vertical";
+---
+
+{collapsible ? (
+  <details class:list={["component-details", "timeline-wrapper", className]} open>
+    <summary class="timeline-summary" aria-label={summaryLabel}>
+      <span class="timeline-chevron" aria-hidden="true"></span>
+      <span class="timeline-summary-text">{firstDate} — {lastDate}</span>
+    </summary>
+    {isVertical ? (
+      <div class="timeline-vertical">
+        {items.map(item => (
+          <div class="timeline-item">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-date">{formatDate(item.date)}</div>
+            <div class="timeline-label">
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer">{item.label}</a>
+              ) : (
+                item.label
+              )}
+            </div>
+            {item.description && <div class="timeline-description">{item.description}</div>}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="timeline-horizontal">
+        {items.map(item => (
+          <div class="timeline-h-item">
+            <span class="timeline-h-dot" aria-hidden="true"></span>
+            <div class="timeline-h-date">{formatShort(item.date)}</div>
+            <div class="timeline-h-label">
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer">{item.label}</a>
+              ) : (
+                item.label
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </details>
+) : (
+  <div class:list={["timeline-wrapper", className]}>
+    {isVertical ? (
+      <div class="timeline-vertical">
+        {items.map(item => (
+          <div class="timeline-item">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-date">{formatDate(item.date)}</div>
+            <div class="timeline-label">
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer">{item.label}</a>
+              ) : (
+                item.label
+              )}
+            </div>
+            {item.description && <div class="timeline-description">{item.description}</div>}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="timeline-horizontal">
+        {items.map(item => (
+          <div class="timeline-h-item">
+            <span class="timeline-h-dot" aria-hidden="true"></span>
+            <div class="timeline-h-date">{formatShort(item.date)}</div>
+            <div class="timeline-h-label">
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer">{item.label}</a>
+              ) : (
+                item.label
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+<style>
+  .component-details {
+    @apply block cursor-default select-auto;
+  }
+  .component-details p,
+  .component-details ul {
+    @apply block;
+  }
+
+  .timeline-wrapper {
+    @apply border border-bd rounded-lg overflow-hidden my-4;
+  }
+
+  .timeline-summary {
+    @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm
+           border-b border-bd list-none cursor-pointer select-none;
+  }
+  .timeline-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .timeline-chevron::before {
+    content: "▾";
+    @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+  }
+  details:not([open]) .timeline-chevron::before {
+    content: "▸";
+  }
+
+  .timeline-summary-text {
+    @apply text-fg/70;
+  }
+
+  /* Vertical layout */
+  .timeline-vertical {
+    @apply relative pl-6 py-4 px-4;
+  }
+  .timeline-vertical::before {
+    content: "";
+    @apply absolute left-[1.35rem] top-4 bottom-4 w-px bg-bd;
+  }
+
+  .timeline-item {
+    @apply relative pb-6 last:pb-0;
+  }
+
+  .timeline-dot {
+    @apply absolute -left-[0.95rem] top-1 w-2.5 h-2.5 rounded-full bg-ac border-2 border-bg;
+  }
+
+  .timeline-date {
+    @apply text-ac text-xs font-mono font-semibold;
+  }
+
+  .timeline-label {
+    @apply text-fg text-sm;
+  }
+  .timeline-label a {
+    @apply text-fg decoration-dashed underline-offset-4 hover:text-ac;
+  }
+
+  .timeline-description {
+    @apply text-fg/60 text-xs mt-1;
+  }
+
+  /* Horizontal layout */
+  .timeline-horizontal {
+    @apply relative flex gap-8 overflow-x-auto p-4 pb-2;
+  }
+  .timeline-horizontal::before {
+    content: "";
+    @apply absolute top-[1.65rem] left-4 right-4 h-px bg-bd;
+  }
+
+  .timeline-h-item {
+    @apply relative pt-6 min-w-[80px] text-center flex-shrink-0;
+  }
+
+  .timeline-h-dot {
+    @apply absolute top-[0.15rem] left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-ac border-2 border-bg;
+  }
+
+  .timeline-h-date {
+    @apply text-ac text-xs font-mono font-semibold;
+  }
+
+  .timeline-h-label {
+    @apply text-fg text-xs mt-1;
+  }
+  .timeline-h-label a {
+    @apply text-fg decoration-dashed underline-offset-4 hover:text-ac;
+  }
+</style>
