@@ -71,10 +71,215 @@ html[data-theme="dark"] .cli-snippet-code :is(.shiki, pre) {
   @apply p-3 bg-mt/50 text-fg font-mono text-sm overflow-x-auto m-0;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Collapsible: Gutter                                                */
+/* ------------------------------------------------------------------ */
+
+/* Container for the collapsible component — needs relative positioning for gutter */
+.cli-snippet-collapsible .cli-snippet-code {
+  @apply relative;
+}
+
+/* Narrow column for fold icons, positioned absolutely to left of code */
+.cli-snippet-gutter {
+  @apply absolute top-0 left-0 flex flex-col z-10
+         select-none pointer-events-none;
+  padding-top: 0.75rem; /* Match .cli-snippet-code pre padding (p-3) */
+}
+
+/* Each gutter row matches a code line height */
+.cli-snippet-gutter-btn,
+.cli-snippet-gutter-spacer {
+  @apply flex items-center justify-center;
+  width: 1.25rem;
+  height: 1.5rem; /* Must match line-height of code lines */
+  line-height: 1.5rem;
+}
+
+.cli-snippet-gutter-btn {
+  @apply text-fg/30 hover:text-fg/70 transition-colors
+         pointer-events-auto cursor-pointer;
+  font-size: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.cli-snippet-gutter-btn:focus-visible {
+  @apply outline-2 outline-dashed outline-ac outline-offset-1;
+}
+
+/* Shift code content right to make room for the gutter */
+.cli-snippet-collapsible .cli-snippet-code :is(.shiki, pre) {
+  padding-left: 1.75rem;
+}
+
+/* When line numbers are on, increase left padding further */
+.cli-snippet-collapsible .cli-snippet-code.line-numbers :is(.shiki, pre) {
+  padding-left: 1.75rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Collapsible: Indicators                                            */
+/* ------------------------------------------------------------------ */
+
+/* Inline collapsed content indicator ({...}, [...], etc.) */
+.cli-snippet-indicator {
+  @apply text-fg/50 font-mono text-xs rounded px-0.5 mx-0.5;
+  background-color: var(--muted);
+  border: 1px solid var(--border);
+  cursor: default;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Collapsible: Line hiding                                           */
+/* ------------------------------------------------------------------ */
+
+.cli-snippet-line-hidden {
+  display: none !important;
+}
+
+.cli-snippet-token-hidden {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Collapsible: Mobile — hide gutter                                  */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 639px) {
+  .cli-snippet-gutter {
+    display: none;
+  }
+
+  /* Remove gutter padding on mobile since gutter is hidden */
+  .cli-snippet-collapsible .cli-snippet-code :is(.shiki, pre) {
+    padding-left: 0.75rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Animated: Line transitions                                         */
+/* ------------------------------------------------------------------ */
+
+/* Line elements get transitions applied by useAnimation via inline styles.
+   These base rules ensure the line elements participate in the layout flow. */
+.cli-snippet-interactive .line {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Split-line clip-path transitions (applied via JS, CSS provides the transition) */
+@supports (clip-path: inset(0)) {
+  .cli-snippet-interactive .line span[data-line] {
+    transition: clip-path 0.3s ease;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Animated: Controls bar                                             */
+/* ------------------------------------------------------------------ */
+
+.cli-snippet-controls {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg/70 text-xs
+         font-mono border-t border-bd select-none;
+}
+
+.cli-snippet-controls:focus {
+  @apply outline-none;
+}
+
+.cli-snippet-controls:focus-visible {
+  @apply outline-2 outline-dashed outline-ac outline-offset-[-2px];
+}
+
+.cli-snippet-controls-buttons {
+  @apply flex items-center gap-0.5;
+}
+
+.cli-snippet-controls button {
+  @apply flex items-center justify-center w-7 h-7 rounded
+         text-fg/50 hover:text-fg hover:bg-fg/10
+         transition-colors;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.cli-snippet-controls button:disabled {
+  @apply text-fg/20 hover:text-fg/20 hover:bg-transparent cursor-default;
+}
+
+.cli-snippet-controls button:focus-visible {
+  @apply outline-2 outline-dashed outline-ac outline-offset-1;
+}
+
+.cli-snippet-controls-play {
+  @apply w-8 h-8;
+}
+
+/* Progress bar */
+.cli-snippet-progress {
+  @apply flex-1 h-1.5 bg-fg/10 rounded-full cursor-pointer
+         overflow-hidden;
+  min-width: 3rem;
+}
+
+.cli-snippet-progress-fill {
+  @apply h-full rounded-full transition-all duration-300 ease-out;
+  background-color: var(--accent);
+}
+
+/* Speed indicator */
+.cli-snippet-speed {
+  @apply text-fg/50 hover:text-fg text-xs font-mono
+         px-1.5 py-0.5 rounded transition-colors;
+  background: none;
+  border: none;
+  white-space: nowrap;
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+.cli-snippet-speed:focus-visible {
+  @apply outline-2 outline-dashed outline-ac outline-offset-1;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Animated: Mobile compact controls                                  */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 639px) {
+  .cli-snippet-controls {
+    @apply gap-1 px-2 py-1;
+  }
+
+  .cli-snippet-controls button {
+    @apply w-6 h-6;
+  }
+
+  .cli-snippet-controls-play {
+    @apply w-7 h-7;
+  }
+
+  .cli-snippet-speed {
+    @apply text-[10px] px-1;
+    min-width: 2rem;
+  }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .cli-snippet-code * {
     transition-duration: 0.01ms !important;
     transform: none !important;
+  }
+
+  .cli-snippet-progress-fill {
+    transition-duration: 0.01ms !important;
+  }
+
+  .cli-snippet-interactive .line span[data-line] {
+    transition-duration: 0.01ms !important;
   }
 }
