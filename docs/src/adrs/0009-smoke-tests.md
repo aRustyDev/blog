@@ -41,6 +41,7 @@ Run via justfile recipes. Each test is a recipe that exits 0 on success, non-zer
 | Graph page renders | `curl localhost:4321/graph/` — no `ReferenceError` | WebGL components don't crash SSR (`client:only="react"` working) |
 | Post widget renders | `curl localhost:4321/posts/*/` — contains `graph-widget` | LocalGraphWidget island hydrates |
 | Homepage renders | `curl localhost:4321/` — contains site title | Basic page rendering works |
+| Component test page | `curl localhost:4321/dev/component-test/` — HTTP 200 | All content components render without SSR errors |
 | Preview works | `just preview` | Production build serves correctly |
 
 #### Tier 3: Data Integrity (run after content changes)

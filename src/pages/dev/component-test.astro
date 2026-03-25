@@ -1,0 +1,181 @@
+---
+/**
+ * Visual test page for all content components.
+ * Dev-only: used for manual QA, smoke testing, and visual regression.
+ *
+ * Access at: http://localhost:4321/dev/component-test/
+ */
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+import CodeBlock from "@/components/CodeBlock.astro";
+import CLISnippet from "@/components/CLISnippet.astro";
+import DirTree from "@/components/DirTree.astro";
+import OGCard from "@/components/OGCard.astro";
+import Tweet from "@/components/Tweet.astro";
+import PersonPopup from "@/components/PersonPopup.astro";
+import Timeline from "@/components/Timeline.astro";
+---
+
+<Layout title="Component Test | Dev">
+  <Header />
+  <main id="main-content" class="app-layout flex-1">
+    <h1 class="text-2xl font-bold text-fg mt-8 mb-4">Component Test Page</h1>
+    <p class="text-fg/60 text-sm mb-8">Visual QA for all content components. Check each section in both light and dark themes.</p>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- CodeBlock ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">CodeBlock</h2>
+
+      <h3 class="text-sm font-medium text-fg/70 mb-2">With title + line numbers</h3>
+      <CodeBlock
+        code={`import { createHighlighter } from "shiki";
+
+const highlighter = await createHighlighter({
+  themes: ["github-light", "github-dark"],
+  langs: ["typescript"],
+});
+
+const html = highlighter.codeToHtml(code, {
+  lang: "typescript",
+  themes: { light: "github-light", dark: "github-dark" },
+  defaultColor: false,
+});`}
+        lang="typescript"
+        title="shiki-example.ts"
+        lineNumbers
+      />
+
+      <h3 class="text-sm font-medium text-fg/70 mb-2 mt-6">Minimal (no title, no line numbers)</h3>
+      <CodeBlock code={`{ "name": "blog", "version": "1.0.0" }`} lang="json" />
+
+      <h3 class="text-sm font-medium text-fg/70 mb-2 mt-6">Not collapsible</h3>
+      <CodeBlock code={`echo "hello world"`} lang="bash" collapsible={false} title="simple.sh" />
+    </section>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- CLISnippet ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">CLISnippet</h2>
+
+      <CLISnippet
+        content={`$ claude --hooks-debug
+[InstructionsLoaded] session_start: CLAUDE.md (user)
+[InstructionsLoaded] session_start: .claude/rules/cf-wrangler.md (skipped, no glob match)
+[InstructionsLoaded] path_glob_match: .claude/rules/cf-wrangler.md (activated)
+$ echo "done"
+done`}
+        title="Checking what loaded"
+      />
+
+      <h3 class="text-sm font-medium text-fg/70 mb-2 mt-6">Custom prompt</h3>
+      <CLISnippet
+        content={`> Get-Process | Select-Object -First 3
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  ProcessName
+-------  ------    -----      -----     ------     --  -----------
+    172      12     2340       8420       0.05   1234  svchost`}
+        prompt=">"
+        title="PowerShell"
+      />
+    </section>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- DirTree ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">DirTree</h2>
+
+      <DirTree
+        content={`my-plugin/
+  .claude-plugin/plugin.json
+  skills/
+    brainstorm/SKILL.md
+    review/SKILL.md
+  .claude/rules/
+    frontmatter.md
+  hooks/hooks.json
+  .mcp.json`}
+        label="Plugin bundle structure"
+        highlight={["plugin.json", "SKILL.md"]}
+      />
+    </section>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- Tweet ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">Tweet</h2>
+
+      <Tweet
+        id="1937902205765607626"
+        author="karpathy"
+        text="The hottest new programming language is English. Context engineering is the subtle art of shaping the input to an LLM so it actually does what you want."
+        date="2025-06-22"
+      />
+    </section>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- PersonPopup ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">PersonPopup</h2>
+
+      <p class="text-fg">
+        As <PersonPopup id="karpathy">Andrej Karpathy</PersonPopup> noted in his tweet,
+        and <PersonPopup id="willison">Simon Willison</PersonPopup> later connected,
+        context engineering is becoming a distinct discipline.
+        <PersonPopup id="schmid">Philipp Schmid</PersonPopup> published a 7-component framework.
+      </p>
+
+      <p class="text-fg mt-2">
+        Unknown person test: <PersonPopup id="nonexistent">Unknown Person</PersonPopup> (should render as plain text).
+      </p>
+    </section>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- Timeline ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">Timeline (Vertical)</h2>
+
+      <Timeline
+        items={[
+          { date: "2025-06-22", label: "Tobi Lütke tweets CE definition" },
+          { date: "2025-06-25", label: "Karpathy amplifies" },
+          { date: "2025-06-27", label: "Willison connects both" },
+          { date: "2025-06-30", label: "Schmid 7-component framework", url: "https://example.com" },
+          { date: "2025-07-02", label: "LangChain 4-strategy framework" },
+          { date: "2025-Q3", label: "Gartner endorsement" },
+        ]}
+      />
+
+      <h3 class="text-sm font-medium text-fg/70 mb-2 mt-6">Horizontal</h3>
+      <Timeline
+        orientation="horizontal"
+        items={[
+          { date: "2025-06-22", label: "Lütke tweet" },
+          { date: "2025-06-25", label: "Karpathy" },
+          { date: "2025-06-27", label: "Willison" },
+          { date: "2025-06-30", label: "Schmid" },
+          { date: "2025-07-02", label: "LangChain" },
+        ]}
+      />
+    </section>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- OGCard ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">OGCard</h2>
+      <p class="text-fg/60 text-xs mb-2">(Fetches OG data at build time — requires network during build)</p>
+
+      <OGCard url="https://docs.astro.build/en/getting-started/" />
+    </section>
+
+  </main>
+  <Footer />
+</Layout>
