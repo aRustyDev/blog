@@ -28,7 +28,7 @@ describe("people", () => {
   describe("getAllPeople", () => {
     it("should return all entries", () => {
       const people = getAllPeople();
-      expect(people.length).toBe(6);
+      expect(people.length).toBe(9);
     });
 
     it("should contain expected ids", () => {
