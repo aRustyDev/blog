@@ -1,0 +1,117 @@
+---
+import { getHighlighter } from "@/utils/shiki";
+
+type Props = {
+  code: string;
+  lang: string;
+  collapsible?: boolean;
+  title?: string;
+  lineNumbers?: boolean;
+  class?: string;
+};
+
+const {
+  code,
+  lang,
+  collapsible = true,
+  title,
+  lineNumbers = false,
+  class: className,
+} = Astro.props;
+
+const highlighter = await getHighlighter();
+const highlightedHtml = highlighter.codeToHtml(code, {
+  lang,
+  themes: { light: "github-light", dark: "github-dark" },
+  defaultColor: false,
+});
+
+const summaryLabel = title ?? "Code block";
+---
+
+{collapsible ? (
+  <details class:list={["component-details", className]} open>
+    <summary class="code-block-title" aria-label={summaryLabel}>
+      <span class="code-block-chevron" aria-hidden="true"></span>
+      {title && <span class="code-block-title-text">{title}</span>}
+    </summary>
+    <div class:list={["code-block-body", { "line-numbers": lineNumbers }]}>
+      <Fragment set:html={highlightedHtml} />
+    </div>
+  </details>
+) : (
+  <div class:list={["code-block-wrapper", className]}>
+    {title && (
+      <div class="code-block-title-static">
+        <span class="code-block-title-text">{title}</span>
+      </div>
+    )}
+    <div class:list={["code-block-body", { "line-numbers": lineNumbers }]}>
+      <Fragment set:html={highlightedHtml} />
+    </div>
+  </div>
+)}
+
+<style>
+  /* Reset prose <details> overrides */
+  .component-details {
+    @apply block cursor-default select-auto;
+  }
+  .component-details p,
+  .component-details ul {
+    @apply block;
+  }
+
+  .component-details,
+  .code-block-wrapper {
+    @apply border border-bd rounded-lg overflow-hidden my-4;
+  }
+
+  /* Summary / title bar */
+  .code-block-title {
+    @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm font-mono
+           border-b border-bd list-none cursor-pointer select-none;
+  }
+  .code-block-title::-webkit-details-marker {
+    display: none;
+  }
+  .code-block-title-static {
+    @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm font-mono border-b border-bd;
+  }
+
+  /* Chevron icon */
+  .code-block-chevron::before {
+    content: "▾";
+    @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+  }
+  details:not([open]) .code-block-chevron::before {
+    content: "▸";
+  }
+
+  .code-block-title-text {
+    @apply text-fg/70;
+  }
+
+  /* Code body */
+  .code-block-body {
+    @apply overflow-x-auto;
+  }
+
+  /* Shiki dual-theme color selection — matches typography.css pattern */
+  .code-block-body :global(.shiki) {
+    @apply flex border-0 bg-(--shiki-light-bg) text-(--shiki-light) [&_span]:text-(--shiki-light);
+  }
+  :global(html[data-theme="dark"]) .code-block-body :global(.shiki) {
+    @apply bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
+  }
+
+  /* Line numbers via CSS counters */
+  .code-block-body.line-numbers :global(.shiki code) {
+    counter-reset: line;
+  }
+  .code-block-body.line-numbers :global(.shiki .line)::before {
+    counter-increment: line;
+    content: counter(line);
+    @apply inline-block w-8 mr-4 text-right text-fg/40 select-none;
+  }
+</style>
