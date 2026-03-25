@@ -13,6 +13,7 @@
   - [Configuration](./guides/configuration.md)
   - [Deployment](./guides/deployment.md)
   - [Graph Visualization](./guides/graph-visualization.md)
+  - [Component Quality Checklist](./guides/component-quality-checklist.md)
 - [ADRs]()
   - [0001: Blog Post Gating Mechanisms](./adrs/0001-blog-post-gating-mechanisms.md)
   - [0002: Justfile Usage](./adrs/0002-justfile-usage.md)
