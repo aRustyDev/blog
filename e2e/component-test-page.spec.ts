@@ -7,9 +7,8 @@ test.describe("Component Test Page", () => {
 
   test("page loads successfully", async ({ page }) => {
     // Verify HTTP 200 by checking page content loaded
-    const heading = page.locator("h1");
+    const heading = page.getByRole("heading", { name: "Component Test Page" });
     await expect(heading).toBeVisible();
-    await expect(heading).toHaveText("Component Test Page");
   });
 
   test("CodeBlock renders with Shiki highlighting", async ({ page }) => {

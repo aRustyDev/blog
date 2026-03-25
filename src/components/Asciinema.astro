@@ -53,48 +53,6 @@ const summaryLabel = title ?? "Terminal recording";
   </div>
 )}
 
-<style>
-@reference "tailwindcss/theme";
-  .component-details {
-    @apply block cursor-default select-auto;
-  }
-  .component-details p,
-  .component-details ul {
-    @apply block;
-  }
-
-  .asciinema-wrapper {
-    @apply border border-bd rounded-lg overflow-hidden my-4;
-  }
-
-  .asciinema-title,
-  .asciinema-title-static {
-    @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm border-b border-bd;
-  }
-  .asciinema-title {
-    @apply list-none cursor-pointer select-none;
-  }
-  .asciinema-title::-webkit-details-marker {
-    display: none;
-  }
-
-  .asciinema-chevron::before {
-    content: "▾";
-    @apply inline-block text-fg/50 text-xs transition-transform duration-150;
-  }
-  details:not([open]) .asciinema-chevron::before {
-    content: "▸";
-  }
-
-  .asciinema-title-text {
-    @apply text-fg/70;
-  }
-
-  .asciinema-container {
-    @apply w-full min-h-[200px] bg-mt/50;
-  }
-</style>
-
 <script>
   let observer: IntersectionObserver | null = null;
 

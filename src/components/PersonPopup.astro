@@ -91,62 +91,6 @@ const primaryLink = person ? getPersonLink(person) : undefined;
   <slot />
 )}
 
-<style>
-@reference "tailwindcss/theme";
-  .person-wrapper {
-    @apply relative inline;
-  }
-
-  .person-trigger {
-    @apply underline decoration-dotted decoration-ac underline-offset-2 cursor-pointer;
-  }
-
-  .person-popup {
-    @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2
-           invisible opacity-0 w-64 p-3 rounded-lg border border-bd bg-bg shadow-lg z-50
-           transition-[opacity,visibility] duration-150 pointer-events-none;
-  }
-
-  .person-wrapper:hover .person-popup,
-  .person-wrapper:focus-within .person-popup,
-  .person-popup.active {
-    @apply visible opacity-100 pointer-events-auto;
-  }
-
-  .person-popup-header {
-    @apply flex items-start gap-3 mb-2;
-  }
-
-  .person-popup-avatar {
-    @apply w-12 h-12 rounded-full bg-mt object-cover flex-shrink-0 border-0;
-  }
-
-  .person-popup-avatar-placeholder {
-    @apply w-12 h-12 rounded-full bg-mt flex items-center justify-center
-           text-fg/60 font-semibold flex-shrink-0;
-  }
-
-  .person-popup-info {
-    @apply flex flex-col;
-  }
-
-  .person-popup-name {
-    @apply text-fg font-semibold text-sm;
-  }
-
-  .person-popup-role {
-    @apply text-fg/60 text-xs;
-  }
-
-  .person-popup-links {
-    @apply flex gap-3 mt-2 text-xs border-t border-bd pt-2;
-  }
-
-  .person-popup-links a {
-    @apply text-ac hover:underline flex items-center gap-1;
-  }
-</style>
-
 <script>
   // Event delegation — handles current and future .person-trigger elements
   // No astro:after-swap re-binding needed
