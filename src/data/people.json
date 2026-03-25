@@ -95,6 +95,46 @@
         "https://www.linkedin.com/in/aakashg"
       ],
       "tags": ["product", "context-engineering"]
+    },
+    {
+      "@type": "Person",
+      "@id": "schulhoff",
+      "name": "Sander Schulhoff",
+      "jobTitle": "Researcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Maryland",
+        "url": "https://www.umd.edu"
+      },
+      "sameAs": [
+        "https://x.com/SanderSchulhoff"
+      ],
+      "tags": ["ai", "prompt-engineering", "research"]
+    },
+    {
+      "@type": "Person",
+      "@id": "sahoo",
+      "name": "Pranab Sahoo",
+      "jobTitle": "Researcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Independent"
+      },
+      "sameAs": [],
+      "tags": ["ai", "prompt-engineering", "research"]
+    },
+    {
+      "@type": "Person",
+      "@id": "hua-qishuo",
+      "name": "Qishuo Hua",
+      "jobTitle": "Researcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Peking University",
+        "url": "https://www.pku.edu.cn"
+      },
+      "sameAs": [],
+      "tags": ["ai", "context-engineering", "research"]
     }
   ]
 }
