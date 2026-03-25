@@ -1,0 +1,176 @@
+---
+import { getPerson, getPersonLink } from "@/utils/people";
+
+type Props = {
+  id: string;
+  class?: string;
+};
+
+const { id, class: className } = Astro.props;
+
+const person = getPerson(id);
+
+// Build links array for popup
+interface PersonLink {
+  label: string;
+  url: string;
+  icon: string;
+}
+
+const links: PersonLink[] = [];
+if (person) {
+  const twitter = person.sameAs.find(
+    u => u.includes("x.com") || u.includes("twitter.com")
+  );
+  const linkedin = person.sameAs.find(u => u.includes("linkedin.com"));
+  const personal = person.sameAs.find(
+    u =>
+      !u.includes("x.com") &&
+      !u.includes("twitter.com") &&
+      !u.includes("linkedin.com") &&
+      !u.includes("github.com") &&
+      !u.includes("medium.com") &&
+      !u.includes("youtube.com")
+  );
+
+  if (twitter) links.push({ label: "Twitter", url: twitter, icon: "𝕏" });
+  if (personal) links.push({ label: "Website", url: personal, icon: "🔗" });
+  if (linkedin) links.push({ label: "LinkedIn", url: linkedin, icon: "in" });
+}
+
+const primaryLink = person ? getPersonLink(person) : undefined;
+---
+
+{person ? (
+  <span class:list={["person-wrapper", className]}>
+    <a
+      href={primaryLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="person-trigger"
+      tabindex="0"
+    >
+      <slot />
+    </a>
+    <span class="person-popup" role="tooltip">
+      <span class="person-popup-header">
+        {person.image ? (
+          <img
+            src={person.image}
+            alt=""
+            class="person-popup-avatar"
+            loading="lazy"
+          />
+        ) : (
+          <span class="person-popup-avatar-placeholder" aria-hidden="true">
+            {person.name.charAt(0)}
+          </span>
+        )}
+        <span class="person-popup-info">
+          <span class="person-popup-name">{person.name}</span>
+          {person.jobTitle && (
+            <span class="person-popup-role">{person.jobTitle}</span>
+          )}
+          {person.affiliation && (
+            <span class="person-popup-role">{person.affiliation.name}</span>
+          )}
+        </span>
+      </span>
+      {links.length > 0 && (
+        <span class="person-popup-links">
+          {links.map(link => (
+            <a href={link.url} target="_blank" rel="noopener noreferrer">
+              <span aria-hidden="true">{link.icon}</span> {link.label}
+            </a>
+          ))}
+        </span>
+      )}
+    </span>
+  </span>
+) : (
+  <slot />
+)}
+
+<style>
+  .person-wrapper {
+    @apply relative inline;
+  }
+
+  .person-trigger {
+    @apply underline decoration-dotted decoration-ac underline-offset-2 cursor-pointer;
+  }
+
+  .person-popup {
+    @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2
+           invisible opacity-0 w-64 p-3 rounded-lg border border-bd bg-bg shadow-lg z-50
+           transition-[opacity,visibility] duration-150 pointer-events-none;
+  }
+
+  .person-wrapper:hover .person-popup,
+  .person-wrapper:focus-within .person-popup,
+  .person-popup.active {
+    @apply visible opacity-100 pointer-events-auto;
+  }
+
+  .person-popup-header {
+    @apply flex items-start gap-3 mb-2;
+  }
+
+  .person-popup-avatar {
+    @apply w-12 h-12 rounded-full bg-mt object-cover flex-shrink-0 border-0;
+  }
+
+  .person-popup-avatar-placeholder {
+    @apply w-12 h-12 rounded-full bg-mt flex items-center justify-center
+           text-fg/60 font-semibold flex-shrink-0;
+  }
+
+  .person-popup-info {
+    @apply flex flex-col;
+  }
+
+  .person-popup-name {
+    @apply text-fg font-semibold text-sm;
+  }
+
+  .person-popup-role {
+    @apply text-fg/60 text-xs;
+  }
+
+  .person-popup-links {
+    @apply flex gap-3 mt-2 text-xs border-t border-bd pt-2;
+  }
+
+  .person-popup-links a {
+    @apply text-ac hover:underline flex items-center gap-1;
+  }
+</style>
+
+<script>
+  // Event delegation — handles current and future .person-trigger elements
+  // No astro:after-swap re-binding needed
+  document.addEventListener("click", (e: Event) => {
+    const target = e.target as HTMLElement;
+    const trigger = target.closest(".person-trigger");
+
+    if (trigger) {
+      const popup = trigger.parentElement?.querySelector(".person-popup");
+      if (popup) {
+        // Close any other open popups
+        document
+          .querySelectorAll(".person-popup.active")
+          .forEach(p => {
+            if (p !== popup) p.classList.remove("active");
+          });
+        popup.classList.toggle("active");
+        e.stopPropagation();
+      }
+      return;
+    }
+
+    // Click outside — dismiss all
+    document
+      .querySelectorAll(".person-popup.active")
+      .forEach(p => p.classList.remove("active"));
+  });
+</script>

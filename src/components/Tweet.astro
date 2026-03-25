@@ -1,0 +1,93 @@
+---
+import { getPerson, getTwitterHandle } from "@/utils/people";
+import dayjs from "dayjs";
+
+type Props = {
+  id: string;
+  author: string;
+  text: string;
+  date?: string;
+  class?: string;
+};
+
+const { id, author, text, date, class: className } = Astro.props;
+
+const person = getPerson(author);
+const handle = person ? getTwitterHandle(person) ?? author : author;
+const displayName = person?.name ?? author;
+const avatarSrc = person?.image;
+const tweetUrl = `https://x.com/${handle}/status/${id}`;
+const formattedDate = date ? dayjs(date).format("MMM D, YYYY") : undefined;
+---
+
+<a
+  href={tweetUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={["tweet-card", className]}
+>
+  <div class="tweet-header">
+    {avatarSrc ? (
+      <img src={avatarSrc} alt="" class="tweet-avatar" loading="lazy" />
+    ) : (
+      <div class="tweet-avatar-placeholder" aria-hidden="true">
+        {displayName.charAt(0)}
+      </div>
+    )}
+    <div class="tweet-author">
+      <div class="tweet-author-name">{displayName}</div>
+      <div class="tweet-author-handle">@{handle}</div>
+    </div>
+    <svg class="tweet-x-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  </div>
+
+  <div class="tweet-body">{text}</div>
+
+  {formattedDate && <div class="tweet-date">{formattedDate}</div>}
+</a>
+
+<style>
+  .tweet-card {
+    @apply block border border-bd rounded-xl p-4 my-4
+           no-underline hover:border-ac/60 transition-colors;
+  }
+
+  .tweet-header {
+    @apply flex items-center gap-3 mb-3;
+  }
+
+  .tweet-avatar {
+    @apply w-10 h-10 rounded-full bg-mt object-cover border-0;
+  }
+
+  .tweet-avatar-placeholder {
+    @apply w-10 h-10 rounded-full bg-mt flex items-center justify-center
+           text-fg/60 font-semibold text-sm;
+  }
+
+  .tweet-author {
+    @apply flex-1 min-w-0;
+  }
+
+  .tweet-author-name {
+    @apply text-fg font-semibold text-sm truncate;
+  }
+
+  .tweet-author-handle {
+    @apply text-fg/50 text-sm;
+  }
+
+  .tweet-x-logo {
+    @apply ml-auto text-fg/40 w-5 h-5 flex-shrink-0;
+  }
+
+  .tweet-body {
+    @apply text-fg text-sm leading-relaxed mb-3 whitespace-pre-line;
+  }
+
+  .tweet-date {
+    @apply text-fg/40 text-xs;
+  }
+</style>
