@@ -81,7 +81,7 @@ const CLISnippetCore: FC<CLISnippetCoreProps> = ({
         textarea.style.opacity = "0";
         document.body.appendChild(textarea);
         textarea.select();
-        document.execCommand("copy");
+        document.execCommand("copy"); // Deprecated but needed as clipboard fallback for non-secure contexts
         document.body.removeChild(textarea);
         setCopyState("copied");
       } catch {

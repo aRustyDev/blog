@@ -29,6 +29,27 @@ Findings from plan reviews (March 2026). Use this checklist when building or rev
 - [ ] **Shared Shiki singleton**: All components use `src/utils/shiki.ts` with `??=` promise cache — never create per-component highlighters
 - [ ] **Event delegation**: Prefer `document.addEventListener` with `.closest()` matching over per-element binding — avoids `astro:after-swap` re-binding issues
 
+## Tailwind v4 Scoped Styles
+
+**Tailwind v4 scoped `<style>` blocks in Astro components CANNOT access custom `@theme` tokens** (`border-bd`, `text-fg`, `bg-mt`, etc.). The `@theme inline` tokens defined in `global.css` are only available in the main CSS pipeline — not in component-scoped style blocks.
+
+**What fails:**
+```astro
+<!-- BROKEN: border-bd is unknown in scoped <style> -->
+<style>
+  .my-component { @apply border border-bd; }
+</style>
+```
+
+**What works:**
+- Move component styles to `src/styles/components.css` (imported by `global.css`)
+- Use `class:list` with Tailwind utilities directly in templates (always works)
+- For component-specific classes that need `@apply` with custom tokens, define them in `components.css`
+
+**Why**: Tailwind v4's Vite plugin processes each `<style>` block as an independent CSS module. The `@theme inline` block in `global.css` defines tokens that are only visible within the global pipeline. The `@reference` directive can import base Tailwind classes but NOT custom `@theme` definitions from other files.
+
+Discovered 2026-03-25 during E2E testing — all 8 component `<style>` blocks had to be migrated to `src/styles/components.css`.
+
 ## Cross-Browser
 
 - [ ] **`clip-path: inset()`**: Works on inline spans in Chrome 55+, Firefox 54+, Safari 13.1+. Use `@supports` guard for graceful degradation
