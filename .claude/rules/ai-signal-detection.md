@@ -2,8 +2,12 @@
 globs:
   - "content/_drafts/**/*.md"
   - "content/_drafts/*.md"
+  - "content/_drafts/**/*.mdx"
+  - "content/_drafts/*.mdx"
   - "src/data/blog/**/*.md"
   - "src/data/blog/*.md"
+  - "src/data/blog/**/*.mdx"
+  - "src/data/blog/*.mdx"
 ---
 
 # AI Signal Detection — Blog Post Review Rule
