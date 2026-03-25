@@ -50,18 +50,24 @@ const highlightedHtml = highlighter.codeToHtml(code, {
 
 const isDev = import.meta.env.DEV;
 
+// Build props object — only include code/lang in dev mode for runtime fallback
+const reactProps: Record<string, unknown> = {
+  html: highlightedHtml,
+  title,
+  steps,
+  autoPlay,
+  speed,
+  delay,
+  showControls,
+  className,
+};
+if (isDev) {
+  reactProps.code = code;
+  reactProps.lang = lang;
+}
 ---
 
 <AnimatedReact
   client:only="react"
-  html={highlightedHtml}
-  code={isDev ? code : undefined}
-  lang={isDev ? lang : undefined}
-  title={title}
-  steps={steps}
-  autoPlay={autoPlay}
-  speed={speed}
-  delay={delay}
-  showControls={showControls}
-  className={className}
+  {...reactProps}
 />
