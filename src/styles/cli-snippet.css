@@ -268,6 +268,101 @@ html[data-theme="dark"] .cli-snippet-code :is(.shiki, pre) {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/*  Responsive: Max-width containment                                  */
+/* ------------------------------------------------------------------ */
+
+/* Prevent code blocks from breaking the blog's max-w-app layout */
+.cli-snippet-interactive {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Momentum scrolling on mobile */
+.cli-snippet-code {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Responsive: Mobile font + bracket tap                              */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 639px) {
+  .cli-snippet-interactive {
+    @apply text-xs;
+  }
+
+  .cli-snippet-chrome {
+    @apply text-[10px] px-2 py-1;
+  }
+
+  .cli-snippet-code :is(.shiki, pre) {
+    @apply text-xs p-2;
+  }
+
+  /* Line numbers narrower on mobile */
+  .cli-snippet-code.line-numbers .line::before {
+    @apply w-6 mr-2;
+  }
+
+  /* Bracket-tap: on mobile (gutter hidden), make bracket tokens tappable */
+  .cli-snippet-collapsible [data-scope^="punctuation.definition."] {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Print styles                                                       */
+/* ------------------------------------------------------------------ */
+
+@media print {
+  .cli-snippet-interactive {
+    @apply border-none shadow-none;
+    break-inside: avoid;
+  }
+
+  /* Hide interactive elements */
+  .cli-snippet-chrome .cli-snippet-copy,
+  .cli-snippet-gutter,
+  .cli-snippet-controls {
+    display: none !important;
+  }
+
+  /* Show all code expanded */
+  .cli-snippet-line-hidden {
+    display: block !important;
+  }
+
+  .cli-snippet-token-hidden {
+    display: inline !important;
+  }
+
+  /* Remove collapse indicators */
+  [data-pair-indicator] {
+    display: none !important;
+  }
+
+  /* Show all animation steps */
+  .cli-snippet-interactive .line {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .cli-snippet-interactive .line span[data-line] {
+    clip-path: none !important;
+  }
+
+  /* No transitions in print */
+  .cli-snippet-interactive * {
+    transition: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion                                                     */
+/* ------------------------------------------------------------------ */
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .cli-snippet-code * {

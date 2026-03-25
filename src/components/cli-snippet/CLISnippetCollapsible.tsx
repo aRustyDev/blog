@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
 import CLISnippetCore from "./CLISnippetCore";
 import CollapseGutter from "./CollapseGutter";
 import { useCollapsing } from "./hooks/useCollapsing";
@@ -57,6 +57,36 @@ const CollapsibleInner: FC<CollapsibleInnerProps> = ({
     enabled: true,
     defaultCollapsed,
   });
+
+  // Mobile bracket-tap: attach click handlers to opener bracket tokens
+  // (gutter is hidden on <640px, so tokens themselves become the toggle)
+  useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 639px)").matches;
+    if (!isMobile || pairs.length === 0) return;
+
+    const handlers = new Map<HTMLElement, () => void>();
+
+    for (const pair of pairs) {
+      if (pair.closeLine <= pair.openLine) continue; // only multi-line
+      const lineTokens = tokenMap.lines[pair.openLine - 1];
+      const openerToken = lineTokens?.find(
+        t => t.charStart === pair.openCol
+      );
+      if (openerToken) {
+        const handler = () => togglePair(pair.id);
+        openerToken.element.addEventListener("click", handler);
+        openerToken.element.style.cursor = "pointer";
+        handlers.set(openerToken.element, handler);
+      }
+    }
+
+    return () => {
+      handlers.forEach((handler, el) => {
+        el.removeEventListener("click", handler);
+        el.style.cursor = "";
+      });
+    };
+  }, [pairs, togglePair, tokenMap]);
 
   return (
     <CollapseGutter
