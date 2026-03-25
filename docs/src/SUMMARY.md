@@ -24,3 +24,4 @@
   - [0007: Graph Component Architecture](./adrs/0007-graph-component-architecture.md)
   - [0008: Brand Theming Strategy](./adrs/0008-brand-theming-strategy.md)
   - [0009: Smoke Tests](./adrs/0009-smoke-tests.md)
+  - [0010: Content Component Architecture](./adrs/0010-content-component-architecture.md)

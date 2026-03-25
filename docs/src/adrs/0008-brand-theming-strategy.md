@@ -219,4 +219,16 @@ background: resolveThemeColor("--muted", "#161b22")  // returns "#161b22" or res
 
 - `color-mix()` requires Chrome 111+, Firefox 113+, Safari 16.2+ (March 2023+). Older browsers will see broken semi-transparent backgrounds on DOM elements. Acceptable for this site's target audience.
 - Category colors are GitHub Dark palette — some may have poor contrast on light backgrounds. A future `CATEGORY_COLORS_LIGHT` map can be added and selected by luminance detection in `ThemeObserver`.
+
+### Known Violations (2026-03-25)
+
+`typography.css` lines 107-116 use hardcoded Tailwind palette colors for Shiki diff annotations that do not respond to theme changes:
+
+| Current | Required Replacement |
+|---------|---------------------|
+| `bg-green-400/20`, `text-green-500` | `bg-(--success)/20`, `text-(--success)` |
+| `bg-red-500/20`, `text-red-500` | `bg-(--error)/20`, `text-(--error)` |
+| `bg-slate-400/20` | `bg-mt/20` |
+
+Tracked for fix during content component implementation (see ADR-0010).
 - Removing the `@import` from `global.css` means Tailwind's build-time CSS processing won't see the brand tokens. This is fine because the tokens are mapped via `var()` indirection (`--background: var(--color-background)`), not consumed directly by Tailwind at build time.
