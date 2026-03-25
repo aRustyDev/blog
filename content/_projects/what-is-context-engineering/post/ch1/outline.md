@@ -256,8 +256,8 @@ Note: visual components add readable content (tweet text, timeline entries, code
 
 | Component | Count | Sections |
 |-----------|-------|----------|
-| Tweet | 2 | 2.1 |
-| PersonPopup | 6+ | 1.1, 2.1, 2.3, 4.2 (every person cited) |
+| Tweet | 2 | 2.1 (lutke, karpathy) |
+| PersonPopup | 9 | 1.1 (schulhoff, sahoo), 2.1 (karpathy), 2.2 (schmid), 2.3 (willison, hua-qishuo), 4.2 (gupta-aakash) |
 | OGCard | 3 | 3.1 (Mei survey), 3.3 (Claude Code hooks docs), 2.2 or 3.1 |
 | Timeline | 1 | 2.2 |
 | DirTree | 1 | 3.2 (plugin callout) |

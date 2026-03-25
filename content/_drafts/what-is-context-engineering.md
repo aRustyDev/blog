@@ -41,7 +41,7 @@ Then, in June 2025, the vocabulary arrived.
 
 ## 72 Hours That Named a Discipline
 
-<!-- COMPONENT: Tweet { id: "1935533422589399127", author: "tobi" } -->
+<!-- COMPONENT: Tweet { id: "1935533422589399127", author: "lutke" } -->
 Tobi Lutke, June 22, 2025: "I really like the mass realization and description of 'context engineering' ... This is the new skill that will matter much more than 'prompt engineering.' It's the art of providing all the context for the task to be plausibly solvable by the LLM."
 <!-- /COMPONENT -->
 
@@ -121,11 +121,12 @@ blog-workflow/
 
 ### The Pipeline Model
 
-<!-- COMPONENT: PipelineDiagram {} -->
-[Pipeline flow diagram: Build-time → Session-start → On-demand → Event-triggered]
-[Shows which component types enter at each stage]
-[Skills metadata at session-start, full content on-demand; Rules at session-start or on-demand (glob); Hooks at event-triggered; Memory at session-start (index) + on-demand (topics); Tools at session-start (negotiate) + on-demand (invoke); References on-demand only]
-<!-- /COMPONENT -->
+<!-- IMAGE: pipeline-diagram.svg — static SVG showing 4 pipeline stages with component types at each stage -->
+<!-- Build-time: plugins, MCP servers, git hooks -->
+<!-- Session-start: CLAUDE.md, rules (unconditional), memory index, MCP negotiation, skill metadata -->
+<!-- On-demand: skills (full), tools (invoke), rules (glob-match), memory topics, references -->
+<!-- Event-triggered: hooks (22 events), system reminders, compaction -->
+<!-- NOTE: Create as static SVG for Post 1. Interactive PipelineDiagram component deferred to Post 2 where pipeline is the central topic. -->
 
 These six component types don't all load at once. They flow through a temporal pipeline with four stages, and the ordering matters. If the context window is RAM, then the pipeline is the boot sequence.
 

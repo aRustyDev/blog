@@ -234,4 +234,18 @@ Not used in Post 1. Contract included for completeness.
 
 **Custom fields** (beyond schema.org): `tags` array for filtering. These don't conflict with schema.org — they're simply additional properties, which JSON-LD allows freely.
 
-**Initial entries needed for Post 1**: karpathy, lutke, willison, schmid, mei-lingrui, gupta-aakash
+**Initial entries needed for Post 1**:
+
+| ID | Name | Affiliation | Used In |
+|----|------|-------------|---------|
+| `karpathy` | Andrej Karpathy | Independent (prev. Tesla, OpenAI) | Sec 2.1 (tweet, popup), Sec 2.3 |
+| `lutke` | Tobi Lutke | Shopify (CEO) | Sec 2.1 (tweet) |
+| `willison` | Simon Willison | Independent | Sec 2.3 |
+| `schmid` | Phil Schmid | Hugging Face | Sec 2.2 |
+| `schulhoff` | Sander Schulhoff | University of Maryland / Prompt Report | Sec 1.1 |
+| `sahoo` | Pranab Sahoo | IIT Kharagpur / PE Survey | Sec 1.1 |
+| `mei-lingrui` | Lingrui Mei | CE Survey lead author | Sec 3.1 (via OGCard) |
+| `hua-qishuo` | Qishuo Hua | CE 2.0 lead author | Sec 2.3 |
+| `gupta-aakash` | Aakash Gupta | Product Growth (newsletter) | Sec 4.2 |
+
+**NOTE**: The draft Tweet component on line 44 uses `author: "lutke"` (not `"tobi"`). All person references use the `@id` from the People DB, not social handles.
