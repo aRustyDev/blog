@@ -1,5 +1,6 @@
 import { defineConfig, envField, fontProviders } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
@@ -16,6 +17,7 @@ import { SITE } from "./src/config";
 export default defineConfig({
   site: SITE.website,
   integrations: [
+    mdx(),
     react(),
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
