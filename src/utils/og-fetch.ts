@@ -9,7 +9,8 @@ export interface OGData {
 /** Build-time cache — same URL fetched only once per build */
 const cache = new Map<string, OGData>();
 
-function extractMeta(html: string, property: string): string | null {
+/** @internal Exported for testing */
+export function extractMeta(html: string, property: string): string | null {
   // Handle both attribute orderings and both property/name attributes
   const patterns = [
     new RegExp(
@@ -37,7 +38,8 @@ function extractMeta(html: string, property: string): string | null {
   return null;
 }
 
-function extractFavicon(html: string, baseUrl: string): string {
+/** @internal Exported for testing */
+export function extractFavicon(html: string, baseUrl: string): string {
   // Try <link rel="icon"> first
   const linkRe =
     /<link[^>]+rel=["'](?:shortcut )?icon["'][^>]+href=["']([^"']+)["']/i;

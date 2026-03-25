@@ -45,7 +45,8 @@ type AnimationAction =
 
 // ── Reducer helpers ─────────────────────────────────────────────────
 
-function applyStep(state: AnimationState, step: AnimationStep): AnimationState {
+/** @internal Exported for testing */
+export function applyStep(state: AnimationState, step: AnimationStep): AnimationState {
   switch (step.type) {
     case "lines": {
       const next = new Set(state.visibleLines);
@@ -74,7 +75,8 @@ function applyStep(state: AnimationState, step: AnimationStep): AnimationState {
 
 // ── Reducer ─────────────────────────────────────────────────────────
 
-function createReducer(steps: AnimationStep[]) {
+/** @internal Exported for testing */
+export function createReducer(steps: AnimationStep[]) {
   return function animationReducer(
     state: AnimationState,
     action: AnimationAction

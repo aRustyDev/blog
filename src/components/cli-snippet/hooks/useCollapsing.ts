@@ -71,7 +71,8 @@ interface StackEntry {
   depth: number;
 }
 
-function detectBracketPairs(tokenMap: TokenMap): BracketPair[] {
+/** @internal Exported for testing */
+export function detectBracketPairs(tokenMap: TokenMap): BracketPair[] {
   const pairs: BracketPair[] = [];
   const stack: StackEntry[] = [];
   let idCounter = 0;
@@ -122,7 +123,8 @@ function detectBracketPairs(tokenMap: TokenMap): BracketPair[] {
 /*  Pair Detection: Quotes (scope-based)                               */
 /* ------------------------------------------------------------------ */
 
-function detectQuotePairs(tokenMap: TokenMap): BracketPair[] {
+/** @internal Exported for testing */
+export function detectQuotePairs(tokenMap: TokenMap): BracketPair[] {
   const pairs: BracketPair[] = [];
   let idCounter = 0;
   let currentQuoteType: "double" | "single" | null = null;
