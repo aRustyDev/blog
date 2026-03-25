@@ -1,7 +1,7 @@
 ---
 type: project
 title: What is Context Engineering? A Taxonomy of AI Context Components
-status: content-planning
+status: post
 persona: null
 created: 2026-03-14T00:00:00Z
 updated: 2026-03-23T00:00:00Z
@@ -46,6 +46,7 @@ tags:
 | Content Brainstorm | approved | ./content-brainstorm.md |
 | Post 1 Spec | draft | ./post/ch1/spec.md |
 | Post 1 Outline | draft | ./post/ch1/outline.md |
+| Post 1 Draft | draft | ../../_drafts/what-is-context-engineering.md |
 
 ## Phases
 
