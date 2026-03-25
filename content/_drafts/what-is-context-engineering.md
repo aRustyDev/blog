@@ -77,8 +77,6 @@ And this wasn't a new idea. <!-- COMPONENT: PersonPopup { id: "hua-qishuo" } -->
 
 ## What Context Engineering Actually Is
 
-Here's the working definition:
-
 > **Context engineering** is the discipline of designing what information enters an LLM's context window, when it enters, and through what mechanism.
 
 Not just text. Not just prompts. Context engineering encompasses tool schemas, persistent memory, event-triggered content, system-level injections, behavioral constraints, and reusable workflows — all of which flow into the same context window that the model reasons over.
@@ -182,8 +180,6 @@ The convergence is striking. Four independent tools — built by different compa
 
 This convergence isn't coincidence. It's the field discovering that context engineering requires the same architectural primitives regardless of which model powers the tool. Skills, rules, hooks, memory, tools, references — these aren't Claude Code features. They're the building blocks of any system that manages what an LLM sees.
 
-Which points to a bigger insight.
-
 <!-- COMPONENT: PersonPopup { id: "gupta-aakash" } -->Aakash Gupta<!-- /COMPONENT --> framed it sharply: "2025 was agents. 2026 is agent harnesses."
 
 The model is commodity. The same Claude, the same GPT-4, the same Gemini is available to everyone. What differentiates tools — what creates the moat — is the _harness_: the context engineering, tool orchestration, memory management, and lifecycle hooks that wrap the model.
@@ -216,9 +212,9 @@ You've been doing context engineering. Now you have the vocabulary.
 
 The term crystallized in 72 hours, but the practice has been building for years. Every `.cursorrules` file, every `CLAUDE.md`, every MCP server configuration, every hook that guards a tool call — these are context components. They flow through a temporal pipeline. They follow patterns that software engineers have been refining for decades.
 
-The difference between a good AI coding assistant and a great one isn't the model. It's the harness.
+The question isn't whether you'll do context engineering. You already are. The question is whether you'll do it with intention — with a taxonomy, a pipeline model, and design principles — or keep wiring things together ad hoc.
 
-The model is commodity. The harness is the moat.
+This series gives you the framework. Start with the harness.
 
 _This is Post 1 of 6 in the Context Engineering series._
 
@@ -226,8 +222,8 @@ _This is Post 1 of 6 in the Context Engineering series._
 
 ## Review
 
-**Reviewed**: 2026-03-25T00:00:00Z
-**Result**: warn
+**Reviewed**: 2026-03-25T12:00:00Z
+**Result**: pass (with notes)
 
 ### Structure & Narrative
 
@@ -314,11 +310,77 @@ _This is Post 1 of 6 in the Context Engineering series._
 
 **Summary**: 29 pass, 5 warn, 1 fail
 
-### Action Items (all resolved 2026-03-25)
+### Prior Action Items (all resolved 2026-03-25)
 
-1. ~~**[FAIL]** Add pipeline diagram~~ — RESOLVED: PipelineDiagram placeholder added at top of Section 3.3 showing all 6 types mapped to their pipeline stages
-2. ~~**[WARN]** Develop OS analogy~~ — RESOLVED: threaded through 3 touchpoints — introduced in Sec 2 (context window = RAM), developed in Sec 3.3 (pipeline = boot sequence, stages mapped to OS concepts), callback in Sec 4.2 (harness = OS distribution)
-3. ~~**[WARN]** Vary Section 3.2 descriptions~~ — RESOLVED: Rules, Hooks, Memory, References rewritten with varied sentence structure (imperative, question-answer, narrative opening)
-4. ~~**[WARN]** Schmid + LangChain in prose~~ — RESOLVED: added 2 sentences in Sec 2 noting their frameworks as evidence of convergence, without detailing components (that's Post 3). Timeline entries preserved.
-5. ~~**[WARN]** Section 3.3 evidence flow~~ — RESOLVED: restructured so prose tells the narrative first ("Post 2 maps this in full depth. But if you want a preview..."), then evidence blocks follow as optional expansions
-6. ~~**[WARN]** Tags~~ — NO CHANGE NEEDED: tags were already separate (`series` + `context-engineering`), not combined
+1. ~~Pipeline diagram~~ — RESOLVED: PipelineDiagram placeholder added
+2. ~~OS analogy~~ — RESOLVED: 3 touchpoints (RAM → boot sequence → OS distribution)
+3. ~~Section 3.2 listicle~~ — RESOLVED: varied sentence structure
+4. ~~Schmid + LangChain~~ — RESOLVED: convergence evidence in prose
+5. ~~Section 3.3 evidence flow~~ — RESOLVED: narrative-first, evidence as expansions
+6. ~~Tags~~ — already correct
+
+### AI Signals Review (2026-03-25)
+
+**Methodology**: Scanned for filler phrases, over-hedging, generic transitions, superlative stacking, passive voice overuse, and formulaic AI patterns.
+
+#### Filler Phrases
+- [x] No "it's worth noting" / "it's important to note" — pass
+- [x] No "in conclusion" / "to summarize" — pass
+- [x] No "let's dive in" / "let's explore" / "let's take a look" — pass
+- [x] No "without further ado" — pass
+- [x] No "at the end of the day" — pass
+
+#### Over-Hedging
+- [x] No "it could be argued" / "one might consider" — pass
+- [x] No "perhaps" / "it seems" / "arguably" used as crutches — pass
+- [x] Claims are stated directly with sources — pass
+
+#### Generic Transitions
+- [x] No "furthermore" / "moreover" / "additionally" — pass
+- [x] No "in this section we will" / "as mentioned above" — pass
+- [~] "Which points to a bigger insight." (line 185) — note: functional but slightly generic. Could be cut — the Gupta quote lands fine without a setup sentence. Minor.
+
+#### Superlative Stacking
+- [x] No "incredibly powerful and transformative" type phrases — pass
+- [x] No "groundbreaking" / "revolutionary" / "game-changing" — pass
+- [x] Superlatives used sparingly and backed by data ("most-cited", "most comprehensive" — both with citation counts) — pass
+
+#### Passive Voice
+- [x] Active voice dominant throughout — pass
+- [x] Passive used appropriately where subject is genuinely unknown or unimportant — pass
+
+#### Formulaic Structure Signals
+- [x] No "X. Here's why." / "X. And it matters." one-sentence-paragraph patterns — pass
+- [~] "Here's the working definition:" (line 80) — note: functional but slightly setup-heavy. The blockquote definition is strong enough to lead without the setup. Could be replaced with just the blockquote. Minor.
+- [x] No numbered "3 reasons why" / "5 things you need to know" clickbait patterns — pass
+
+#### Emotional Flatness / Affirmation Loops
+- [x] No "great question" / "that's a really important point" — pass (N/A for blog post)
+- [x] No hollow affirmations before substance — pass
+
+#### Repetition / Padding
+- [~] "The model is commodity" appears 3 times (lines 189, 193, 221) — note: deliberate rhetorical repetition (not padding), but the close repeats lines 220-221 almost verbatim from 193. The close could restate the idea with fresh language rather than echoing the same words.
+- [x] No paragraph-level repetition of the same point — pass
+
+#### Voice Authenticity
+- [x] Staff engineer voice maintained — opinionated, grounded, trade-off aware — pass
+- [x] "Function writing" analogy feels original, not template-generated — pass
+- [x] OS analogy thread feels intentionally developed, not mechanically inserted — pass
+- [x] Specific numbers grounded in sources (58, 767, 22, 915, 1400, 110+) — pass
+- [~] Section 2 ("72 Hours") reads slightly breathless — "remarkably fast", "unmistakable convergence" — note: could be toned down slightly for the staff engineer voice, which tends toward understatement. But the pacing shift is arguably intentional here (origin story energy). Judgment call.
+
+**AI Signals Summary**: 21 pass, 4 notes, 0 fail
+
+The draft is clean of major AI signals. The 4 notes are minor stylistic refinements:
+1. "Which points to a bigger insight." — cut or sharpen
+2. "Here's the working definition:" — could lead directly with the blockquote
+3. Close repeats "model is commodity, harness is the moat" nearly verbatim from Sec 4 — restate with fresh language
+4. Section 2 has slightly breathless tone — consider whether deliberate pacing shift or should be tempered
+
+### Overall Assessment
+
+**Result**: pass
+
+All prior action items resolved. AI signals review clean (0 fail, 4 minor notes). Draft is ready for refinement pass on the 4 notes, then approval.
+
+**Recommendation**: Address notes 1-3 (quick edits), leave note 4 as-is (deliberate pacing shift). Then approve for component integration.
