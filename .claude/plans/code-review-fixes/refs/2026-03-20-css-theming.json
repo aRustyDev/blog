@@ -1,0 +1,37 @@
+{
+  "category": "css-theming",
+  "reviewed_at": "2026-03-20T16:00:00Z",
+  "files_reviewed": [
+    "src/styles/global.css",
+    "src/styles/typography.css",
+    "src/styles/graph.css",
+    "src/components/graph/GraphView.tsx",
+    "src/components/graph/GraphControllers.tsx",
+    "src/components/graph/GraphSearch.tsx",
+    "src/components/graph/GraphToolbar.tsx",
+    "src/components/graph/GraphFilters.tsx",
+    "src/components/graph/GraphModal.tsx",
+    "src/components/graph/LocalGraphWidget.tsx",
+    "src/components/graph/graph.constants.ts",
+    "src/layouts/Layout.astro",
+    "src/layouts/PostDetails.astro",
+    "src/components/Header.astro",
+    "src/components/Footer.astro",
+    "src/components/BackToTopButton.astro"
+  ],
+  "findings": [
+    {"id":"CSS-001","severity":"high","confidence":90,"title":"resolveThemeColor called on render path — stale initial labelColor","file":"src/components/graph/GraphView.tsx","line":195,"current":"const labelColor = resolveThemeColor(...) called during render, baked into SigmaContainer settings","expected":"Use hardcoded fallback hex, defer live resolution to ThemeObserver","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["sigma","theming","render-path"]},
+    {"id":"CSS-002","severity":"high","confidence":88,"title":"8-digit hex colors passed to sigma WebGL may not render correctly","file":"src/components/graph/graph.constants.ts","line":57,"current":"resolveDimColors() appends 2-digit hex alpha (e.g. #30363d15) — sigma WebGL support not verified","expected":"Convert to rgba() string or verify sigma supports 8-digit hex","fix_complexity":"small","depends_on":[],"adr_ref":null,"tags":["sigma","webgl","hex-color"]},
+    {"id":"CSS-003","severity":"high","confidence":85,"title":"resolveThemeColor + alpha suffix may produce invalid color if resolved value is not hex","file":"src/components/graph/GraphControllers.tsx","line":96,"current":"resolveThemeColor('--foreground') + '60' — could produce 'rgba(...)60' if CSS var resolves to non-hex","expected":"Add hex format guard before appending alpha suffix","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["sigma","webgl","defensive-coding"]},
+    {"id":"CSS-004","severity":"high","confidence":87,"title":"getDimColor/resolveDimColors append alpha without hex validation — same hazard as CSS-003","file":"src/components/graph/graph.constants.ts","line":41,"current":"Blindly concatenates alphaSuffix to resolved --border value","expected":"Add hex guard like getSigmaBackground does","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["sigma","webgl","defensive-coding"]},
+    {"id":"CSS-005","severity":"medium","confidence":92,"title":"color-mix() in GraphSearch spotlight — no Safari <16.2 fallback","file":"src/components/graph/GraphSearch.tsx","line":157,"current":"background: color-mix(in srgb, var(--muted) 65%, transparent)","expected":"Add non-color-mix fallback or use opacity approach","fix_complexity":"small","depends_on":[],"adr_ref":null,"tags":["color-mix","safari-compat"]},
+    {"id":"CSS-006","severity":"medium","confidence":92,"title":"color-mix() in LocalGraphWidget — no Safari <16.2 fallback","file":"src/components/graph/LocalGraphWidget.tsx","line":52,"current":"background: color-mix(in srgb, var(--muted) 85%, transparent)","expected":"Add plain fallback or use opacity/rgba","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["color-mix","safari-compat"]},
+    {"id":"CSS-007","severity":"medium","confidence":82,"title":"Static hardcoded dark-theme edge/node defaults in SigmaContainer — flash on light mode","file":"src/components/graph/GraphView.tsx","line":212,"current":"defaultEdgeColor: '#30363d', defaultNodeColor: '#8b949e' — dark values","expected":"Use resolveThemeColor with hex guard for initial values","fix_complexity":"small","depends_on":["CSS-003"],"adr_ref":null,"tags":["sigma","theming","light-mode"]},
+    {"id":"CSS-008","severity":"medium","confidence":80,"title":"graph.css uses --background and --border without fallback values","file":"src/styles/graph.css","line":4,"current":"var(--border) and var(--background) with no fallback","expected":"Add fallbacks: var(--border, #30363d) and var(--background, #0d1117)","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["fallback","cdn-loading"]},
+    {"id":"CSS-009","severity":"medium","confidence":85,"title":"getSigmaBackground imported but unused in GraphView.tsx","file":"src/components/graph/GraphView.tsx","line":9,"current":"import { resolveThemeColor, getSigmaBackground } — getSigmaBackground never called","expected":"Remove unused import","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["dead-code","import"]},
+    {"id":"CSS-010","severity":"medium","confidence":80,"title":"theme-color meta tag initialized empty — mobile browser chrome unstyled until JS","file":"src/layouts/Layout.astro","line":133,"current":"<meta name='theme-color' content=''>","expected":"Pre-populate with dark fallback hex #0d1117","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["meta-theme-color","mobile"]},
+    {"id":"CSS-011","severity":"low","confidence":82,"title":"Typography dark-mode selector inconsistent with global.css custom variant","file":"src/styles/typography.css","line":99,"current":"html[data-theme='dark'] vs @custom-variant dark (&:where([data-theme=dark]))","expected":"Use consistent selector pattern","fix_complexity":"small","depends_on":[],"adr_ref":null,"tags":["specificity","consistency"]},
+    {"id":"CSS-012","severity":"low","confidence":80,"title":"GraphSearch selected row highlight hardcoded rgba — invisible in light mode","file":"src/components/graph/GraphSearch.tsx","line":248,"current":"rgba(255,255,255,0.08) — white overlay on light bg is invisible","expected":"Use var(--border) or theme-aware value","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["light-mode","contrast"]},
+    {"id":"CSS-013","severity":"low","confidence":80,"title":"GraphSearch result dividers hardcoded rgba — invisible in light mode","file":"src/components/graph/GraphSearch.tsx","line":176,"current":"rgba(255,255,255,0.06) and rgba(255,255,255,0.04)","expected":"Replace with var(--border)","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["light-mode","contrast"]}
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "category": "build-pipeline",
+  "reviewed_at": "2026-03-20T15:45:00Z",
+  "files_reviewed": [
+    "src/scripts/build-graph.ts",
+    "src/scripts/tag-projects.ts",
+    "src/components/graph/graph.shared.ts",
+    "src/components/graph/graph.constants.ts",
+    "src/components/graph/graph.types.ts",
+    "package.json",
+    "justfile",
+    "wrangler.jsonc",
+    ".gitignore"
+  ],
+  "findings": [
+    {
+      "id": "BUILD-001",
+      "severity": "critical",
+      "confidence": 97,
+      "title": "wrangler not in package.json dependencies — schema path broken, Workers Builds CI lacks binary",
+      "file": "package.json",
+      "line": null,
+      "current": "wrangler absent from devDependencies; wrangler.jsonc references ./node_modules/wrangler/config-schema.json",
+      "expected": "Add wrangler to devDependencies",
+      "fix_complexity": "trivial",
+      "depends_on": [],
+      "adr_ref": null,
+      "tags": ["wrangler", "deployment", "ci", "dependencies"]
+    },
+    {
+      "id": "BUILD-002",
+      "severity": "critical",
+      "confidence": 95,
+      "title": "justfile deploy uses 'wrangler pages deploy' but wrangler.jsonc is Workers static assets config",
+      "file": "justfile",
+      "line": 45,
+      "current": "npx wrangler pages deploy dist --project-name=blog — invokes Pages API, ignores wrangler.jsonc",
+      "expected": "npx wrangler deploy — uses wrangler.jsonc Workers static assets pipeline",
+      "fix_complexity": "small",
+      "depends_on": ["BUILD-001"],
+      "adr_ref": null,
+      "tags": ["wrangler", "deployment", "pages-vs-workers"]
+    },
+    {
+      "id": "BUILD-003",
+      "severity": "critical",
+      "confidence": 95,
+      "title": "justfile deploy-only has same wrangler pages vs Workers mismatch",
+      "file": "justfile",
+      "line": 50,
+      "current": "npx wrangler pages deploy dist --project-name=blog",
+      "expected": "npx wrangler deploy",
+      "fix_complexity": "trivial",
+      "depends_on": ["BUILD-002"],
+      "adr_ref": null,
+      "tags": ["wrangler", "deployment", "pages-vs-workers"]
+    },
+    {
+      "id": "BUILD-004",
+      "severity": "high",
+      "confidence": 85,
+      "title": "build-graph.ts uses bare relative paths — breaks if invoked from outside repo root",
+      "file": "src/scripts/build-graph.ts",
+      "line": 14,
+      "current": "const BLOG_DIR = 'src/data/blog' — relative to process.cwd()",
+      "expected": "Anchor to import.meta.url",
+      "fix_complexity": "small",
+      "depends_on": [],
+      "adr_ref": null,
+      "tags": ["build-graph", "paths", "correctness"]
+    },
+    {
+      "id": "BUILD-005",
+      "severity": "high",
+      "confidence": 85,
+      "title": "tag-projects.ts uses bare relative PROJECTS_DIR path — same CWD assumption",
+      "file": "src/scripts/tag-projects.ts",
+      "line": 10,
+      "current": "const PROJECTS_DIR = 'content/_projects' — relative to process.cwd()",
+      "expected": "Anchor to import.meta.url",
+      "fix_complexity": "small",
+      "depends_on": [],
+      "adr_ref": null,
+      "tags": ["tag-projects", "paths", "correctness"]
+    },
+    {
+      "id": "BUILD-006",
+      "severity": "high",
+      "confidence": 92,
+      "title": "tag-projects.ts increments updated counter in --dry-run mode — wrong summary count",
+      "file": "src/scripts/tag-projects.ts",
+      "line": 384,
+      "current": "updated++ is outside if(DRY_RUN)/else block — counts dry-run as updated",
+      "expected": "Move updated++ inside else branch, or print 'would-update' in dry-run",
+      "fix_complexity": "trivial",
+      "depends_on": [],
+      "adr_ref": null,
+      "tags": ["tag-projects", "dry-run", "correctness"]
+    }
+  ]
+}
