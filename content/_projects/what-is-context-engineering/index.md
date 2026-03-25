@@ -62,4 +62,4 @@ tags:
 
 | Project | Relationship | Path |
 |---------|-------------|------|
-| Cross-Tool Context Engineering Comparison | standalone companion post | ../cross-tool-context-engineering/ |
+| Cross-Tool Context Engineering Comparison | standalone companion post | ../context-engineering-cross-tool-analysis/ |
