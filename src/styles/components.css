@@ -271,10 +271,23 @@ details:not([open]) .dir-tree-chevron::before {
          transition-[opacity,visibility] duration-150 pointer-events-none;
 }
 
+/* Hover intent: wrapper keeps popup visible while mouse moves between trigger and popup.
+   The wrapper spans both trigger + popup, so moving from trigger to popup stays "hovered." */
 .person-wrapper:hover .person-popup,
 .person-wrapper:focus-within .person-popup,
 .person-popup.active {
   @apply visible opacity-100 pointer-events-auto;
+}
+
+/* Hit area bridge: extends below popup to cover the mb-2 gap to the trigger.
+   Without this, moving the mouse from trigger to popup crosses a gap that drops hover. */
+.person-popup::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 0.75rem; /* covers the mb-2 gap */
 }
 
 .person-popup-header {

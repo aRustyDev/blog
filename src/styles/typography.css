@@ -67,7 +67,8 @@
     }
 
     code {
-      @apply rounded bg-mt/75 p-1 wrap-break-word text-fg before:content-none after:content-none;
+      @apply rounded bg-mt p-1 wrap-break-word text-fg border border-bd/50
+             before:content-none after:content-none;
     }
 
     .astro-code code {
