@@ -10,7 +10,9 @@ import DirTree from "@/components/DirTree.astro";
 import OGCard from "@/components/OGCard.astro";
 import Tweet from "@/components/Tweet.astro";
 import PersonPopup from "@/components/PersonPopup.astro";
-import Timeline from "@/components/Timeline.astro";
+import TimelineCards from "@/components/TimelineCards.astro";
+import HierarchySimple from "@/components/HierarchySimple.astro";
+import scopeData from "@/data/hierarchies/scope-hierarchy.json";
 
 <Header />
 <main id="main-content" class="app-layout flex-1">
@@ -68,7 +70,7 @@ Three days later:
 
 What happened next was remarkably fast. Within days, practitioners started publishing their own frameworks. <PersonPopup id="schmid">Phil Schmid</PersonPopup> identified seven context components and hit 915 points on Hacker News. LangChain proposed a four-strategy model for context management: writing, selecting, compressing, and isolating. Each framework was slightly different, but the convergence was unmistakable: the field was coalescing around the same architectural intuitions.
 
-<Timeline
+<TimelineCards
   items={[
     { date: "2025-06-22", label: "Tobi Lütke coins 'context engineering'", url: "https://x.com/tobi/status/1935533422589399127" },
     { date: "2025-06-25", label: "Karpathy amplifies with detailed definition", url: "https://x.com/karpathy/status/1937902205765607626" },
@@ -149,17 +151,7 @@ These six component types don't all load at once. They flow through a temporal p
 
 Post 2 maps this pipeline in full depth with implementation evidence and cross-platform validation. But if you want a preview of the evidence: the pipeline isn't theoretical. You can observe it directly.
 
-<CodeBlock
-  code={`Managed Policy  /Library/Application Support/ClaudeCode/CLAUDE.md  (cannot be excluded)
-     |
-Project         ./CLAUDE.md  +  .claude/rules/*.md  +  .claude/settings.json
-     |
-User            ~/.claude/CLAUDE.md  +  ~/.claude/rules/*.md
-     |
-Local           .claude/settings.local.json  (gitignored overrides)`}
-  lang="text"
-  title="The scope hierarchy: who overrides whom"
-/>
+<HierarchySimple items={scopeData.items} title={scopeData.title} />
 
 <CLISnippet
   content={`$ # With an InstructionsLoaded hook configured:

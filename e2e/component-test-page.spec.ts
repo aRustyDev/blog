@@ -99,15 +99,9 @@ test.describe("Component Test Page", () => {
     await expect(dots.first()).toBeVisible();
   });
 
-  test("Timeline horizontal: container has overflow-x", async ({ page }) => {
-    const horizontal = page.locator(".timeline-horizontal").first();
-    await expect(horizontal).toBeVisible();
-
-    // Verify the container has overflow-x-auto styling
-    const overflowX = await horizontal.evaluate(
-      el => getComputedStyle(el).overflowX
-    );
-    expect(overflowX).toBe("auto");
+  test("TimelineProcess: process steps visible", async ({ page }) => {
+    const process = page.locator(".timeline-process").first();
+    await expect(process).toBeVisible();
   });
 
   test("OGCard: card element present with link", async ({ page }) => {
