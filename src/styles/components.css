@@ -256,11 +256,9 @@ details:not([open]) .dir-tree-chevron::before {
 }
 
 .og-card-image {
-  @apply w-32 sm:w-40 flex-shrink-0 bg-mt border-0;
+  @apply w-36 sm:w-44 flex-shrink-0 bg-mt border-0 self-stretch;
   object-fit: cover;
-  object-position: center;
-  aspect-ratio: 1.2 / 1;
-  max-height: 8rem;
+  object-position: center top;
 }
 
 /* Hide image container when src is empty or fails to load */

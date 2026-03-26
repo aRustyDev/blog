@@ -99,10 +99,20 @@ export async function fetchOGData(
     // Truncate to first 50KB — all <meta> tags are in <head>
     const html = rawHtml.slice(0, 51200);
 
+    // Resolve og:image — may be relative (e.g., arxiv uses /static/...)
+    let image = extractMeta(html, "og:image") ?? "";
+    if (image && !image.startsWith("http")) {
+      try {
+        image = new URL(image, url).href;
+      } catch {
+        // Invalid URL — leave as-is
+      }
+    }
+
     ogData = {
       title: extractMeta(html, "og:title") ?? "",
       description: extractMeta(html, "og:description") ?? "",
-      image: extractMeta(html, "og:image") ?? "",
+      image,
       siteName: extractMeta(html, "og:site_name") ?? hostname,
       favicon: extractFavicon(html, url),
       brandColor:
