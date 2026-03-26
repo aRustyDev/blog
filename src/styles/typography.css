@@ -8,11 +8,6 @@
     --breakout-width: min(64rem, 90vw);
     max-width: var(--prose-width);
     margin-inline: auto;
-  }
-
-  /* Wide mode: prose expands to match breakout width — everything is full container */
-  html[data-wide] .app-prose {
-    --prose-width: var(--breakout-width);
 
     h1,
     h2,
@@ -99,6 +94,11 @@
     pre {
       @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-ac focus-visible:outline-dashed;
     }
+  }
+
+  /* Wide mode: prose expands to match breakout width */
+  html[data-wide] .app-prose {
+    --prose-width: var(--breakout-width);
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
