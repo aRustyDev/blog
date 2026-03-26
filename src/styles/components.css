@@ -208,7 +208,17 @@ details:not([open]) .dir-tree-chevron::before {
 }
 
 .og-card-image {
-  @apply w-32 sm:w-40 flex-shrink-0 object-cover bg-mt border-0;
+  @apply w-32 sm:w-40 flex-shrink-0 bg-mt border-0;
+  object-fit: cover;
+  object-position: center;
+  aspect-ratio: 1.2 / 1;
+  max-height: 8rem;
+}
+
+/* Hide image container when src is empty or fails to load */
+.og-card-image[src=""],
+.og-card-image:not([src]) {
+  display: none;
 }
 
 .og-card-content {
@@ -248,6 +258,12 @@ details:not([open]) .dir-tree-chevron::before {
 .tweet-card {
   @apply block border border-bd rounded-xl p-4 my-4
          no-underline hover:border-ac/60 transition-colors;
+  border-left: 3px solid #1DA1F2;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, #1DA1F2 6%, transparent),
+    transparent 30%
+  );
 }
 
 .tweet-header {
@@ -602,7 +618,7 @@ details:not([open]) .hierarchy-chevron::before {
 }
 
 .hierarchy-node-header {
-  @apply flex items-center gap-2 flex-wrap;
+  @apply flex items-center justify-between gap-2;
 }
 
 .hierarchy-node-label {
@@ -618,7 +634,7 @@ details:not([open]) .hierarchy-chevron::before {
 }
 
 .hierarchy-node-leaves {
-  @apply flex flex-row gap-2 flex-wrap mt-2;
+  @apply flex flex-row gap-2 flex-wrap mt-2 justify-center;
 }
 
 .hierarchy-leaf {

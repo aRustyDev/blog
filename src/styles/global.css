@@ -83,7 +83,7 @@
 }
 
 @utility max-w-app {
-  @apply max-w-3xl;
+  max-width: clamp(48rem, 60vw, 80rem);
 }
 
 @utility app-layout {
