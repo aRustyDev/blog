@@ -25,3 +25,4 @@
   - [0008: Brand Theming Strategy](./adrs/0008-brand-theming-strategy.md)
   - [0009: Smoke Tests](./adrs/0009-smoke-tests.md)
   - [0010: Content Component Architecture](./adrs/0010-content-component-architecture.md)
+  - [0011: Component Data Input Pattern](./adrs/0011-component-data-input-pattern.md)
