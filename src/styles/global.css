@@ -86,9 +86,16 @@
   max-width: clamp(48rem, 60vw, 80rem);
 }
 
+/* Wide mode config — single source of truth for wide-mode widths */
+:root {
+  --wide-max: min(90vw, 100%);
+  --wide-prose: min(85vw, 100%);
+  --wide-breakout: min(90vw, 100%);
+}
+
 /* Wide mode: only content areas expand — site chrome (header, footer) stays fixed */
 html[data-wide] main.app-layout {
-  max-width: min(90vw, 100%);
+  max-width: var(--wide-max);
 }
 
 @utility app-layout {
