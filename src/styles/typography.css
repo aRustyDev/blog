@@ -8,6 +8,11 @@
     --breakout-width: min(64rem, 90vw);
     max-width: var(--prose-width);
     margin-inline: auto;
+  }
+
+  /* Wide mode: prose expands to match breakout width — everything is full container */
+  html[data-wide] .app-prose {
+    --prose-width: var(--breakout-width);
 
     h1,
     h2,
