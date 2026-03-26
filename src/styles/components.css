@@ -244,6 +244,7 @@ details:not([open]) .dir-tree-chevron::before {
   @apply flex border border-bd rounded-lg overflow-hidden my-4
          no-underline hover:border-ac/60 transition-colors;
   border-left: 3px solid var(--brand-color, var(--border));
+  min-height: 6rem;
 }
 
 /* Brand tint gradient when brand color is set */
@@ -256,9 +257,10 @@ details:not([open]) .dir-tree-chevron::before {
 }
 
 .og-card-image {
-  @apply w-36 sm:w-44 flex-shrink-0 bg-mt border-0 self-stretch;
+  @apply w-28 sm:w-36 flex-shrink-0 bg-mt border-0;
   object-fit: cover;
-  object-position: center top;
+  object-position: center;
+  height: 100%;
 }
 
 /* Hide image container when src is empty or fails to load */
@@ -268,7 +270,7 @@ details:not([open]) .dir-tree-chevron::before {
 }
 
 .og-card-content {
-  @apply flex flex-col justify-center gap-1 p-3 min-w-0;
+  @apply flex flex-col justify-center gap-1 p-3 min-w-0 flex-1;
 }
 
 .og-card-title {
