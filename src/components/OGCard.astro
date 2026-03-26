@@ -20,6 +20,7 @@ const domain = og.siteName || new URL(url).hostname;
   target="_blank"
   rel="noopener noreferrer"
   class:list={["og-card", className]}
+  style={og.brandColor ? `--brand-color: ${og.brandColor}` : undefined}
 >
   {og.image && (
     <img

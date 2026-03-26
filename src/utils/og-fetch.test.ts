@@ -1,4 +1,5 @@
 import { extractMeta, extractFavicon } from "./og-fetch";
+import { extractThemeColor, getBrandColor } from "./brands";
 
 describe("og-fetch", () => {
   describe("extractMeta", () => {
@@ -93,5 +94,81 @@ describe("og-fetch", () => {
       const result = extractFavicon(html, "https://test.org");
       expect(result).toContain("sz=32");
     });
+  });
+});
+
+describe("extractThemeColor", () => {
+  it("should extract theme-color with name before content", () => {
+    const html = `<meta name="theme-color" content="#FF5733">`;
+    expect(extractThemeColor(html)).toBe("#FF5733");
+  });
+
+  it("should extract theme-color with content before name", () => {
+    const html = `<meta content="#00AAFF" name="theme-color">`;
+    expect(extractThemeColor(html)).toBe("#00AAFF");
+  });
+
+  it("should be case-insensitive", () => {
+    const html = `<META NAME="theme-color" CONTENT="#ABC123">`;
+    expect(extractThemeColor(html)).toBe("#ABC123");
+  });
+
+  it("should handle single quotes", () => {
+    const html = `<meta name='theme-color' content='#DEF456'>`;
+    expect(extractThemeColor(html)).toBe("#DEF456");
+  });
+
+  it("should handle extra attributes", () => {
+    const html = `<meta charset="utf-8" name="theme-color" content="#123456" data-x="y">`;
+    expect(extractThemeColor(html)).toBe("#123456");
+  });
+
+  it("should return null when no theme-color meta", () => {
+    const html = `<html><head><meta name="viewport" content="width=device-width"></head></html>`;
+    expect(extractThemeColor(html)).toBeNull();
+  });
+
+  it("should handle named colors", () => {
+    const html = `<meta name="theme-color" content="tomato">`;
+    expect(extractThemeColor(html)).toBe("tomato");
+  });
+
+  it("should handle rgb values", () => {
+    const html = `<meta name="theme-color" content="rgb(255, 87, 51)">`;
+    expect(extractThemeColor(html)).toBe("rgb(255, 87, 51)");
+  });
+});
+
+describe("getBrandColor", () => {
+  it("should return color for known domain", () => {
+    expect(getBrandColor("github.com")).toBe("#24292F");
+  });
+
+  it("should return color for twitter.com", () => {
+    expect(getBrandColor("twitter.com")).toBe("#1DA1F2");
+  });
+
+  it("should return color for x.com", () => {
+    expect(getBrandColor("x.com")).toBe("#1DA1F2");
+  });
+
+  it("should return color for anthropic.com", () => {
+    expect(getBrandColor("anthropic.com")).toBe("#D97757");
+  });
+
+  it("should return color for arxiv.org", () => {
+    expect(getBrandColor("arxiv.org")).toBe("#B31B1B");
+  });
+
+  it("should return color for docs.astro.build", () => {
+    expect(getBrandColor("docs.astro.build")).toBe("#BC52EE");
+  });
+
+  it("should return null for unknown domain", () => {
+    expect(getBrandColor("unknown-site.example.com")).toBeNull();
+  });
+
+  it("should return null for empty string", () => {
+    expect(getBrandColor("")).toBeNull();
   });
 });

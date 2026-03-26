@@ -1,9 +1,12 @@
+import { getBrandColor, extractThemeColor } from "./brands";
+
 export interface OGData {
   title: string;
   description: string;
   image: string;
   siteName: string;
   favicon: string;
+  brandColor: string;
 }
 
 /** Build-time cache — same URL fetched only once per build */
@@ -81,6 +84,7 @@ export async function fetchOGData(
     image: "",
     siteName: "",
     favicon: "",
+    brandColor: "",
   };
 
   try {
@@ -101,6 +105,8 @@ export async function fetchOGData(
       image: extractMeta(html, "og:image") ?? "",
       siteName: extractMeta(html, "og:site_name") ?? hostname,
       favicon: extractFavicon(html, url),
+      brandColor:
+        extractThemeColor(html) ?? getBrandColor(hostname) ?? "",
     };
   } catch {
     try {

@@ -1,0 +1,9 @@
+{
+  "x.com": { "name": "X/Twitter", "color": "#1DA1F2" },
+  "twitter.com": { "name": "X/Twitter", "color": "#1DA1F2" },
+  "arxiv.org": { "name": "arXiv", "color": "#B31B1B" },
+  "anthropic.com": { "name": "Anthropic", "color": "#D97757" },
+  "code.claude.com": { "name": "Claude Code", "color": "#D97757" },
+  "github.com": { "name": "GitHub", "color": "#24292F" },
+  "docs.astro.build": { "name": "Astro", "color": "#BC52EE" }
+}
