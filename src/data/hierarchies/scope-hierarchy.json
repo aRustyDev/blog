@@ -1,0 +1,24 @@
+{
+  "title": "The scope hierarchy: who overrides whom",
+  "items": [
+    {
+      "label": "Managed Policy",
+      "description": "/Library/Application Support/ClaudeCode/",
+      "badge": "cannot be excluded",
+      "leaves": ["CLAUDE.md"]
+    },
+    {
+      "label": "Project",
+      "leaves": ["./CLAUDE.md", ".claude/rules/*.md", ".claude/settings.json"]
+    },
+    {
+      "label": "User",
+      "leaves": ["~/.claude/CLAUDE.md", "~/.claude/rules/*.md"]
+    },
+    {
+      "label": "Local",
+      "description": "gitignored overrides",
+      "leaves": [".claude/settings.local.json"]
+    }
+  ]
+}
