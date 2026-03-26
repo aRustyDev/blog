@@ -6,6 +6,54 @@
 /* =================================================================== */
 
 /* ------------------------------------------------------------------ */
+/*  Breakout pattern: components escape prose width to fill container   */
+/*  Prose is --prose-width (48rem), components break to --breakout-width*/
+/* ------------------------------------------------------------------ */
+
+.app-prose .code-block-wrapper,
+.app-prose .component-details,
+.app-prose .cli-snippet,
+.app-prose .cli-snippet-interactive,
+.app-prose .og-card,
+.app-prose .tweet-card,
+.app-prose .timeline-cards-wrapper,
+.app-prose .timeline-process,
+.app-prose .hierarchy-simple,
+.app-prose .dir-tree,
+.app-prose .asciinema-wrapper,
+.app-prose table,
+.app-prose .astro-code,
+.app-prose pre {
+  --_prose: var(--prose-width, 48rem);
+  --_breakout: var(--breakout-width, min(64rem, 90vw));
+  max-width: var(--_breakout);
+  width: var(--_breakout);
+  margin-inline: calc((var(--_prose) - var(--_breakout)) / 2);
+}
+
+/* On small screens where breakout > viewport, prevent overflow */
+@media (max-width: 768px) {
+  .app-prose .code-block-wrapper,
+  .app-prose .component-details,
+  .app-prose .cli-snippet,
+  .app-prose .cli-snippet-interactive,
+  .app-prose .og-card,
+  .app-prose .tweet-card,
+  .app-prose .timeline-cards-wrapper,
+  .app-prose .timeline-process,
+  .app-prose .hierarchy-simple,
+  .app-prose .dir-tree,
+  .app-prose .asciinema-wrapper,
+  .app-prose table,
+  .app-prose .astro-code,
+  .app-prose pre {
+    max-width: 100%;
+    width: 100%;
+    margin-inline: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Shared: component-details reset                                    */
 /* ------------------------------------------------------------------ */
 
