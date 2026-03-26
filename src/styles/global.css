@@ -86,9 +86,8 @@
   max-width: clamp(48rem, 60vw, 80rem);
 }
 
-/* Wide mode: container expands to 90vw */
-html[data-wide] .max-w-app,
-html[data-wide] [class*="max-w-app"] {
+/* Wide mode: only content areas expand — site chrome (header, footer) stays fixed */
+html[data-wide] main.app-layout {
   max-width: min(90vw, 100%);
 }
 
