@@ -257,10 +257,14 @@ details:not([open]) .dir-tree-chevron::before {
 }
 
 .og-card-image {
-  @apply w-28 sm:w-36 flex-shrink-0 bg-mt border-0;
+  @apply flex-shrink-0 bg-mt border-0;
+  width: 5.5rem;
+  height: 5.5rem;
   object-fit: cover;
   object-position: center;
-  height: 100%;
+  margin: auto 0;
+  margin-left: 0.75rem;
+  border-radius: 0.375rem;
 }
 
 /* Hide image container when src is empty or fails to load */
@@ -289,13 +293,12 @@ details:not([open]) .dir-tree-chevron::before {
   @apply w-4 h-4 border-0;
 }
 
-/* Stack image on narrow screens */
+/* On narrow screens, keep horizontal layout but shrink image */
 @media (max-width: 480px) {
-  .og-card {
-    @apply flex-col;
-  }
   .og-card-image {
-    @apply w-full h-32;
+    width: 4rem;
+    height: 4rem;
+    margin-left: 0.5rem;
   }
 }
 
