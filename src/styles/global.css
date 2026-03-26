@@ -86,6 +86,12 @@
   max-width: clamp(48rem, 60vw, 80rem);
 }
 
+/* Wide mode: container expands to 90vw */
+html[data-wide] .max-w-app,
+html[data-wide] [class*="max-w-app"] {
+  max-width: min(90vw, 100%);
+}
+
 @utility app-layout {
   @apply mx-auto w-full max-w-app px-4;
 }

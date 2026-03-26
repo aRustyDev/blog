@@ -96,9 +96,10 @@
     }
   }
 
-  /* Wide mode: prose expands to match breakout width */
+  /* Wide mode: prose fills percentage of viewport (capped at screen width) */
   html[data-wide] .app-prose {
-    --prose-width: var(--breakout-width);
+    --prose-width: min(85vw, 100%);
+    --breakout-width: min(90vw, 100%);
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
