@@ -149,11 +149,12 @@ details:not([open]) .dir-tree-chevron::before {
 }
 
 .dir-tree-body {
-  @apply p-3 bg-mt/30 overflow-x-auto;
+  @apply px-3 py-2 bg-mt/30 overflow-x-auto;
 }
 
 .dir-tree-entry {
-  @apply whitespace-pre text-fg leading-relaxed;
+  @apply whitespace-pre text-fg flex items-baseline;
+  line-height: 1.5;
 }
 
 .dir-tree-entry.highlighted {
@@ -164,6 +165,29 @@ details:not([open]) .dir-tree-chevron::before {
   @apply text-fg/40 select-none;
 }
 
+.dir-tree-icon {
+  @apply flex-shrink-0 text-xs mr-1.5;
+}
+
+.dir-tree-name {
+  @apply inline;
+}
+
+/* --- Simple variant --- */
+.dir-tree--simple .dir-tree-body {
+  @apply px-3 py-1.5;
+}
+
+.dir-tree--simple .dir-tree-entry {
+  @apply text-[13px];
+  line-height: 1.4;
+}
+
+/* --- Icons variant (default) --- */
+.dir-tree--icons .dir-tree-entry {
+  line-height: 1.6;
+}
+
 /* ------------------------------------------------------------------ */
 /*  OGCard                                                             */
 /* ------------------------------------------------------------------ */
@@ -171,6 +195,16 @@ details:not([open]) .dir-tree-chevron::before {
 .og-card {
   @apply flex border border-bd rounded-lg overflow-hidden my-4
          no-underline hover:border-ac/60 transition-colors;
+  border-left: 3px solid var(--brand-color, var(--border));
+}
+
+/* Brand tint gradient when brand color is set */
+.og-card[style*="--brand-color"] {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--brand-color) 8%, transparent),
+    transparent 40%
+  );
 }
 
 .og-card-image {
@@ -324,91 +358,283 @@ details:not([open]) .dir-tree-chevron::before {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Timeline                                                           */
+/*  TimelineCards (vertical card-based)                                */
 /* ------------------------------------------------------------------ */
 
-.timeline-wrapper {
+.timeline-cards-wrapper {
   @apply border border-bd rounded-lg overflow-hidden my-4;
 }
 
-.timeline-summary {
+.timeline-cards-summary {
   @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm
          border-b border-bd list-none cursor-pointer select-none;
 }
-.timeline-summary::-webkit-details-marker {
+.timeline-cards-summary::-webkit-details-marker {
   display: none;
 }
 
-.timeline-chevron::before {
+.timeline-cards-chevron::before {
   content: "▾";
   @apply inline-block text-fg/50 text-xs transition-transform duration-150;
 }
-details:not([open]) .timeline-chevron::before {
+details:not([open]) .timeline-cards-chevron::before {
   content: "▸";
 }
 
-.timeline-summary-text {
+.timeline-cards-summary-text {
   @apply text-fg/70;
 }
 
-/* Vertical layout */
-.timeline-vertical {
-  @apply relative pl-6 py-4 px-4;
-}
-.timeline-vertical::before {
-  content: "";
-  @apply absolute left-[1.35rem] top-4 bottom-4 w-px bg-bd;
+/* Card container — positions the vertical line centrally on desktop */
+.timeline-cards {
+  @apply relative py-6 px-4;
 }
 
-.timeline-item {
-  @apply relative pb-6 last:pb-0;
+/* Vertical connecting line */
+.timeline-line {
+  @apply absolute top-0 bottom-0 w-0.5 bg-bd;
+  left: 1.25rem;
 }
 
+@media (min-width: 768px) {
+  .timeline-line {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Each event row: dot + card */
+.timeline-card-row {
+  @apply relative mb-6 last:mb-0;
+  /* Mobile: single column, cards always to the right of the line */
+  padding-left: 2.75rem;
+}
+
+/* Dot marker on the line */
 .timeline-dot {
-  @apply absolute -left-[0.95rem] top-1 w-2.5 h-2.5 rounded-full bg-ac border-2 border-bg;
+  @apply absolute w-3 h-3 rounded-full bg-ac;
+  top: 1rem;
+  left: 0.75rem;
+  box-shadow: 0 0 0 2px var(--background);
 }
 
-.timeline-date {
-  @apply text-ac text-xs font-mono font-semibold;
+@media (min-width: 768px) {
+  .timeline-cards {
+    @apply px-0;
+  }
+
+  .timeline-card-row {
+    @apply w-1/2;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Left cards: sit on the left side */
+  .timeline-card-row.left {
+    margin-left: 0;
+    margin-right: auto;
+    padding-right: 2rem;
+    text-align: right;
+  }
+
+  /* Right cards: sit on the right side */
+  .timeline-card-row.right {
+    margin-left: auto;
+    margin-right: 0;
+    padding-left: 2rem;
+    text-align: left;
+  }
+
+  /* Dot repositioning for desktop — centered on the line */
+  .timeline-dot {
+    left: auto;
+    right: auto;
+  }
+
+  .timeline-card-row.left .timeline-dot {
+    right: -0.375rem;
+    left: auto;
+  }
+
+  .timeline-card-row.right .timeline-dot {
+    left: -0.375rem;
+    right: auto;
+  }
 }
 
-.timeline-label {
-  @apply text-fg text-sm;
-}
-.timeline-label a {
-  @apply text-fg decoration-dashed underline-offset-4 hover:text-ac;
+/* The card itself */
+.timeline-card {
+  @apply border border-bd rounded-lg bg-bg p-3;
 }
 
-.timeline-description {
+/* Date badge pill */
+.timeline-card-date {
+  @apply inline-block text-xs font-mono font-semibold rounded-full px-2 py-0.5 mb-1.5;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+/* Card content area */
+.timeline-card-content {
+  @apply text-left;
+}
+
+.timeline-card-title {
+  @apply text-fg text-sm font-semibold;
+}
+.timeline-card-title a {
+  @apply text-fg no-underline hover:text-ac hover:underline underline-offset-2;
+}
+
+.timeline-card-desc {
   @apply text-fg/60 text-xs mt-1;
 }
 
-/* Horizontal layout */
-.timeline-horizontal {
-  @apply relative flex gap-8 overflow-x-auto p-4 pb-2;
+/* ------------------------------------------------------------------ */
+/*  TimelineProcess (horizontal step flow)                             */
+/* ------------------------------------------------------------------ */
+
+.timeline-process {
+  @apply flex items-start gap-0 overflow-x-auto my-4 py-4 px-2;
 }
-.timeline-horizontal::before {
+
+.timeline-step-group {
+  @apply relative flex flex-col items-center text-center flex-shrink-0;
+  min-width: 5rem;
+  flex: 1;
+}
+
+/* Numbered circle */
+.timeline-step {
+  @apply w-10 h-10 rounded-full border-2 border-ac bg-bg
+         flex items-center justify-center mb-2;
+}
+
+.timeline-step-number {
+  @apply text-ac font-semibold text-sm;
+}
+
+/* Label below the circle */
+.timeline-step-label {
+  @apply text-fg text-xs font-medium max-w-[6rem] leading-tight;
+}
+
+.timeline-step-desc {
+  @apply text-fg/50 text-xs mt-0.5 max-w-[6rem] leading-tight;
+}
+
+/* Arrow connector between steps */
+.timeline-arrow {
+  @apply absolute;
+  top: 1.125rem;
+  left: calc(50% + 1.25rem + 0.25rem);
+  width: calc(100% - 2.5rem - 0.5rem);
+  height: 2px;
+  background: var(--border);
+}
+
+/* Arrow head (triangle) */
+.timeline-arrow::after {
   content: "";
-  @apply absolute top-[1.65rem] left-4 right-4 h-px bg-bd;
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid var(--accent);
 }
 
-.timeline-h-item {
-  @apply relative pt-6 min-w-[80px] text-center flex-shrink-0;
+/* On small screens, allow horizontal scroll */
+@media (max-width: 480px) {
+  .timeline-step-group {
+    min-width: 4rem;
+  }
+  .timeline-step {
+    @apply w-8 h-8;
+  }
+  .timeline-step-number {
+    @apply text-xs;
+  }
+  .timeline-arrow {
+    top: 0.875rem;
+  }
 }
 
-.timeline-h-dot {
-  @apply absolute top-[0.15rem] left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-ac border-2 border-bg;
+/* ------------------------------------------------------------------ */
+/*  HierarchySimple                                                    */
+/* ------------------------------------------------------------------ */
+
+.hierarchy-simple {
+  @apply max-w-[500px] mx-auto my-4;
 }
 
-.timeline-h-date {
-  @apply text-ac text-xs font-mono font-semibold;
+.hierarchy-title {
+  @apply text-fg/70 text-sm font-semibold mb-3 text-center;
 }
 
-.timeline-h-label {
-  @apply text-fg text-xs mt-1;
+.hierarchy-summary {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm
+         border border-bd rounded-t-lg list-none cursor-pointer select-none;
 }
-.timeline-h-label a {
-  @apply text-fg decoration-dashed underline-offset-4 hover:text-ac;
+.hierarchy-summary::-webkit-details-marker {
+  display: none;
+}
+
+.hierarchy-chevron::before {
+  content: "▾";
+  @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+}
+details:not([open]) .hierarchy-chevron::before {
+  content: "▸";
+}
+
+.hierarchy-summary-text {
+  @apply text-fg/70;
+}
+
+.hierarchy-body {
+  @apply flex flex-col items-center;
+}
+
+.hierarchy-node {
+  @apply w-full border border-bd rounded-lg bg-bg p-3;
+}
+
+.hierarchy-node-header {
+  @apply flex items-center gap-2 flex-wrap;
+}
+
+.hierarchy-node-label {
+  @apply text-ac font-semibold text-sm;
+}
+
+.hierarchy-node-badge {
+  @apply bg-mt text-fg/60 text-xs rounded-full px-2 py-0.5 border border-bd;
+}
+
+.hierarchy-node-description {
+  @apply text-fg/50 text-xs mt-0.5;
+}
+
+.hierarchy-node-leaves {
+  @apply flex flex-row gap-2 flex-wrap mt-2;
+}
+
+.hierarchy-leaf {
+  @apply bg-mt font-mono text-xs border border-bd rounded px-2 py-0.5 text-fg/80;
+}
+
+.hierarchy-connector {
+  @apply flex flex-col items-center;
+}
+
+.hierarchy-connector-line {
+  @apply w-0.5 h-3 bg-bd;
+}
+
+.hierarchy-connector-dot {
+  @apply w-2.5 h-2.5 rounded-full bg-ac;
 }
 
 /* ------------------------------------------------------------------ */

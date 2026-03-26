@@ -1,6 +1,7 @@
 ---
 type Props = {
   content: string;
+  variant?: "simple" | "icons";
   collapsible?: boolean;
   label?: string;
   highlight?: string[];
@@ -9,11 +10,14 @@ type Props = {
 
 const {
   content,
+  variant = "icons",
   collapsible = true,
   label,
   highlight = [],
   class: className,
 } = Astro.props;
+
+const isSimple = variant === "simple";
 
 interface TreeEntry {
   name: string;
@@ -102,7 +106,7 @@ const summaryLabel = label ?? "Directory tree";
 ---
 
 {collapsible ? (
-  <details class:list={["component-details", "dir-tree", className]} open>
+  <details class:list={["component-details", "dir-tree", `dir-tree--${variant}`, className]} open>
     <summary class="dir-tree-label" aria-label={summaryLabel}>
       <span class="dir-tree-chevron" aria-hidden="true"></span>
       <span>{label ?? "Directory tree"}</span>
@@ -111,14 +115,14 @@ const summaryLabel = label ?? "Directory tree";
       {entries.map(entry => (
         <div class:list={["dir-tree-entry", { highlighted: isHighlighted(entry) }]}>
           <span class="dir-tree-connector" aria-hidden="true">{entry.prefix}</span>
-          <span>{entry.isDir ? "📁 " : "📄 "}</span>
-          <span>{entry.name}</span>
+          {!isSimple && <span class="dir-tree-icon">{entry.isDir ? "📁" : "📄"}</span>}
+          <span class="dir-tree-name">{entry.name}</span>
         </div>
       ))}
     </div>
   </details>
 ) : (
-  <div class:list={["dir-tree", className]}>
+  <div class:list={["dir-tree", `dir-tree--${variant}`, className]}>
     {label && (
       <div class="dir-tree-label-static">
         <span>{label}</span>
@@ -128,8 +132,8 @@ const summaryLabel = label ?? "Directory tree";
       {entries.map(entry => (
         <div class:list={["dir-tree-entry", { highlighted: isHighlighted(entry) }]}>
           <span class="dir-tree-connector" aria-hidden="true">{entry.prefix}</span>
-          <span>{entry.isDir ? "📁 " : "📄 "}</span>
-          <span>{entry.name}</span>
+          {!isSimple && <span class="dir-tree-icon">{entry.isDir ? "📁" : "📄"}</span>}
+          <span class="dir-tree-name">{entry.name}</span>
         </div>
       ))}
     </div>

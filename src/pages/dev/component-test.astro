@@ -15,7 +15,10 @@ import DirTree from "@/components/DirTree.astro";
 import OGCard from "@/components/OGCard.astro";
 import Tweet from "@/components/Tweet.astro";
 import PersonPopup from "@/components/PersonPopup.astro";
-import Timeline from "@/components/Timeline.astro";
+import TimelineCards from "@/components/TimelineCards.astro";
+import TimelineProcess from "@/components/TimelineProcess.astro";
+import HierarchySimple from "@/components/HierarchySimple.astro";
+import scopeData from "@/data/hierarchies/scope-hierarchy.json";
 ---
 
 <Layout title="Component Test | Dev">
@@ -89,6 +92,7 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  ProcessName
     <section class="mb-12">
       <h2 class="text-lg font-semibold text-fg mb-4">DirTree</h2>
 
+      <h3 class="text-sm font-medium text-fg/70 mb-2">Icons variant (default)</h3>
       <DirTree
         content={`my-plugin/
   .claude-plugin/plugin.json
@@ -101,6 +105,19 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  ProcessName
   .mcp.json`}
         label="Plugin bundle structure"
         highlight={["plugin.json", "SKILL.md"]}
+      />
+
+      <h3 class="text-sm font-medium text-fg/70 mb-2 mt-6">Simple variant</h3>
+      <DirTree
+        variant="simple"
+        content={`src/
+  components/
+    CodeBlock.astro
+    CLISnippet.astro
+  utils/
+    people.ts
+    shiki.ts`}
+        label="Source structure"
       />
     </section>
 
@@ -138,11 +155,11 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  ProcessName
 
     <hr class="border-bd my-8" />
 
-    {/* ---- Timeline ---- */}
+    {/* ---- TimelineCards ---- */}
     <section class="mb-12">
-      <h2 class="text-lg font-semibold text-fg mb-4">Timeline (Vertical)</h2>
+      <h2 class="text-lg font-semibold text-fg mb-4">TimelineCards</h2>
 
-      <Timeline
+      <TimelineCards
         items={[
           { date: "2025-06-22", label: "Tobi Lütke tweets CE definition" },
           { date: "2025-06-25", label: "Karpathy amplifies" },
@@ -153,15 +170,29 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  ProcessName
         ]}
       />
 
-      <h3 class="text-sm font-medium text-fg/70 mb-2 mt-6">Horizontal</h3>
-      <Timeline
-        orientation="horizontal"
+      <h3 class="text-sm font-medium text-fg/70 mb-2 mt-6">Non-collapsible</h3>
+      <TimelineCards
+        collapsible={false}
         items={[
-          { date: "2025-06-22", label: "Lütke tweet" },
-          { date: "2025-06-25", label: "Karpathy" },
-          { date: "2025-06-27", label: "Willison" },
-          { date: "2025-06-30", label: "Schmid" },
-          { date: "2025-07-02", label: "LangChain" },
+          { date: "2025-06-22", label: "Lütke tweet", description: "Coined 'context engineering'" },
+          { date: "2025-06-25", label: "Karpathy amplifies", description: "Context window is RAM" },
+          { date: "2025-06-27", label: "Willison connects both" },
+        ]}
+      />
+    </section>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- TimelineProcess ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">TimelineProcess</h2>
+
+      <TimelineProcess
+        items={[
+          { label: "Build-time", description: "Install plugins, register MCP" },
+          { label: "Session Start", description: "Load rules, memory, skills" },
+          { label: "On-demand", description: "Invoke skills, call tools" },
+          { label: "Event-triggered", description: "Hooks, compaction" },
         ]}
       />
     </section>
@@ -174,6 +205,18 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  ProcessName
       <p class="text-fg/60 text-xs mb-2">(Fetches OG data at build time — requires network during build)</p>
 
       <OGCard url="https://docs.astro.build/en/getting-started/" />
+    </section>
+
+    <hr class="border-bd my-8" />
+
+    {/* ---- HierarchySimple ---- */}
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-fg mb-4">HierarchySimple</h2>
+
+      <HierarchySimple items={scopeData.items} title={scopeData.title} />
+
+      <h3 class="text-sm font-medium text-fg/70 mb-2 mt-6">Collapsible</h3>
+      <HierarchySimple items={scopeData.items} title={scopeData.title} collapsible />
     </section>
 
   </main>
