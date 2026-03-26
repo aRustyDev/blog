@@ -115,48 +115,8 @@ const isActive = (path: string) => {
       </ul>
     </nav>
 
-    {/* Utility icons — always visible, never collapse into hamburger */}
+    {/* Always-visible: Search + Settings gear */}
     <div class="flex items-center gap-1">
-      <button
-        id="wide-btn"
-        class="focus-outline relative size-8 p-1 hover:text-ac"
-        title="Toggle wide mode"
-        aria-label="Toggle wide reading mode"
-        aria-pressed="false"
-      >
-        <svg
-          id="wide-icon-narrow"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="absolute top-[50%] left-[50%] -translate-[50%] size-5"
-        >
-          <polyline points="15 3 21 3 21 9" />
-          <polyline points="9 21 3 21 3 15" />
-          <line x1="21" y1="3" x2="14" y2="10" />
-          <line x1="3" y1="21" x2="10" y2="14" />
-        </svg>
-        <svg
-          id="wide-icon-wide"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="absolute top-[50%] left-[50%] -translate-[50%] size-5 hidden"
-        >
-          <polyline points="4 14 10 14 10 20" />
-          <polyline points="20 10 14 10 14 4" />
-          <line x1="14" y1="10" x2="21" y2="3" />
-          <line x1="3" y1="21" x2="10" y2="14" />
-        </svg>
-      </button>
       <LinkButton
         href="/search"
         class:list={[
@@ -169,20 +129,61 @@ const isActive = (path: string) => {
         <IconSearch />
         <span class="sr-only">Search</span>
       </LinkButton>
-      {
-        SITE.lightAndDarkMode && (
-          <button
-            id="theme-btn"
-            class="focus-outline relative size-8 p-1 hover:[&>svg]:stroke-ac"
-            title="Toggles light & dark"
-            aria-label="auto"
-            aria-live="polite"
-          >
-            <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-            <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+
+      {/* Settings gear with popover */}
+      <div class="settings-wrapper relative">
+        <button
+          id="settings-btn"
+          class="focus-outline size-8 p-1 hover:text-ac"
+          title="Settings"
+          aria-label="Settings"
+          aria-expanded="false"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" class="size-5">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+        </button>
+
+        <div id="settings-popover" class="settings-popover">
+          {/* Wide mode */}
+          <button id="wide-btn" class="settings-item" aria-pressed="false">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" class="size-4 shrink-0">
+              <polyline points="15 3 21 3 21 9" />
+              <polyline points="9 21 3 21 3 15" />
+              <line x1="21" y1="3" x2="14" y2="10" />
+              <line x1="3" y1="21" x2="10" y2="14" />
+            </svg>
+            <span>Wide mode</span>
+            <span id="wide-status" class="settings-status">Off</span>
           </button>
-        )
-      }
+
+          {/* Theme toggle */}
+          {SITE.lightAndDarkMode && (
+            <button id="theme-btn" class="settings-item" aria-live="polite">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="size-4 shrink-0">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+              <span>Theme</span>
+              <span id="theme-status" class="settings-status">Auto</span>
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -210,45 +211,66 @@ const isActive = (path: string) => {
 
   toggleNav();
 
+  // Settings popover
+  function setupSettings() {
+    const settingsBtn = document.querySelector("#settings-btn");
+    const popover = document.querySelector("#settings-popover");
+    if (!settingsBtn || !popover) return;
+
+    settingsBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = popover.classList.contains("active");
+      popover.classList.toggle("active");
+      settingsBtn.setAttribute("aria-expanded", isOpen ? "false" : "true");
+    });
+
+    // Click outside to dismiss
+    document.addEventListener("click", (e) => {
+      if (!popover.contains(e.target as Node) && e.target !== settingsBtn) {
+        popover.classList.remove("active");
+        settingsBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
   // Wide mode toggle
   function setupWideMode() {
     const btn = document.querySelector("#wide-btn");
-    const iconNarrow = document.querySelector("#wide-icon-narrow");
-    const iconWide = document.querySelector("#wide-icon-wide");
-    if (!btn || !iconNarrow || !iconWide) return;
+    const status = document.querySelector("#wide-status");
+    if (!btn) return;
+
+    const updateUI = (isWide: boolean) => {
+      if (status) status.textContent = isWide ? "On" : "Off";
+      btn.setAttribute("aria-pressed", isWide ? "true" : "false");
+    };
 
     // Restore from localStorage
     const isWide = localStorage.getItem("wide-mode") === "true";
     if (isWide) {
       document.documentElement.setAttribute("data-wide", "");
-      btn.setAttribute("aria-pressed", "true");
-      iconNarrow.classList.add("hidden");
-      iconWide.classList.remove("hidden");
     }
+    updateUI(isWide);
 
     btn.addEventListener("click", () => {
       const wasWide = document.documentElement.hasAttribute("data-wide");
       if (wasWide) {
         document.documentElement.removeAttribute("data-wide");
         localStorage.setItem("wide-mode", "false");
-        btn.setAttribute("aria-pressed", "false");
-        iconNarrow.classList.remove("hidden");
-        iconWide.classList.add("hidden");
       } else {
         document.documentElement.setAttribute("data-wide", "");
         localStorage.setItem("wide-mode", "true");
-        btn.setAttribute("aria-pressed", "true");
-        iconNarrow.classList.add("hidden");
-        iconWide.classList.remove("hidden");
       }
+      updateUI(!wasWide);
     });
   }
 
+  setupSettings();
   setupWideMode();
 
   // Runs on view transitions navigation
   document.addEventListener("astro:after-swap", () => {
     toggleNav();
+    setupSettings();
     setupWideMode();
   });
 </script>

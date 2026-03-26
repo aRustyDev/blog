@@ -106,6 +106,38 @@ html[data-wide] main.app-layout {
   @apply underline decoration-wavy decoration-2 underline-offset-8;
 }
 
+/* Settings popover */
+.settings-popover {
+  @apply absolute right-0 top-full mt-2 z-50
+         invisible opacity-0 pointer-events-none
+         w-48 rounded-lg border border-bd bg-bg shadow-lg
+         transition-[opacity,visibility] duration-150;
+}
+
+.settings-popover.active {
+  @apply visible opacity-100 pointer-events-auto;
+}
+
+.settings-item {
+  @apply flex items-center gap-3 w-full px-3 py-2
+         text-sm text-fg hover:bg-mt transition-colors
+         cursor-pointer;
+  background: none;
+  border: none;
+}
+
+.settings-item:first-child {
+  @apply rounded-t-lg;
+}
+
+.settings-item:last-child {
+  @apply rounded-b-lg;
+}
+
+.settings-status {
+  @apply ml-auto text-xs text-fg/50;
+}
+
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
 /* Anything that has been anchored to should have extra scroll margin */
 :target {
