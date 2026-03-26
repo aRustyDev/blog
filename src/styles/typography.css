@@ -17,6 +17,16 @@
     th {
       @apply mb-3;
       color: var(--accent) !important;
+
+      /* Heading anchor links (from rehype-autolink-headings) inherit heading color */
+      a {
+        color: inherit !important;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+        text-decoration-style: dashed;
+      }
     }
 
     h3 {
