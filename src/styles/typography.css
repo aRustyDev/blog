@@ -6,6 +6,7 @@
     @apply prose;
     --prose-width: 48rem;
     --breakout-width: min(64rem, 90vw);
+    --tw-prose-headings: var(--accent);
     max-width: var(--prose-width);
     margin-inline: auto;
 
@@ -14,7 +15,8 @@
     h3,
     h4,
     th {
-      @apply mb-3 text-ac;
+      @apply mb-3;
+      color: var(--accent);
     }
 
     h3 {
