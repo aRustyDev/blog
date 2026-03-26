@@ -48,9 +48,10 @@ const isActive = (path: string) => {
     >
       {SITE.title}
     </a>
+    {/* Collapsible nav links — hidden on mobile, hamburger toggles */}
     <nav
       id="nav-menu"
-      class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
+      class="flex flex-1 flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:py-0"
     >
       <button
         id="menu-btn"
@@ -111,82 +112,78 @@ const isActive = (path: string) => {
             </li>
           )
         }
-        <li class="col-span-1 flex items-center justify-center">
-          <button
-            id="wide-btn"
-            class="focus-outline relative size-12 p-4 sm:size-8 hover:text-ac"
-            title="Toggle wide mode"
-            aria-label="Toggle wide reading mode"
-            aria-pressed="false"
-          >
-            {/* Narrow mode icon: arrows pointing outward (expand) */}
-            <svg
-              id="wide-icon-narrow"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="absolute top-[50%] left-[50%] -translate-[50%] size-5"
-            >
-              <polyline points="15 3 21 3 21 9" />
-              <polyline points="9 21 3 21 3 15" />
-              <line x1="21" y1="3" x2="14" y2="10" />
-              <line x1="3" y1="21" x2="10" y2="14" />
-            </svg>
-            {/* Wide mode icon: arrows pointing inward (contract) */}
-            <svg
-              id="wide-icon-wide"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="absolute top-[50%] left-[50%] -translate-[50%] size-5 hidden"
-            >
-              <polyline points="4 14 10 14 10 20" />
-              <polyline points="20 10 14 10 14 4" />
-              <line x1="14" y1="10" x2="21" y2="3" />
-              <line x1="3" y1="21" x2="10" y2="14" />
-            </svg>
-          </button>
-        </li>
-        <li class="col-span-1 flex items-center justify-center">
-          <LinkButton
-            href="/search"
-            class:list={[
-              "focus-outline flex p-3 sm:p-1",
-              { "[&>svg]:stroke-ac": isActive("/search") },
-            ]}
-            title="Search"
-            aria-label="search"
-          >
-            <IconSearch />
-            <span class="sr-only">Search</span>
-          </LinkButton>
-        </li>
-        {
-          SITE.lightAndDarkMode && (
-            <li class="col-span-1 flex items-center justify-center">
-              <button
-                id="theme-btn"
-                class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-ac"
-                title="Toggles light & dark"
-                aria-label="auto"
-                aria-live="polite"
-              >
-                <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-              </button>
-            </li>
-          )
-        }
       </ul>
     </nav>
+
+    {/* Utility icons — always visible, never collapse into hamburger */}
+    <div class="flex items-center gap-1">
+      <button
+        id="wide-btn"
+        class="focus-outline relative size-8 p-1 hover:text-ac"
+        title="Toggle wide mode"
+        aria-label="Toggle wide reading mode"
+        aria-pressed="false"
+      >
+        <svg
+          id="wide-icon-narrow"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="absolute top-[50%] left-[50%] -translate-[50%] size-5"
+        >
+          <polyline points="15 3 21 3 21 9" />
+          <polyline points="9 21 3 21 3 15" />
+          <line x1="21" y1="3" x2="14" y2="10" />
+          <line x1="3" y1="21" x2="10" y2="14" />
+        </svg>
+        <svg
+          id="wide-icon-wide"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="absolute top-[50%] left-[50%] -translate-[50%] size-5 hidden"
+        >
+          <polyline points="4 14 10 14 10 20" />
+          <polyline points="20 10 14 10 14 4" />
+          <line x1="14" y1="10" x2="21" y2="3" />
+          <line x1="3" y1="21" x2="10" y2="14" />
+        </svg>
+      </button>
+      <LinkButton
+        href="/search"
+        class:list={[
+          "focus-outline flex p-1",
+          { "[&>svg]:stroke-ac": isActive("/search") },
+        ]}
+        title="Search"
+        aria-label="search"
+      >
+        <IconSearch />
+        <span class="sr-only">Search</span>
+      </LinkButton>
+      {
+        SITE.lightAndDarkMode && (
+          <button
+            id="theme-btn"
+            class="focus-outline relative size-8 p-1 hover:[&>svg]:stroke-ac"
+            title="Toggles light & dark"
+            aria-label="auto"
+            aria-live="polite"
+          >
+            <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+            <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+          </button>
+        )
+      }
+    </div>
   </div>
 </header>
 
