@@ -125,9 +125,16 @@ Workers Builds runs `npm ci` which enforces **strict peer dependency resolution*
 3. Test with `npm ci` (not `npm install`) to catch peer dep conflicts
 4. If `npm ci` fails locally, it WILL fail in Workers Builds
 
+### Node.js Version
+
+Workers Builds detects Node.js version from `.node-version` or `.nvmrc`. Current: **22.16.0**.
+
+`@astrojs/react@5.x` requires Node >=22.12.0. Always keep `.node-version` and `.nvmrc` in sync with `package.json` engines field.
+
 ### Incident Log
 
 - **2026-03-27**: `@astrojs/mdx@5.0.2` broke Workers Builds — requires `astro@^6.0.0`. Fixed by downgrading to `@astrojs/mdx@4.3.14`. Root cause: installed locally with `--legacy-peer-deps` which masked the conflict.
+- **2026-03-27**: `@astrojs/react@5.0.1` requires Node >=22.12.0 but `.node-version` was `20.19.2`. Fixed by updating to Node 22.16.0.
 
 ## References
 
