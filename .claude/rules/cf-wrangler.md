@@ -2,6 +2,7 @@
 globs:
   - "**/wrangler.jsonc"
   - "**/wrangler.toml"
+  - "**/package.json"
 ---
 
 # Cloudflare Workers Wrangler Configuration
@@ -104,6 +105,29 @@ Always include the schema for editor support:
   "$schema": "./node_modules/wrangler/config-schema.json"
 }
 ```
+
+## Dependency Compatibility (Workers Builds)
+
+Workers Builds runs `npm ci` which enforces **strict peer dependency resolution**. Do NOT use `--legacy-peer-deps` or `--force` locally — if a package requires it, the build will fail in CI.
+
+### Known Compatibility Constraints
+
+| Package | Constraint | Reason |
+|---------|-----------|--------|
+| `@astrojs/mdx` | Must use `4.x` with Astro 5 | `@astrojs/mdx@5.x` requires `astro@^6.0.0` |
+| `@astrojs/react` | Must match Astro major version | Peer dep on `astro@^5.0.0` |
+| `@playwright/test` | devDependency only | Not needed in production build |
+
+### Before Adding Dependencies
+
+1. Check peer dependencies: `npm view <pkg> peerDependencies`
+2. Verify compatibility with current Astro version (`astro@5.x`)
+3. Test with `npm ci` (not `npm install`) to catch peer dep conflicts
+4. If `npm ci` fails locally, it WILL fail in Workers Builds
+
+### Incident Log
+
+- **2026-03-27**: `@astrojs/mdx@5.0.2` broke Workers Builds — requires `astro@^6.0.0`. Fixed by downgrading to `@astrojs/mdx@4.3.14`. Root cause: installed locally with `--legacy-peer-deps` which masked the conflict.
 
 ## References
 
