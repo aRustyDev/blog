@@ -1,0 +1,139 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {
+      "@type": "Person",
+      "@id": "karpathy",
+      "name": "Andrej Karpathy",
+      "jobTitle": "AI Researcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Independent (prev. Tesla, OpenAI)"
+      },
+      "sameAs": [
+        "https://x.com/karpathy",
+        "https://karpathy.ai",
+        "https://www.linkedin.com/in/andrejkarpathy"
+      ],
+      "tags": ["ai", "context-engineering", "llm"]
+    },
+    {
+      "@type": "Person",
+      "@id": "lutke",
+      "name": "Tobi Lütke",
+      "jobTitle": "CEO",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Shopify",
+        "url": "https://www.shopify.com"
+      },
+      "sameAs": [
+        "https://x.com/toaborern",
+        "https://www.linkedin.com/in/tobiaslutke"
+      ],
+      "tags": ["context-engineering", "leadership"]
+    },
+    {
+      "@type": "Person",
+      "@id": "willison",
+      "name": "Simon Willison",
+      "jobTitle": "Creator of Datasette",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Independent"
+      },
+      "sameAs": [
+        "https://x.com/simonw",
+        "https://simonwillison.net",
+        "https://www.linkedin.com/in/simonwillison"
+      ],
+      "tags": ["ai", "context-engineering", "python"]
+    },
+    {
+      "@type": "Person",
+      "@id": "schmid",
+      "name": "Philipp Schmid",
+      "jobTitle": "AI Developer Advocate",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Google DeepMind",
+        "url": "https://deepmind.google"
+      },
+      "sameAs": [
+        "https://x.com/_philschmid",
+        "https://www.philschmid.de",
+        "https://www.linkedin.com/in/philipp-schmid-a6a2bb196"
+      ],
+      "tags": ["ai", "context-engineering", "huggingface"]
+    },
+    {
+      "@type": "Person",
+      "@id": "mei-lingrui",
+      "name": "Lingrui Mei",
+      "jobTitle": "Researcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Carnegie Mellon University",
+        "url": "https://www.cmu.edu"
+      },
+      "sameAs": [],
+      "tags": ["ai", "context-engineering", "research"]
+    },
+    {
+      "@type": "Person",
+      "@id": "gupta-aakash",
+      "name": "Aakash Gupta",
+      "jobTitle": "Product Growth Expert",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Independent"
+      },
+      "sameAs": [
+        "https://x.com/aaborens",
+        "https://www.linkedin.com/in/aakashg"
+      ],
+      "tags": ["product", "context-engineering"]
+    },
+    {
+      "@type": "Person",
+      "@id": "schulhoff",
+      "name": "Sander Schulhoff",
+      "jobTitle": "Researcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Maryland",
+        "url": "https://www.umd.edu"
+      },
+      "sameAs": [
+        "https://x.com/SanderSchulhoff"
+      ],
+      "tags": ["ai", "prompt-engineering", "research"]
+    },
+    {
+      "@type": "Person",
+      "@id": "sahoo",
+      "name": "Pranab Sahoo",
+      "jobTitle": "Researcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Independent"
+      },
+      "sameAs": [],
+      "tags": ["ai", "prompt-engineering", "research"]
+    },
+    {
+      "@type": "Person",
+      "@id": "hua-qishuo",
+      "name": "Qishuo Hua",
+      "jobTitle": "Researcher",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Peking University",
+        "url": "https://www.pku.edu.cn"
+      },
+      "sameAs": [],
+      "tags": ["ai", "context-engineering", "research"]
+    }
+  ]
+}

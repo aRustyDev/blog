@@ -1,0 +1,72 @@
+label: "Phase 1 Initial (19 sources)"
+topics:
+  - "CE Definition"
+  - "In-Context Learning"
+  - "Prompt Engineering"
+  - "Agent Architecture"
+  - "Memory Systems"
+  - "Tool Use & MCP"
+  - "RAG"
+  - "Multi-Agent"
+  - "Security & Control"
+  - "Production Eng."
+  - "Community & Term."
+  - "SE Patterns"
+sources:
+  - name: "Mei et al. CE Survey"
+    type: academic
+    weights: [1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0]
+  - name: "Hua et al. CE 2.0"
+    type: academic
+    weights: [1.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "Rivasseau Invasive CE"
+    type: academic
+    weights: [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+  - name: "Dong et al. ICL Survey"
+    type: academic
+    weights: [0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "Li Prompt Design"
+    type: academic
+    weights: [0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "Chhikara et al. Mem0"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.5, 0.0, 0.0, 1.0, 0.0, 0.0]
+  - name: "Hu et al. Agent Memory"
+    type: academic
+    weights: [0.5, 0.0, 0.0, 1.0, 1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: "Krishnan MCP Multi-Agent"
+    type: academic
+    weights: [0.5, 0.0, 0.0, 0.5, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.5]
+  - name: "Singh et al. Agentic RAG"
+    type: academic
+    weights: [0.0, 0.0, 0.0, 1.0, 0.0, 0.5, 1.0, 0.5, 0.0, 0.0, 0.0, 0.5]
+  - name: "Karpathy Tweet"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 1.0, 0.0]
+  - name: "Lutke Tweet"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "Willison Blog"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0]
+  - name: "Anthropic CE Framework"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 1.0, 0.5, 1.0, 0.0, 0.5, 0.0, 0.5, 0.0, 1.0]
+  - name: "LangChain 4-Strategy"
+    type: practitioner
+    weights: [1.0, 0.0, 0.0, 1.0, 0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.5, 1.0]
+  - name: "Schmid 7-Component"
+    type: practitioner
+    weights: [1.0, 0.0, 0.5, 1.0, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.5, 0.0]
+  - name: "Weng Agent Blog"
+    type: practitioner
+    weights: [0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
+  - name: "Manus Production"
+    type: practitioner
+    weights: [1.0, 0.0, 0.0, 1.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0, 0.5]
+  - name: "Latent Space RAG is Dead"
+    type: practitioner
+    weights: [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.5, 0.0]
+  - name: "Anthropic Context Mgmt"
+    type: practitioner
+    weights: [0.5, 0.0, 0.0, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0]

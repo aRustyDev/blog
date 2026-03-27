@@ -1,0 +1,90 @@
+---
+import dayjs from "dayjs";
+
+interface TimelineItem {
+  date: string;
+  label: string;
+  description?: string;
+  url?: string;
+  icon?: string;
+}
+
+type Props = {
+  items: TimelineItem[];
+  collapsible?: boolean;
+  class?: string;
+};
+
+const {
+  items,
+  collapsible = true,
+  class: className,
+} = Astro.props;
+
+function formatDate(date: string): string {
+  // Quarter format: "2025-Q3" → "Q3 2025"
+  if (date.includes("-Q")) {
+    const [year, quarter] = date.split("-");
+    return `${quarter} ${year}`;
+  }
+  return dayjs(date).format("MMM D, YYYY");
+}
+
+const firstDate = items.length > 0 ? formatDate(items[0].date) : "";
+const lastDate = items.length > 1 ? formatDate(items[items.length - 1].date) : firstDate;
+const summaryLabel = `Timeline: ${firstDate} — ${lastDate}`;
+---
+
+{collapsible ? (
+  <details class:list={["component-details", "timeline-cards-wrapper", className]} open>
+    <summary class="timeline-cards-summary" aria-label={summaryLabel}>
+      <span class="timeline-cards-chevron" aria-hidden="true"></span>
+      <span class="timeline-cards-summary-text">{firstDate} — {lastDate}</span>
+    </summary>
+    <div class="timeline-cards">
+      <div class="timeline-line" aria-hidden="true"></div>
+      {items.map((item, i) => (
+        <div class:list={["timeline-card-row", i % 2 === 0 ? "left" : "right"]}>
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <div class="timeline-card">
+            <span class="timeline-card-date">{formatDate(item.date)}</span>
+            <div class="timeline-card-content">
+              <div class="timeline-card-title">
+                {item.url ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                ) : (
+                  item.label
+                )}
+              </div>
+              {item.description && <div class="timeline-card-desc">{item.description}</div>}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </details>
+) : (
+  <div class:list={["timeline-cards-wrapper", className]}>
+    <div class="timeline-cards">
+      <div class="timeline-line" aria-hidden="true"></div>
+      {items.map((item, i) => (
+        <div class:list={["timeline-card-row", i % 2 === 0 ? "left" : "right"]}>
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <div class="timeline-card">
+            <span class="timeline-card-date">{formatDate(item.date)}</span>
+            <div class="timeline-card-content">
+              <div class="timeline-card-title">
+                {item.url ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                ) : (
+                  item.label
+                )}
+              </div>
+              {item.description && <div class="timeline-card-desc">{item.description}</div>}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}

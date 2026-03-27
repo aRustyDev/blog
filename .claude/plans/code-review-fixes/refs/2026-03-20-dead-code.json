@@ -1,0 +1,26 @@
+{
+  "category": "dead-code",
+  "reviewed_at": "2026-03-20T16:30:00Z",
+  "files_reviewed": [
+    "src/components/graph/GraphView.tsx",
+    "src/components/graph/graph.constants.ts",
+    "src/components/graph/graph.shared.ts",
+    "src/components/graph/useGraphData.ts",
+    "src/components/Tag.astro",
+    "src/constants.ts",
+    "src/config.ts",
+    "src/scripts/theme.ts",
+    "src/styles/global.css",
+    "src/styles/graph.css"
+  ],
+  "findings": [
+    {"id":"DEAD-001","severity":"low","confidence":97,"title":"Unused import: getSigmaBackground in GraphView.tsx","file":"src/components/graph/GraphView.tsx","line":9,"current":"import { resolveThemeColor, getSigmaBackground }","expected":"Remove getSigmaBackground from import","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["unused-import","refactor-residue"]},
+    {"id":"DEAD-002","severity":"low","confidence":98,"title":"Exported getDimColor in graph.constants.ts never imported anywhere","file":"src/components/graph/graph.constants.ts","line":41,"current":"export function getDimColor(...) — never called","expected":"Remove entirely; callers use resolveDimColors/dimColorsRef","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["unused-export","refactor-residue"]},
+    {"id":"DEAD-003","severity":"low","confidence":90,"title":"adjustColor exported but only used internally by getSigmaBackground","file":"src/components/graph/graph.constants.ts","line":18,"current":"export function adjustColor(...)","expected":"Remove export keyword — module-local helper only","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["unnecessary-export"]},
+    {"id":"DEAD-004","severity":"medium","confidence":92,"title":"Tag.astro uses border-foreground and border-accent — undefined after @theme rename","file":"src/components/Tag.astro","line":19,"current":"border-foreground, border-accent — tokens not in @theme inline","expected":"border-fg, border-ac","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["broken-tailwind-token","visual-bug"]},
+    {"id":"DEAD-005","severity":"low","confidence":95,"title":"ORCID social entry has placeholder URL 0000-0000-0000-0000","file":"src/constants.ts","line":106,"current":"href: https://orcid.org/0000-0000-0000-0000, enabled: false","expected":"Replace with real URL or remove","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["placeholder-url"]},
+    {"id":"DEAD-006","severity":"low","confidence":85,"title":"Six disabled social entries with unverified stub URLs","file":"src/constants.ts","line":96,"current":"arXiv, ResearchGate, AlphaXiv, HackerOne, CVE, ACM — all enabled:false with generic URLs","expected":"Remove entries without real profiles, or verify URLs","fix_complexity":"small","depends_on":[],"adr_ref":null,"tags":["placeholder-url","dead-config"]},
+    {"id":"DEAD-007","severity":"low","confidence":88,"title":"graphData state unused in local/modal useGraphData paths","file":"src/components/graph/useGraphData.ts","line":77,"current":"graphData allocated but never accessed by GraphView","expected":"Consider includeMetadata option to skip state allocation","fix_complexity":"medium","depends_on":[],"adr_ref":null,"tags":["unused-state","performance"]},
+    {"id":"DEAD-008","severity":"low","confidence":80,"title":"window.theme.setPreference/reflectPreference never called externally","file":"src/scripts/theme.ts","line":43,"current":"Attached to window.theme but only called internally","expected":"Remove or document as extension point","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["unused-global-api","template-residue"]}
+  ]
+}

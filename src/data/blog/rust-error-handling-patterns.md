@@ -5,10 +5,10 @@ pubDatetime: 2024-02-08T00:00:00Z
 featured: false
 draft: false
 tags:
-  - rust
-  - programming
   - patterns
   - errors
+languages:
+  - rust
 ---
 
 Coming from Go, Rust's error handling felt alien at first. `Result<T, E>` everywhere, the `?` operator, and a dozen crates all claiming to be "the" solution. After shipping a few production services in Rust, here's what actually works.

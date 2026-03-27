@@ -1,0 +1,141 @@
+---
+type Props = {
+  content: string;
+  variant?: "simple" | "icons";
+  collapsible?: boolean;
+  label?: string;
+  highlight?: string[];
+  class?: string;
+};
+
+const {
+  content,
+  variant = "icons",
+  collapsible = true,
+  label,
+  highlight = [],
+  class: className,
+} = Astro.props;
+
+const isSimple = variant === "simple";
+
+interface TreeEntry {
+  name: string;
+  isDir: boolean;
+  depth: number;
+  path: string;
+  isLast: boolean;
+  prefix: string;
+}
+
+function parseTree(input: string): TreeEntry[] {
+  const rawLines = input.split("\n").filter(l => l.trim().length > 0);
+  const entries: TreeEntry[] = [];
+  const stack: { depth: number; isLast: boolean }[] = [];
+
+  for (let i = 0; i < rawLines.length; i++) {
+    const line = rawLines[i];
+    const stripped = line.replace(/^\s+/, "");
+    const indent = line.length - stripped.length;
+    const depth = Math.floor(indent / 2);
+
+    // Split nested paths: "a/b/c.txt" -> segments
+    const segments = stripped.split("/").filter(Boolean);
+    const hasTrailingSlash = stripped.endsWith("/");
+
+    for (let s = 0; s < segments.length; s++) {
+      const segDepth = depth + s;
+      const isLastSegment = s === segments.length - 1;
+      const isDir = !isLastSegment || hasTrailingSlash;
+      const name = segments[s] + (isDir ? "/" : "");
+
+      // Build the full path for highlight matching
+      const pathParts = [];
+      for (const e of entries) {
+        if (e.depth < segDepth && e.isDir) {
+          pathParts.length = e.depth;
+          pathParts[e.depth] = e.name.replace(/\/$/, "");
+        }
+      }
+      pathParts.length = segDepth;
+      pathParts[segDepth] = segments[s];
+      const fullPath = pathParts.filter(Boolean).join("/") + (isDir ? "/" : "");
+
+      // Determine if last child at this depth
+      let isLast = true;
+      if (isLastSegment) {
+        for (let j = i + 1; j < rawLines.length; j++) {
+          const nextStripped = rawLines[j].replace(/^\s+/, "");
+          const nextIndent = rawLines[j].length - nextStripped.length;
+          const nextDepth = Math.floor(nextIndent / 2);
+          if (nextDepth <= segDepth) {
+            isLast = nextDepth < segDepth;
+            break;
+          }
+        }
+      } else {
+        isLast = false;
+      }
+
+      // Build tree connector prefix
+      while (stack.length > segDepth) stack.pop();
+      let prefix = "";
+      for (let d = 0; d < segDepth; d++) {
+        const ancestor = stack[d];
+        prefix += ancestor && !ancestor.isLast ? "│  " : "   ";
+      }
+      prefix += segDepth === 0 ? "" : isLast ? "└── " : "├── ";
+
+      stack[segDepth] = { depth: segDepth, isLast };
+
+      entries.push({ name, isDir, depth: segDepth, path: fullPath, isLast, prefix });
+    }
+  }
+  return entries;
+}
+
+const entries = parseTree(content);
+const highlightSet = new Set(highlight.map(h => h.replace(/\/$/, "")));
+
+function isHighlighted(entry: TreeEntry): boolean {
+  const cleanPath = entry.path.replace(/\/$/, "");
+  return highlightSet.has(cleanPath) || highlightSet.has(entry.name.replace(/\/$/, ""));
+}
+
+const summaryLabel = label ?? "Directory tree";
+---
+
+{collapsible ? (
+  <details class:list={["component-details", "dir-tree", `dir-tree--${variant}`, className]} open>
+    <summary class="dir-tree-label" aria-label={summaryLabel}>
+      <span class="dir-tree-chevron" aria-hidden="true"></span>
+      <span>{label ?? "Directory tree"}</span>
+    </summary>
+    <div class="dir-tree-body">
+      {entries.map(entry => (
+        <div class:list={["dir-tree-entry", { highlighted: isHighlighted(entry) }]}>
+          <span class="dir-tree-connector" aria-hidden="true">{entry.prefix}</span>
+          {!isSimple && <span class="dir-tree-icon">{entry.isDir ? "📁" : "📄"}</span>}
+          <span class="dir-tree-name">{entry.name}</span>
+        </div>
+      ))}
+    </div>
+  </details>
+) : (
+  <div class:list={["dir-tree", `dir-tree--${variant}`, className]}>
+    {label && (
+      <div class="dir-tree-label-static">
+        <span>{label}</span>
+      </div>
+    )}
+    <div class="dir-tree-body">
+      {entries.map(entry => (
+        <div class:list={["dir-tree-entry", { highlighted: isHighlighted(entry) }]}>
+          <span class="dir-tree-connector" aria-hidden="true">{entry.prefix}</span>
+          {!isSimple && <span class="dir-tree-icon">{entry.isDir ? "📁" : "📄"}</span>}
+          <span class="dir-tree-name">{entry.name}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+)}

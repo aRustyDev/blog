@@ -5,6 +5,9 @@ dist/
 # generated search index
 public/pagefind/
 
+# generated graph data
+public/graph.json
+
 # dependencies
 node_modules/
 

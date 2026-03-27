@@ -7,6 +7,8 @@ import Tag from "@/components/Tag.astro";
 import Datetime from "@/components/Datetime.astro";
 import EditPost from "@/components/EditPost.astro";
 import ShareLinks from "@/components/ShareLinks.astro";
+import LocalGraphWidget from "@/components/graph/LocalGraphWidget";
+import "@/styles/graph.css";
 import BackButton from "@/components/BackButton.astro";
 import BackToTopButton from "@/components/BackToTopButton.astro";
 import { getPath } from "@/utils/getPath";
@@ -91,8 +93,8 @@ const nextPost =
     data-pagefind-body
   >
     <h1
-      transition:name={slugifyStr(title.replaceAll(".", "-"))}
-      class="inline-block text-2xl font-bold text-accent sm:text-3xl"
+      transition:name={slugifyStr(title.replaceAll(".", "-").replaceAll(":", ""))}
+      class="inline-block text-2xl font-bold text-ac sm:text-3xl"
     >
       {title}
     </h1>
@@ -109,7 +111,7 @@ const nextPost =
     </div>
     <article
       id="article"
-      class="app-prose mt-8 w-full max-w-app prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)"
+      class="app-prose mt-8 w-full prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)"
     >
       <Content />
     </article>
@@ -139,7 +141,7 @@ const nextPost =
             <IconChevronLeft class="inline-block flex-none rtl:rotate-180" />
             <div>
               <span>Previous Post</span>
-              <div class="text-sm text-accent/85">{prevPost.title}</div>
+              <div class="text-sm text-ac/85">{prevPost.title}</div>
             </div>
           </a>
         )
@@ -152,7 +154,7 @@ const nextPost =
           >
             <div>
               <span>Next Post</span>
-              <div class="text-sm text-accent/85">{nextPost.title}</div>
+              <div class="text-sm text-ac/85">{nextPost.title}</div>
             </div>
             <IconChevronRight class="inline-block flex-none rtl:rotate-180" />
           </a>
@@ -160,48 +162,51 @@ const nextPost =
       }
     </div>
   </main>
+
+  <!-- Floating graph widget (desktop only, fixed position) -->
+  <LocalGraphWidget
+    client:only="react"
+    nodeId={`post:${post.id}`}
+    title={title}
+  />
+
   <Footer />
 </Layout>
 
 <script is:inline data-astro-rerun>
-  /** Create a progress indicator
-   *  at the top */
+  // Abort previous listeners from prior navigations (prevents accumulation)
+  if (window.__postDetailsAC) window.__postDetailsAC.abort();
+  window.__postDetailsAC = new AbortController();
+  var __pdSignal = window.__postDetailsAC.signal;
+
+  /** Create a progress indicator at the top (guard: only create once) */
   function createProgressBar() {
-    // Create the main container div
-    const progressContainer = document.createElement("div");
+    if (document.querySelector(".progress-container")) return;
+    var progressContainer = document.createElement("div");
     progressContainer.className =
-      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
-
-    // Create the progress bar div
-    const progressBar = document.createElement("div");
-    progressBar.className = "progress-bar h-1 w-0 bg-accent";
+      "progress-container fixed top-0 z-10 h-1 w-full bg-bg";
+    var progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-ac";
     progressBar.id = "myBar";
-
-    // Append the progress bar to the progress container
     progressContainer.appendChild(progressBar);
-
-    // Append the progress container to the document body or any other desired parent element
     document.body.appendChild(progressContainer);
   }
   createProgressBar();
 
-  /** Update the progress bar
-   *  when user scrolls */
+  /** Update the progress bar when user scrolls */
   function updateScrollProgress() {
-    document.addEventListener("scroll", () => {
-      const winScroll =
+    document.addEventListener("scroll", function() {
+      var winScroll =
         document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
+      var height =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (document) {
-        const myBar = document.getElementById("myBar");
-        if (myBar) {
-          myBar.style.width = scrolled + "%";
-        }
+      var scrolled = (winScroll / height) * 100;
+      var myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
       }
-    });
+    }, { signal: __pdSignal });
   }
   updateScrollProgress();
 
@@ -248,7 +253,7 @@ const nextPost =
         : "-top-3";
 
       const copyButton = document.createElement("button");
-      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
+      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-mt border border-mt px-2 py-1 text-xs leading-4 text-fg font-medium`;
       copyButton.innerHTML = copyButtonLabel;
       codeBlock.setAttribute("tabindex", "0");
       codeBlock.appendChild(copyButton);
@@ -278,8 +283,8 @@ const nextPost =
   }
   attachCopyButtons();
 
-  /* Go to page start after page swap */
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
-  );
+  /* Go to page start after page swap (uses signal to prevent accumulation) */
+  document.addEventListener("astro:after-swap", function() {
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+  }, { signal: __pdSignal });
 </script>

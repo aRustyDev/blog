@@ -1,14 +1,19 @@
-/* Brand colors from CDN - forest-night theme */
-@import url("https://brand.arusty.dev/assets/colors/themes/forest-night.css");
-
 @import "tailwindcss";
 @import "./typography.css";
+@import "./components.css";
+@import "./cli-snippet.css";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /*
- * Map brand.arusty.dev tokens to AstroPaper theme variables.
- * Theme file provides light/dark via data-theme attribute.
+ * Brand token aliases.
+ * forest-night.css (CDN) defines --color-background, --color-text, etc.
+ * We create short aliases (--background, --foreground, etc.) that resolve
+ * to the CDN tokens. These aliases are used in var() throughout components.
+ *
+ * IMPORTANT: @theme inline must NOT redefine --color-background etc.
+ * because that creates a circular reference with the aliases below.
+ * Instead, Tailwind reads the short aliases directly.
  */
 :root {
   --background: var(--color-background);
@@ -16,9 +21,12 @@
   --accent: var(--color-accent);
   --muted: var(--color-surface);
   --border: var(--color-border);
+  --error: var(--color-error, #f85149);
+  --warning: var(--color-warning, #d29922);
+  --success: var(--color-success, #3fb950);
 }
 
-/* System preference auto-detection */
+/* System preference auto-detection (when CDN hasn't loaded or no data-theme set) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --background: #0d1117;
@@ -29,30 +37,44 @@
   }
 }
 
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --background: #ffffff;
+    --foreground: #1f2328;
+    --accent: #2ea043;
+    --muted: #f6f8fa;
+    --border: #d0d7de;
+  }
+}
+
 @theme inline {
   --font-app: var(--font-jetbrains-mono);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
+  /* Tailwind reads the short aliases, NOT the CDN --color-* tokens.
+   * This avoids the circular reference:
+   *   --color-background (CDN) → --background (alias) → --color-background (Tailwind) → loop
+   * By using unique Tailwind token names, the circle is broken. */
+  --color-bg: var(--background);
+  --color-fg: var(--foreground);
+  --color-ac: var(--accent);
+  --color-mt: var(--muted);
+  --color-bd: var(--border);
 }
 
 @layer base {
   * {
-    @apply border-border outline-accent/75;
+    @apply border-bd outline-ac/75;
     scrollbar-width: auto;
-    scrollbar-color: var(--color-muted) transparent;
+    scrollbar-color: var(--color-mt) transparent;
   }
   html {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-bg font-app text-fg selection:bg-ac/75 selection:text-bg;
   }
   a,
   button {
-    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+    @apply outline-offset-1 outline-ac focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -61,7 +83,19 @@
 }
 
 @utility max-w-app {
-  @apply max-w-3xl;
+  max-width: clamp(48rem, 60vw, 80rem);
+}
+
+/* Wide mode config — single source of truth for wide-mode widths */
+:root {
+  --wide-max: min(90vw, 100%);
+  --wide-prose: min(85vw, 100%);
+  --wide-breakout: min(90vw, 100%);
+}
+
+/* Wide mode: only content areas expand — site chrome (header, footer) stays fixed */
+html[data-wide] main.app-layout {
+  max-width: var(--wide-max);
 }
 
 @utility app-layout {
@@ -70,6 +104,38 @@
 
 .active-nav {
   @apply underline decoration-wavy decoration-2 underline-offset-8;
+}
+
+/* Settings popover */
+.settings-popover {
+  @apply absolute right-0 top-full mt-2 z-50
+         invisible opacity-0 pointer-events-none
+         w-48 rounded-lg border border-bd bg-bg shadow-lg
+         transition-[opacity,visibility] duration-150;
+}
+
+.settings-popover.active {
+  @apply visible opacity-100 pointer-events-auto;
+}
+
+.settings-item {
+  @apply flex items-center gap-3 w-full px-3 py-2
+         text-sm text-fg hover:bg-mt transition-colors
+         cursor-pointer;
+  background: none;
+  border: none;
+}
+
+.settings-item:first-child {
+  @apply rounded-t-lg;
+}
+
+.settings-item:last-child {
+  @apply rounded-b-lg;
+}
+
+.settings-status {
+  @apply ml-auto text-xs text-fg/50;
 }
 
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */

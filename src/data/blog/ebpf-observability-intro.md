@@ -36,6 +36,7 @@ The ecosystem is maturing but still fragmented:
 - **cilium/ebpf** - Go library, good if you're in that ecosystem.
 
 For production observability:
+
 - **Pixie** - Full auto-instrumentation platform
 - **Parca** - Continuous profiling with eBPF
 - **Tetragon** - Security observability from Cilium

@@ -1,0 +1,43 @@
+---
+import { fetchOGData } from "@/utils/og-fetch";
+
+type Props = {
+  url: string;
+  title?: string;
+  description?: string;
+  image?: string;
+  class?: string;
+};
+
+const { url, title, description, image, class: className } = Astro.props;
+
+const og = await fetchOGData(url, { title, description, image });
+const domain = og.siteName || new URL(url).hostname;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={["og-card", className]}
+  style={og.brandColor ? `--brand-color: ${og.brandColor}` : undefined}
+>
+  {og.image && (
+    <img
+      src={og.image}
+      alt=""
+      class="og-card-image"
+      loading="lazy"
+    />
+  )}
+  <div class="og-card-content">
+    {og.title && <div class="og-card-title">{og.title}</div>}
+    {og.description && <div class="og-card-description">{og.description}</div>}
+    <div class="og-card-domain">
+      {og.favicon && (
+        <img src={og.favicon} alt="" class="og-card-favicon" loading="lazy" />
+      )}
+      <span>{domain}</span>
+    </div>
+  </div>
+</a>

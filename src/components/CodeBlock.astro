@@ -1,0 +1,53 @@
+---
+import { getHighlighter } from "@/utils/shiki";
+
+type Props = {
+  code: string;
+  lang: string;
+  collapsible?: boolean;
+  title?: string;
+  lineNumbers?: boolean;
+  class?: string;
+};
+
+const {
+  code,
+  lang,
+  collapsible = true,
+  title,
+  lineNumbers = false,
+  class: className,
+} = Astro.props;
+
+const highlighter = await getHighlighter();
+const highlightedHtml = highlighter.codeToHtml(code, {
+  lang,
+  themes: { light: "github-light", dark: "github-dark" },
+  defaultColor: false,
+});
+
+const summaryLabel = title ?? "Code block";
+---
+
+{collapsible ? (
+  <details class:list={["component-details", className]} open>
+    <summary class="code-block-title" aria-label={summaryLabel}>
+      <span class="code-block-chevron" aria-hidden="true"></span>
+      {title && <span class="code-block-title-text">{title}</span>}
+    </summary>
+    <div class:list={["code-block-body", { "line-numbers": lineNumbers }]}>
+      <Fragment set:html={highlightedHtml} />
+    </div>
+  </details>
+) : (
+  <div class:list={["code-block-wrapper", className]}>
+    {title && (
+      <div class="code-block-title-static">
+        <span class="code-block-title-text">{title}</span>
+      </div>
+    )}
+    <div class:list={["code-block-body", { "line-numbers": lineNumbers }]}>
+      <Fragment set:html={highlightedHtml} />
+    </div>
+  </div>
+)}

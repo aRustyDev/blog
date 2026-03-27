@@ -1,0 +1,73 @@
+---
+type Props = {
+  content: string;
+  collapsible?: boolean;
+  title?: string;
+  prompt?: string;
+  class?: string;
+};
+
+const {
+  content,
+  collapsible = true,
+  title,
+  prompt = "$",
+  class: className,
+} = Astro.props;
+
+interface ParsedLine {
+  type: "command" | "output";
+  promptStr?: string;
+  text: string;
+}
+
+const lines: ParsedLine[] = content.split("\n").map(line => {
+  const trimmed = line.trimStart();
+  if (trimmed.startsWith(prompt + " ") || trimmed === prompt) {
+    return {
+      type: "command" as const,
+      promptStr: prompt,
+      text: trimmed.slice(prompt.length + 1),
+    };
+  }
+  return { type: "output" as const, text: line };
+});
+
+const summaryLabel = title ?? "Terminal output";
+---
+
+{collapsible ? (
+  <details class:list={["component-details", "cli-snippet", className]} open>
+    <summary class="cli-snippet-title" aria-label={summaryLabel}>
+      <span class="cli-dots" aria-hidden="true">● ● ●</span>
+      {title && <span class="cli-title-text">{title}</span>}
+    </summary>
+    <div class="cli-snippet-body">
+      {lines.map(line => (
+        <div class:list={["cli-line", line.type === "command" ? "cli-line-command" : "cli-line-output"]}>
+          {line.type === "command" && (
+            <span class="cli-prompt" aria-hidden="true">{line.promptStr} </span>
+          )}
+          <span>{line.text}</span>
+        </div>
+      ))}
+    </div>
+  </details>
+) : (
+  <div class:list={["cli-snippet", className]}>
+    <div class="cli-snippet-title-static">
+      <span class="cli-dots" aria-hidden="true">● ● ●</span>
+      {title && <span class="cli-title-text">{title}</span>}
+    </div>
+    <div class="cli-snippet-body">
+      {lines.map(line => (
+        <div class:list={["cli-line", line.type === "command" ? "cli-line-command" : "cli-line-output"]}>
+          {line.type === "command" && (
+            <span class="cli-prompt" aria-hidden="true">{line.promptStr} </span>
+          )}
+          <span>{line.text}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+)}

@@ -130,7 +130,7 @@ const structuredData = {
       href={new URL("rss.xml", Astro.site)}
     />
 
-    <meta name="theme-color" content="" />
+    <meta name="theme-color" content="#0d1117" />
 
     {
       // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,
@@ -146,8 +146,10 @@ const structuredData = {
 
     <ClientRouter />
 
-    <!-- Initialize BrandTheme early to prevent FOUC -->
-    <script is:inline>
+    <!-- Initialize BrandTheme early to prevent FOUC.
+         data-astro-rerun forces this to re-execute on every view transition,
+         ensuring data-theme is set on <html> before the new page paints. -->
+    <script is:inline data-astro-rerun>
       (function () {
         // Parse URL query parameters for theme overrides
         // Supports: ?theme=twilight&mode=dark
@@ -176,13 +178,14 @@ const structuredData = {
           typeof BrandTheme !== "undefined"
             ? BrandTheme.getEffectiveMode()
             : "dark";
-        window.theme = {
+        window.theme = Object.assign(window.theme || {}, {
           themeValue: mode,
           getTheme: () => window.theme.themeValue,
           setTheme: val => {
             window.theme.themeValue = val;
           },
-        };
+        });
+
       })();
     </script>
   </head>

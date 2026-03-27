@@ -15,8 +15,11 @@ function getEffectiveMode(): string {
 function reflectPreference(): void {
   const mode = getEffectiveMode();
 
-  // Update aria-label on theme button
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", mode);
+  // Update aria-label on theme button with actionable description
+  const nextMode = mode === "dark" ? "light" : "dark";
+  document
+    .querySelector("#theme-btn")
+    ?.setAttribute("aria-label", `Switch to ${nextMode} mode`);
 
   // Update window.theme for compatibility
   if (window.theme) {
@@ -39,6 +42,8 @@ function setPreference(): void {
 }
 
 // Update the global theme API
+// Extend window.theme with functions (Layout.astro creates the base object)
+// setPreference/reflectPreference are exposed for potential external use
 if (window.theme) {
   window.theme.setPreference = setPreference;
   window.theme.reflectPreference = reflectPreference;
@@ -59,36 +64,69 @@ if (window.theme) {
 // Ensure theme is reflected
 reflectPreference();
 
+// Named handler so we can remove before re-adding (prevents accumulation)
+function handleThemeToggle(): void {
+  if (window.BrandTheme) {
+    window.BrandTheme.toggle();
+  }
+  reflectPreference();
+}
+
 function setThemeFeature(): void {
   reflectPreference();
 
-  // Wire up theme button to BrandTheme.toggle()
-  document.querySelector("#theme-btn")?.addEventListener("click", () => {
-    if (window.BrandTheme) {
-      window.BrandTheme.toggle();
-    }
-    reflectPreference();
-  });
+  // Remove previous listener before adding (prevents accumulation on view transitions)
+  const btn = document.querySelector("#theme-btn");
+  if (btn) {
+    btn.removeEventListener("click", handleThemeToggle);
+    btn.addEventListener("click", handleThemeToggle);
+  }
 }
 
 // Set up theme features after page load
 setThemeFeature();
 
-// Runs on view transitions navigation
-document.addEventListener("astro:after-swap", setThemeFeature);
+// Store the current theme mode before any swap happens
+let _savedMode: string | null = null;
 
-// Set theme-color value before page transition
+// Capture theme state BEFORE swap — this runs before inline scripts in the new doc
 document.addEventListener("astro:before-swap", event => {
-  const astroEvent = event;
+  // Save the current effective mode
+  _savedMode = window.BrandTheme
+    ? window.BrandTheme.getEffectiveMode()
+    : document.documentElement.getAttribute("data-theme");
+
+
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro transition event lacks newDocument type
+  const newDoc = (event as any).newDocument as Document;
+
+  // Stamp the new document's <html> with current theme
+  if (_savedMode) {
+    newDoc.documentElement.setAttribute("data-theme", _savedMode);
+  }
+
+  // Preserve meta theme-color
   const bgColor = document
     .querySelector("meta[name='theme-color']")
     ?.getAttribute("content");
-
   if (bgColor) {
-    (astroEvent as any).newDocument
+    newDoc
       .querySelector("meta[name='theme-color']")
       ?.setAttribute("content", bgColor);
   }
+});
+
+// After swap: the new doc is live.
+document.addEventListener("astro:after-swap", () => {
+  if (_savedMode) {
+    // Force the correct mode on both DOM and BrandTheme
+    document.documentElement.setAttribute("data-theme", _savedMode);
+    if (window.BrandTheme) {
+      window.BrandTheme.mode(_savedMode);
+    }
+  }
+  setThemeFeature();
 });
 
 // Sync with system preference changes

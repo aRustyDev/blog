@@ -1,0 +1,53 @@
+---
+import { getHighlighter } from "@/utils/shiki";
+import { transformerTokenMetadata } from "@/utils/shiki-transformer";
+import CollapsibleReact from "./CLISnippetCollapsible";
+
+type Props = {
+  code: string;
+  lang: string;
+  title?: string;
+  collapsibleGroups?: boolean;
+  defaultCollapsed?: string[];
+  class?: string;
+};
+
+const {
+  code,
+  lang,
+  title,
+  collapsibleGroups = true,
+  defaultCollapsed,
+  class: className,
+} = Astro.props;
+
+// Build-time Shiki highlighting with scope metadata for pair detection
+const highlighter = await getHighlighter();
+const highlightedHtml = highlighter.codeToHtml(code, {
+  lang,
+  themes: { light: "github-light", dark: "github-dark" },
+  defaultColor: false,
+  includeExplanation: "scopeName",
+  transformers: [transformerTokenMetadata({ includeScope: true })],
+});
+
+const isDev = import.meta.env.DEV;
+
+// Build props object — only include code/lang in dev mode for runtime fallback
+const reactProps: Record<string, unknown> = {
+  html: highlightedHtml,
+  title,
+  collapsibleGroups,
+  defaultCollapsed,
+  className,
+};
+if (isDev) {
+  reactProps.code = code;
+  reactProps.lang = lang;
+}
+---
+
+<CollapsibleReact
+  client:only="react"
+  {...reactProps}
+/>

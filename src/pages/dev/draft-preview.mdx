@@ -1,0 +1,220 @@
+---
+layout: "@/layouts/Layout.astro"
+title: "Draft Preview: What is Context Engineering?"
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import CodeBlock from "@/components/CodeBlock.astro";
+import CLISnippet from "@/components/CLISnippet.astro";
+import DirTree from "@/components/DirTree.astro";
+import OGCard from "@/components/OGCard.astro";
+import Tweet from "@/components/Tweet.astro";
+import PersonPopup from "@/components/PersonPopup.astro";
+import TimelineCards from "@/components/TimelineCards.astro";
+import HierarchySimple from "@/components/HierarchySimple.astro";
+import scopeData from "@/data/hierarchies/scope-hierarchy.json";
+
+<Header />
+<main id="main-content" class="app-layout flex-1">
+<article class="app-prose my-8">
+
+# What is Context Engineering?
+
+You've been doing context engineering for months. You just didn't have a name for it.
+
+Every `.cursorrules` file you've written. Every `CLAUDE.md` you've maintained. Every system prompt you've refined, every MCP server you've configured, every hook you've wired up to guard a dangerous command. All of it. Context engineering.
+
+The field crystallized in June 2025 when two tweets gave it a name. Within 72 hours, a decade of scattered practice had a vocabulary. Within weeks, academic surveys formalized it. By late 2025, Gartner declared it the successor to prompt engineering.
+
+This post defines what context engineering actually is, where it came from, and why it matters more than "prompt engineering" ever did. It's the first in a six-part series mapping the discipline from first principles.
+
+But to understand what context engineering is, we need to understand what it replaced.
+
+---
+
+## Prompt Engineering Hit Its Ceiling
+
+Let's be clear: prompt engineering is real. It's not "just typing into a chatbox."
+
+<PersonPopup id="schulhoff">Schulhoff et al.</PersonPopup> cataloged 58 distinct prompting techniques organized into six categories: few-shot learning, thought generation, zero-shot methods, ensembling, self-criticism, and more. Their _Prompt Report_ is the most comprehensive survey of the field, co-authored by researchers at OpenAI, Microsoft, Google, Princeton, and Stanford. <PersonPopup id="sahoo">Sahoo et al.</PersonPopup> produced a separate systematic survey with 767 citations, the most-cited prompt engineering paper in existence. These are legitimate engineering techniques with measurable impact on model performance.
+
+But production AI tools don't just have prompts. They have persistent rules that activate when you open specific file types. Event-driven hooks that fire before tool calls and can block dangerous commands. External tools accessed through protocols like MCP. Cross-session memory that learns from past conversations and persists across sessions. Reusable skills invoked by slash commands. Reference documents loaded on demand.
+
+"Prompt engineering" doesn't describe any of this. The term covers one component type in a system that has at least six. It's like calling all of software engineering "function writing." Technically a part of the job, but missing most of what makes the work hard.
+
+The problem wasn't just semantic. Practitioners were building these systems (system prompts, skills, rules, hooks, memory systems) without a shared vocabulary. There was no way to compare approaches across tools, no framework for evaluating which components to build, no language for discussing composition and ordering. Every team invented their own terminology.
+
+Then, in June 2025, the vocabulary arrived.
+
+---
+
+## 72 Hours That Named a Discipline
+
+<Tweet
+  id="1935533422589399127"
+  author="lutke"
+  text={`I really like the mass realization and description of "context engineering" ... This is the new skill that will matter much more than "prompt engineering." It's the art of providing all the context for the task to be plausibly solvable by the LLM.`}
+  date="2025-06-22"
+/>
+
+Three days later:
+
+<Tweet
+  id="1937902205765607626"
+  author="karpathy"
+  text={`I think the word "prompt" trivializes what actually happens ... It's the delicate art and science of filling the context window with just the right information for the next step.`}
+  date="2025-06-25"
+/>
+
+<PersonPopup id="karpathy">Karpathy</PersonPopup> added a framing that stuck: LLMs are a new kind of operating system. The context window is RAM: a finite, volatile workspace where everything the model can reason over must fit simultaneously. And context engineering is the discipline of managing that RAM. Deciding what goes in, when, and in what order. Like an OS kernel managing memory pages, a context engineer manages information payloads.
+
+What happened next was remarkably fast. Within days, practitioners started publishing their own frameworks. <PersonPopup id="schmid">Phil Schmid</PersonPopup> identified seven context components and hit 915 points on Hacker News. LangChain proposed a four-strategy model for context management: writing, selecting, compressing, and isolating. Each framework was slightly different, but the convergence was unmistakable: the field was coalescing around the same architectural intuitions.
+
+<TimelineCards
+  items={[
+    { date: "2025-06-22", label: "Tobi Lütke coins 'context engineering'", url: "https://x.com/tobi/status/1935533422589399127" },
+    { date: "2025-06-25", label: "Karpathy amplifies with detailed definition", url: "https://x.com/karpathy/status/1937902205765607626" },
+    { date: "2025-06-27", label: "Simon Willison connects both definitions", url: "https://simonwillison.net/2025/jun/27/context-engineering/" },
+    { date: "2025-06-30", label: "Phil Schmid publishes 7-component framework (915 HN points)", url: "https://www.philschmid.de/context-engineering" },
+    { date: "2025-07-02", label: "LangChain publishes 4-strategy framework", url: "https://blog.langchain.com/context-engineering-for-agents/" },
+    { date: "2025-07-17", label: "Mei et al. publish first academic survey (1,400 papers)", url: "https://arxiv.org/abs/2507.13334" },
+    { date: "2025-09-29", label: "Anthropic publishes official CE framework", url: "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" },
+    { date: "2025-Q3", label: "Gartner declares 'context engineering is in, prompt engineering is out'" },
+    { date: "2026-01-01", label: "First peer-reviewed PE vs CE comparison (IEEE IISEC)" },
+  ]}
+/>
+
+From two tweets to academic formalization in 25 days. From practitioner blog posts to Gartner endorsement in a single quarter.
+
+The term stuck because it captured something practitioners already felt but couldn't articulate. As <PersonPopup id="willison">Simon Willison</PersonPopup> noted, "context engineering" carries closer alignment to its intended meaning than "prompt engineering" ever did. It encompasses everything that enters the context window, not just the text you type: the tools, memory, rules, and event-driven content that shape what the model sees.
+
+And this wasn't a new idea. <PersonPopup id="hua-qishuo">Hua et al.</PersonPopup> traced the concept back 20+ years to human-computer interaction research. Context has always mattered. We just finally had a name for the engineering discipline around it.
+
+---
+
+## What Context Engineering Actually Is
+
+> **Context engineering** is the discipline of designing what information enters an LLM's context window, when it enters, and through what mechanism.
+
+Not just text. Not just prompts. Context engineering encompasses tool schemas, persistent memory, event-triggered content, system-level injections, behavioral constraints, and reusable workflows. All of which flow into the same context window that the model reasons over.
+
+<OGCard url="https://arxiv.org/abs/2507.13334" />
+
+### The Six Component Types
+
+We identify six distinct types of context components. Each has its own lifecycle, trigger mechanism, and role in the system. Here's a preview; Post 3 in this series covers each in depth.
+
+**Skills** are reusable, invocable prompt templates. You activate them by name (`/blog-workflow:brainstorm`, `/review`) and they load structured instructions that guide the model through a specific workflow. They're the closest thing to "prompt engineering," but packaged as reusable, composable units rather than one-off text.
+
+**Rules** shape how the model operates without being explicitly invoked. Think of them as persistent behavioral constraints, some always active, others gated by file patterns. A rule about Cloudflare configuration might activate only when you open a `wrangler.jsonc` file, lying dormant the rest of the time. You never invoke a rule; it activates when conditions are met.
+
+**Hooks** fire on system lifecycle events. Claude Code has 22 of them, including `PreToolUse`, `PostToolUse`, `SessionStart`, and `InstructionsLoaded`. Some observe (logging what happened after a tool call). Others guard (blocking a dangerous command before it executes). They're the event-driven backbone of the context system.
+
+When you close a conversation and open a new one, you lose everything. Unless **memory** carries it forward. Memory is persistent state that survives across sessions: your preferences, your project's conventions, the debugging insight from last Tuesday. It's what keeps you from repeating yourself.
+
+**Tools** extend what the model can do beyond text. Accessed via protocols like MCP (Model Context Protocol), they connect the model to external capabilities: searching academic papers, scraping web pages, querying databases, running code. Every major AI coding tool now supports MCP.
+
+Finally, **references** are static documents loaded on demand: templates, architecture decision records, style guides. They sit outside the context window until pulled in when relevant. No execution logic, no triggers; just knowledge available when needed.
+
+> **What about commands and plugins?**
+>
+> Two familiar concepts are absent from this taxonomy. **Commands** (`.claude/commands/`) were the predecessor to skills, deprecated but functionally equivalent. They're the earlier name for the same component type.
+>
+> **Plugins** are different: they're _bundles_ of the other types. A plugin packages skills + rules + hooks + tools together into an installable unit. Plugins are a composition mechanism, not a component type. The same way an npm package isn't a new JavaScript primitive.
+
+<DirTree
+  content={`blog-workflow/
+  .claude-plugin/plugin.json
+  skills/
+    brainstorm/SKILL.md
+    review/SKILL.md
+  .claude/rules/
+    frontmatter.md
+  hooks/hooks.json
+  .mcp.json`}
+  label="A plugin bundles component types, not a component itself"
+/>
+
+### The Pipeline Model
+
+{/* PipelineDiagram — TODO: build as a dedicated component */}
+
+These six component types don't all load at once. They flow through a temporal pipeline with four stages, and the ordering matters. If the context window is RAM, then the pipeline is the boot sequence.
+
+**Build-time** is like installing packages before the OS runs. Plugins are installed. MCP servers are registered. Git hooks are wired up. Nothing enters the context window yet, but the infrastructure is in place.
+
+**Session-start** is the boot process. When a conversation begins, the system assembles the initial context: CLAUDE.md files load in a three-tier hierarchy (managed policy > project > user), rules are discovered, memory is recalled, MCP servers negotiate their capabilities, and skill metadata is scanned. The system prompt (110+ modular segments in Claude Code) is assembled in a specific order optimized for cache efficiency.
+
+**On-demand** is demand paging. Content loaded only when accessed. A user invokes a skill. The model calls a tool. A path-scoped rule activates because a matching file was opened. A memory topic file is loaded because the memory agent decided it was relevant. Nothing loads until something triggers it.
+
+**Event-triggered** is the interrupt handler layer. Hooks fire on lifecycle events. System reminders inject context changes. And when the context window approaches its limit, compaction kicks in, the equivalent of garbage collection, compressing the conversation while re-reading CLAUDE.md and memory fresh from disk.
+
+Post 2 maps this pipeline in full depth with implementation evidence and cross-platform validation. But if you want a preview of the evidence: the pipeline isn't theoretical. You can observe it directly.
+
+<HierarchySimple items={scopeData.items} title={scopeData.title} />
+
+<CLISnippet
+  content={`$ # With an InstructionsLoaded hook configured:
+$ claude
+Loaded: ~/.claude/CLAUDE.md (session_start)
+Loaded: .claude/rules/cf-wrangler.md (session_start, skipped: no glob match)
+$ # ... later, when you open wrangler.jsonc:
+Loaded: .claude/rules/cf-wrangler.md (path_glob_match)`}
+  title="Watch the pipeline in action with InstructionsLoaded"
+/>
+
+<OGCard url="https://code.claude.com/docs/en/hooks" />
+
+This isn't just a Claude Code thing. Every major AI coding tool has converged on similar architecture.
+
+---
+
+## All Roads Lead to the Agent Harness
+
+The convergence is striking. Four independent tools, built by different companies, powered by different models, targeting different workflows, arrived at the same architectural primitives.
+
+**MCP** is now universal. Anthropic donated the Model Context Protocol to the Linux Foundation in December 2025. Claude Code, Cursor, Copilot, and Windsurf all support it. The protocol wars are over before they started.
+
+**Glob-gated rules** exist in all four tools, with different syntax but identical semantics. Claude Code uses `.claude/rules/*.md` with YAML frontmatter globs. Cursor uses `.cursor/rules/*.mdc`. Copilot uses `.github/instructions/*.instructions.md` with `applyTo`. Windsurf uses `.windsurfrules` and directory-scoped `AGENTS.md` files.
+
+**AGENTS.md** is emerging as a cross-tool instruction standard. Copilot supports it alongside `CLAUDE.md` and `GEMINI.md`, a deliberate bet on interoperability.
+
+**Lifecycle hooks** show a maturity gradient: Claude Code leads with 21 events and four handler types (including approve/deny control flow). Cursor and Copilot each offer 6 events. Windsurf has none yet, but the pressure to add them is obvious.
+
+This convergence isn't coincidence. It's the field discovering that context engineering requires the same architectural primitives regardless of which model powers the tool. Skills, rules, hooks, memory, tools, references. These aren't Claude Code features. They're the building blocks of any system that manages what an LLM sees.
+
+<PersonPopup id="gupta-aakash">Aakash Gupta</PersonPopup> framed it sharply: "2025 was agents. 2026 is agent harnesses."
+
+The model is commodity. The same Claude, the same GPT-4, the same Gemini is available to everyone. What differentiates tools, what creates the moat, is the _harness_: the context engineering, tool orchestration, memory management, and lifecycle hooks that wrap the model.
+
+The evidence is concrete. Manus rewrote their harness five times. LangChain re-architected their Deep Research system four times. Vercel cut 80% of their tools and _improved_ results. Less context, better curated, outperformed more context, poorly assembled.
+
+If the context window is RAM and the pipeline is the boot sequence, then the harness is the OS distribution. Ubuntu and Fedora and macOS all run on the same kernel, but the distribution is what users experience. The six component types (skills, rules, hooks, memory, tools, references) are the building blocks of that distribution. You're not building prompts. You're building a harness.
+
+---
+
+## What's Coming
+
+This series maps the harness. Five more posts, each building on the vocabulary established here:
+
+**Post 2: The Context Pipeline** maps the four temporal stages in depth: what loads when, in what order, with what priority. Grounded in Claude Code's actual loading sequence and validated across all four major tools.
+
+**Post 3: A Taxonomy of Context Components** covers each of the six component types with definitions, concrete examples, and a cross-platform comparison showing how Claude Code, Cursor, Copilot, and Windsurf implement them.
+
+**Post 4: SE Patterns for Context Systems** bridges software engineering expertise to context engineering. 14 classical patterns (middleware pipelines, plugin architectures, observer, DI) mapped to context engineering parallels, plus four novel patterns unique to the field.
+
+**Post 5: Securing the Context Pipeline** analyzes trust boundaries at each pipeline stage, maps OWASP LLM Top 10 risks to context engineering, and shows how prompt injection parallels classical web security vulnerabilities.
+
+**Post 6: Memory, RAG, and the Future** covers memory architectures (from MemGPT to temporal knowledge graphs), the RAG-to-context-engineering evolution, and where the field is heading.
+
+Each post can stand alone, but they build on each other. A companion standalone post will compare context engineering implementations across the four tools in implementation detail: file formats, frontmatter schemas, hook models, memory strategies.
+
+---
+
+You've been doing context engineering. Now you have the vocabulary.
+
+_This is Post 1 of 6 in the Context Engineering series._
+
+</article>
+</main>
+<Footer />

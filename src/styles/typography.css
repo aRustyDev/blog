@@ -4,13 +4,29 @@
   /* ===== Override default Tailwind Typography styles ===== */
   .app-prose {
     @apply prose;
+    --prose-width: 48rem;
+    --breakout-width: min(64rem, 90vw);
+    --tw-prose-headings: var(--accent);
+    max-width: var(--prose-width);
+    margin-inline: auto;
 
     h1,
     h2,
     h3,
     h4,
     th {
-      @apply mb-3 text-foreground;
+      @apply mb-3;
+      color: var(--accent) !important;
+
+      /* Heading anchor links (from rehype-autolink-headings) inherit heading color */
+      a {
+        color: inherit !important;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+        text-decoration-style: dashed;
+      }
     }
 
     h3 {
@@ -24,11 +40,11 @@
     figcaption,
     table,
     code {
-      @apply text-foreground;
+      @apply text-fg;
     }
 
     a {
-      @apply wrap-break-word text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
+      @apply wrap-break-word text-fg decoration-dashed underline-offset-4 hover:text-ac focus-visible:no-underline;
     }
 
     ul {
@@ -36,15 +52,15 @@
     }
 
     li {
-      @apply marker:text-accent;
+      @apply marker:text-ac;
     }
 
     hr {
-      @apply border-border;
+      @apply border-bd;
     }
 
     img {
-      @apply mx-auto border border-border;
+      @apply mx-auto border border-bd;
     }
 
     figcaption {
@@ -54,7 +70,7 @@
     table {
       th,
       td {
-        @apply border border-border p-2;
+        @apply border border-bd p-2;
       }
 
       th {
@@ -67,7 +83,8 @@
     }
 
     code {
-      @apply rounded bg-muted/75 p-1 wrap-break-word text-foreground before:content-none after:content-none;
+      @apply rounded bg-mt p-1 wrap-break-word text-fg border border-bd/50
+             before:content-none after:content-none;
     }
 
     .astro-code code {
@@ -75,25 +92,31 @@
     }
 
     blockquote {
-      @apply border-s-accent/80 wrap-break-word opacity-80;
+      @apply border-s-ac/80 wrap-break-word opacity-80;
     }
 
     details {
-      @apply inline-block cursor-pointer text-foreground select-none [&_p]:hidden [&_ul]:my-0!;
+      @apply inline-block cursor-pointer text-fg select-none [&_p]:hidden [&_ul]:my-0!;
     }
 
     summary {
-      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:outline-dashed;
+      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ac focus-visible:outline-dashed;
     }
 
     pre {
-      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
+      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-ac focus-visible:outline-dashed;
     }
+  }
+
+  /* Wide mode: prose fills viewport — widths from global --wide-* variables */
+  html[data-wide] .app-prose {
+    --prose-width: var(--wide-prose);
+    --breakout-width: var(--wide-breakout);
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
-    @apply flex border bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
+    @apply flex border bg-(--shiki-light-bg) text-(--shiki-light) outline-bd [&_span]:text-(--shiki-light);
   }
 
   html[data-theme="dark"] .astro-code {
@@ -104,16 +127,16 @@
   /* https://shiki.style/packages/transformers */
   .astro-code {
     .line.diff.add {
-      @apply relative inline-block w-full bg-green-400/20 before:absolute before:-left-3 before:text-green-500 before:content-['+'];
+      @apply relative inline-block w-full bg-(--success)/20 before:absolute before:-left-3 before:text-(--success) before:content-['+'];
     }
     .line.diff.remove {
-      @apply relative inline-block w-full bg-red-500/20 before:absolute before:-left-3 before:text-red-500 before:content-['-'];
+      @apply relative inline-block w-full bg-(--error)/20 before:absolute before:-left-3 before:text-(--error) before:content-['-'];
     }
     .line.highlighted {
-      @apply inline-block w-full bg-slate-400/20;
+      @apply inline-block w-full bg-mt/20;
     }
     .highlighted-word {
-      @apply rounded-sm border border-border px-0.5 py-px;
+      @apply rounded-sm border border-bd px-0.5 py-px;
     }
   }
 }

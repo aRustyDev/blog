@@ -20,6 +20,7 @@ I work on distributed systems during the day and break things at night. The inte
 ## What to Expect
 
 Topics will likely include:
+
 - **Systems programming** - Low-level C, Rust, and Go
 - **Security** - DFIR, reverse engineering, vulnerability research
 - **Infrastructure** - Kubernetes, cloud architecture, observability

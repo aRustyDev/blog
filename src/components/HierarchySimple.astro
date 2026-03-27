@@ -1,0 +1,91 @@
+---
+interface HierarchyItem {
+  label: string;
+  description?: string;
+  badge?: string;
+  leaves?: string[];
+}
+
+type Props = {
+  items: HierarchyItem[];
+  title?: string;
+  collapsible?: boolean;
+  class?: string;
+};
+
+const {
+  items,
+  title,
+  collapsible = false,
+  class: className,
+} = Astro.props;
+---
+
+{collapsible ? (
+  <details class:list={["component-details", "hierarchy-simple", className]} open>
+    {title && (
+      <summary class="hierarchy-summary" aria-label={title}>
+        <span class="hierarchy-chevron" aria-hidden="true"></span>
+        <span class="hierarchy-summary-text">{title}</span>
+      </summary>
+    )}
+    <div class="hierarchy-body">
+      {items.map((item, index) => (
+        <>
+          <div class="hierarchy-node">
+            <div class="hierarchy-node-header">
+              <span class="hierarchy-node-label">{item.label}</span>
+              {item.badge && <span class="hierarchy-node-badge">{item.badge}</span>}
+            </div>
+            {item.description && <div class="hierarchy-node-description">{item.description}</div>}
+            {item.leaves && item.leaves.length > 0 && (
+              <div class="hierarchy-node-leaves">
+                {item.leaves.map(leaf => (
+                  <span class="hierarchy-leaf">{leaf}</span>
+                ))}
+              </div>
+            )}
+          </div>
+          {index < items.length - 1 && (
+            <div class="hierarchy-connector" aria-hidden="true">
+              <div class="hierarchy-connector-line"></div>
+              <div class="hierarchy-connector-dot"></div>
+              <div class="hierarchy-connector-line"></div>
+            </div>
+          )}
+        </>
+      ))}
+    </div>
+  </details>
+) : (
+  <div class:list={["hierarchy-simple", className]}>
+    {title && <div class="hierarchy-title">{title}</div>}
+    <div class="hierarchy-body">
+      {items.map((item, index) => (
+        <>
+          <div class="hierarchy-node">
+            <div class="hierarchy-node-header">
+              <span class="hierarchy-node-label">{item.label}</span>
+              {item.badge && <span class="hierarchy-node-badge">{item.badge}</span>}
+            </div>
+            {item.description && <div class="hierarchy-node-description">{item.description}</div>}
+            {item.leaves && item.leaves.length > 0 && (
+              <div class="hierarchy-node-leaves">
+                {item.leaves.map(leaf => (
+                  <span class="hierarchy-leaf">{leaf}</span>
+                ))}
+              </div>
+            )}
+          </div>
+          {index < items.length - 1 && (
+            <div class="hierarchy-connector" aria-hidden="true">
+              <div class="hierarchy-connector-line"></div>
+              <div class="hierarchy-connector-dot"></div>
+              <div class="hierarchy-connector-line"></div>
+            </div>
+          )}
+        </>
+      ))}
+    </div>
+  </div>
+)}

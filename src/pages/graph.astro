@@ -1,0 +1,29 @@
+---
+// src/pages/graph.astro
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import GlobalGraphPage from "@/components/graph/GlobalGraphPage";
+import "@/styles/graph.css";
+---
+
+<Layout title="Graph | aRustyDev's Blog">
+  <Header />
+  <main id="main-content" class="w-full flex-1 overflow-hidden px-4">
+    <h1 class="sr-only">Knowledge Graph</h1>
+    <GlobalGraphPage client:only="react" />
+  </main>
+  <Footer noMarginTop class="sr-only" />
+</Layout>
+
+<script>
+  // Apply overflow:hidden to body only on this page, clean up on navigation
+  document.addEventListener("astro:page-load", () => {
+    const isGraphPage = !!document.querySelector("#main-content .graph-container");
+    if (isGraphPage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  });
+</script>

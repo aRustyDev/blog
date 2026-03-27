@@ -1,0 +1,26 @@
+{
+  "category": "graph-data-model",
+  "reviewed_at": "2026-03-20T16:15:00Z",
+  "files_reviewed": [
+    "src/scripts/build-graph.ts",
+    "src/scripts/tag-projects.ts",
+    "src/components/graph/graph.types.ts",
+    "src/components/graph/graph.shared.ts",
+    "src/components/graph/useGraphData.ts",
+    "src/components/graph/GraphFilters.tsx",
+    "content/_projects/deep-dive-kernels-overview/index.md",
+    "content/_projects/deep-dive-ebpf/index.md",
+    "content/_projects/keebs-getting-started/index.md",
+    "src/data/blog/starting-contributing-to-linux-kernel.md"
+  ],
+  "findings": [
+    {"id":"DATA-001","severity":"critical","confidence":100,"title":"Blog post tags contain language identifiers 'c' and 'rust' — should be in languages field","file":"src/data/blog/starting-contributing-to-linux-kernel.md","line":11,"current":"tags: [..., c, rust, ...] — no languages field","expected":"Remove c/rust from tags, add languages: [c, rust]","fix_complexity":"trivial","depends_on":[],"adr_ref":"ADR-0005","tags":["data-model","tags","languages"]},
+    {"id":"DATA-002","severity":"critical","confidence":100,"title":"Blog post tags contain format words 'tutorial' and 'guide'","file":"src/data/blog/starting-contributing-to-linux-kernel.md","line":15,"current":"tags includes tutorial and guide","expected":"Remove — these are contentType not domain tags","fix_complexity":"trivial","depends_on":[],"adr_ref":"ADR-0005","tags":["data-model","tags","contentType"]},
+    {"id":"DATA-003","severity":"critical","confidence":100,"title":"Blog post tag 'lowlevel' explicitly prohibited by ADR-0005","file":"src/data/blog/starting-contributing-to-linux-kernel.md","line":14,"current":"tags includes lowlevel","expected":"Remove per ADR-0005 tag conventions","fix_complexity":"trivial","depends_on":[],"adr_ref":"ADR-0005","tags":["data-model","tags"]},
+    {"id":"DATA-004","severity":"critical","confidence":95,"title":"'book' and 'benchmarking' used as domain tags but are contentType words","file":"src/scripts/tag-projects.ts","line":148,"current":"tags: ['book'] and tags: ['ai', 'agents', 'benchmarking']","expected":"Remove book and benchmarking from tags — they describe format not domain","fix_complexity":"small","depends_on":[],"adr_ref":"ADR-0005","tags":["data-model","tags","contentType"]},
+    {"id":"DATA-005","severity":"high","confidence":95,"title":"deriveCategory maps 'deep-dive-comparing-kernels' to generic 'deep-dive' — loses Kernels grouping","file":"src/scripts/build-graph.ts","line":86,"current":"Slug doesn't match 'deep-dive-kernels' prefix, falls to catch-all","expected":"Add explicit prefix entry returning deep-dive-kernels","fix_complexity":"trivial","depends_on":[],"adr_ref":"ADR-0005","tags":["category","deriveCategory"]},
+    {"id":"DATA-006","severity":"high","confidence":95,"title":"deriveCategory maps 'deep-dive-llm-observability-*' to generic 'deep-dive'","file":"src/scripts/build-graph.ts","line":100,"current":"No prefix for deep-dive-llm-observability — unfilterable in Topics","expected":"Add prefix mapping to AI/ML category","fix_complexity":"small","depends_on":[],"adr_ref":"ADR-0005","tags":["category","deriveCategory","topic-groups"]},
+    {"id":"DATA-007","severity":"high","confidence":90,"title":"Seven project slugs resolve to generic 'deep-dive' category — unfilterable via Topics","file":"src/scripts/build-graph.ts","line":103,"current":"elastic-search, tls, ipv6, git-internals, git-as-a-database, heap/stack overflows all get 'deep-dive'","expected":"Add to TOPIC_GROUPS as catch-all group, or create specific categories","fix_complexity":"medium","depends_on":["DATA-005","DATA-006"],"adr_ref":"ADR-0006","tags":["category","topic-groups","filterability"]},
+    {"id":"DATA-008","severity":"high","confidence":88,"title":"parseRelatedProjects creates edges without checking target node exists — dangling edges","file":"src/scripts/build-graph.ts","line":210,"current":"edges.push with no nodeIds.has() check — metadata.edgeCount inflated","expected":"Build nodeIds set, filter edges against it before deduplication","fix_complexity":"small","depends_on":[],"adr_ref":"ADR-0005","tags":["edges","data-integrity"]}
+  ]
+}

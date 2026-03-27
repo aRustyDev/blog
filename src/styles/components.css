@@ -1,0 +1,740 @@
+/* =================================================================== */
+/*  Component styles                                                    */
+/*  Extracted from Astro component <style is:global> blocks so that     */
+/*  @apply with @theme tokens (bg-mt, text-fg, border-bd, etc.) works   */
+/*  in Tailwind v4, where scoped <style> blocks lack @theme context.    */
+/* =================================================================== */
+
+/* ------------------------------------------------------------------ */
+/*  Breakout pattern: components escape prose width to fill container   */
+/*  Prose is --prose-width (48rem), components break to --breakout-width*/
+/* ------------------------------------------------------------------ */
+
+.app-prose .code-block-wrapper,
+.app-prose .component-details,
+.app-prose .cli-snippet,
+.app-prose .cli-snippet-interactive,
+.app-prose .og-card,
+.app-prose .tweet-card,
+.app-prose .timeline-cards-wrapper,
+.app-prose .timeline-process,
+.app-prose .hierarchy-simple,
+.app-prose .dir-tree,
+.app-prose .asciinema-wrapper,
+.app-prose table,
+.app-prose .astro-code,
+.app-prose pre {
+  --_prose: var(--prose-width, 48rem);
+  --_breakout: var(--breakout-width, min(64rem, 90vw));
+  max-width: var(--_breakout);
+  width: var(--_breakout);
+  margin-inline: calc((var(--_prose) - var(--_breakout)) / 2);
+}
+
+/* On small screens where breakout > viewport, prevent overflow */
+@media (max-width: 768px) {
+  .app-prose .code-block-wrapper,
+  .app-prose .component-details,
+  .app-prose .cli-snippet,
+  .app-prose .cli-snippet-interactive,
+  .app-prose .og-card,
+  .app-prose .tweet-card,
+  .app-prose .timeline-cards-wrapper,
+  .app-prose .timeline-process,
+  .app-prose .hierarchy-simple,
+  .app-prose .dir-tree,
+  .app-prose .asciinema-wrapper,
+  .app-prose table,
+  .app-prose .astro-code,
+  .app-prose pre {
+    max-width: 100%;
+    width: 100%;
+    margin-inline: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Shared: component-details reset                                    */
+/* ------------------------------------------------------------------ */
+
+.component-details {
+  @apply block cursor-default select-auto;
+}
+.component-details p,
+.component-details ul {
+  @apply block;
+}
+
+/* ------------------------------------------------------------------ */
+/*  CodeBlock                                                           */
+/* ------------------------------------------------------------------ */
+
+.component-details,
+.code-block-wrapper {
+  @apply border border-bd rounded-lg overflow-hidden my-4;
+}
+
+/* Summary / title bar */
+.code-block-title {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm font-mono
+         border-b border-bd list-none cursor-pointer select-none;
+}
+.code-block-title::-webkit-details-marker {
+  display: none;
+}
+.code-block-title-static {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm font-mono border-b border-bd;
+}
+
+/* Chevron icon */
+.code-block-chevron::before {
+  content: "▾";
+  @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+}
+details:not([open]) .code-block-chevron::before {
+  content: "▸";
+}
+
+.code-block-title-text {
+  @apply text-fg/70;
+}
+
+/* Code body */
+.code-block-body {
+  @apply overflow-x-auto;
+}
+
+/* Shiki dual-theme color selection — matches typography.css pattern */
+.code-block-body .shiki {
+  @apply flex border-0 bg-(--shiki-light-bg) text-(--shiki-light) [&_span]:text-(--shiki-light);
+}
+html[data-theme="dark"] .code-block-body .shiki {
+  @apply bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
+}
+
+/* Line numbers via CSS counters */
+.code-block-body.line-numbers .shiki code {
+  counter-reset: line;
+}
+.code-block-body.line-numbers .shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply inline-block w-8 mr-4 text-right text-fg/40 select-none;
+}
+
+/* ------------------------------------------------------------------ */
+/*  CLISnippet (static / non-interactive)                              */
+/* ------------------------------------------------------------------ */
+
+.cli-snippet {
+  @apply border border-bd rounded-lg overflow-hidden font-mono text-sm my-4;
+}
+
+.cli-snippet-title,
+.cli-snippet-title-static {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg/70 text-xs border-b border-bd;
+}
+.cli-snippet-title {
+  @apply list-none cursor-pointer select-none;
+}
+.cli-snippet-title::-webkit-details-marker {
+  display: none;
+}
+
+.cli-dots {
+  @apply text-xs tracking-wider opacity-40;
+}
+
+.cli-title-text {
+  @apply text-fg/60;
+}
+
+.cli-snippet-body {
+  @apply p-3 bg-mt/50 overflow-x-auto;
+}
+
+.cli-line {
+  @apply whitespace-pre leading-relaxed;
+}
+
+.cli-line-command {
+  @apply text-fg font-semibold;
+}
+
+.cli-prompt {
+  @apply text-ac select-none;
+}
+
+.cli-line-output {
+  @apply text-fg/60;
+}
+
+/* ------------------------------------------------------------------ */
+/*  DirTree                                                            */
+/* ------------------------------------------------------------------ */
+
+.dir-tree {
+  @apply border border-bd rounded-lg overflow-hidden font-mono text-sm my-4;
+}
+
+.dir-tree-label,
+.dir-tree-label-static {
+  @apply px-3 py-1.5 bg-mt text-fg text-sm border-b border-bd;
+}
+.dir-tree-label {
+  @apply flex items-center gap-2 list-none cursor-pointer select-none;
+}
+.dir-tree-label::-webkit-details-marker {
+  display: none;
+}
+
+.dir-tree-chevron::before {
+  content: "▾";
+  @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+}
+details:not([open]) .dir-tree-chevron::before {
+  content: "▸";
+}
+
+.dir-tree-body {
+  @apply px-3 py-2 bg-mt/30 overflow-x-auto;
+}
+
+.dir-tree-entry {
+  @apply whitespace-pre text-fg flex items-baseline;
+  line-height: 1.5;
+}
+
+.dir-tree-entry.highlighted {
+  @apply text-ac font-semibold;
+}
+
+.dir-tree-connector {
+  @apply text-fg/40 select-none;
+}
+
+.dir-tree-icon {
+  @apply flex-shrink-0 text-xs mr-1.5;
+}
+
+.dir-tree-name {
+  @apply inline;
+}
+
+/* --- Simple variant --- */
+.dir-tree--simple .dir-tree-body {
+  @apply px-3 py-1.5;
+}
+
+.dir-tree--simple .dir-tree-entry {
+  @apply text-[13px];
+  line-height: 1.4;
+}
+
+/* --- Icons variant (default) --- */
+.dir-tree--icons .dir-tree-entry {
+  line-height: 1.6;
+}
+
+/* ------------------------------------------------------------------ */
+/*  OGCard                                                             */
+/* ------------------------------------------------------------------ */
+
+.og-card {
+  @apply flex border border-bd rounded-lg overflow-hidden my-4
+         no-underline hover:border-ac/60 transition-colors;
+  border-left: 3px solid var(--brand-color, var(--border));
+  min-height: 6rem;
+}
+
+/* Brand tint gradient when brand color is set */
+.og-card[style*="--brand-color"] {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--brand-color) 8%, transparent),
+    transparent 40%
+  );
+}
+
+.og-card-image {
+  @apply flex-shrink-0 bg-mt border-0;
+  width: 5.5rem;
+  height: 5.5rem;
+  object-fit: cover;
+  object-position: center;
+  margin: auto 0;
+  margin-left: 0.75rem;
+  border-radius: 0.375rem;
+}
+
+/* Hide image container when src is empty or fails to load */
+.og-card-image[src=""],
+.og-card-image:not([src]) {
+  display: none;
+}
+
+.og-card-content {
+  @apply flex flex-col justify-center gap-1 p-3 min-w-0 flex-1;
+}
+
+.og-card-title {
+  @apply text-fg font-semibold text-sm line-clamp-2;
+}
+
+.og-card-description {
+  @apply text-fg/60 text-xs line-clamp-2;
+}
+
+.og-card-domain {
+  @apply text-fg/40 text-xs flex items-center gap-1 mt-1;
+}
+
+.og-card-favicon {
+  @apply w-4 h-4 border-0;
+}
+
+/* On narrow screens, keep horizontal layout but shrink image */
+@media (max-width: 480px) {
+  .og-card-image {
+    width: 4rem;
+    height: 4rem;
+    margin-left: 0.5rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Tweet                                                              */
+/* ------------------------------------------------------------------ */
+
+.tweet-card {
+  @apply block border border-bd rounded-xl p-4 my-4
+         no-underline hover:border-ac/60 transition-colors;
+  border-left: 3px solid #1DA1F2;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, #1DA1F2 6%, transparent),
+    transparent 30%
+  );
+}
+
+.tweet-header {
+  @apply flex items-center gap-3 mb-3;
+}
+
+.tweet-avatar {
+  @apply w-10 h-10 rounded-full bg-mt object-cover border-0;
+}
+
+.tweet-avatar-placeholder {
+  @apply w-10 h-10 rounded-full bg-mt flex items-center justify-center
+         text-fg/60 font-semibold text-sm;
+}
+
+.tweet-author {
+  @apply flex-1 min-w-0;
+}
+
+.tweet-author-name {
+  @apply text-fg font-semibold text-sm truncate;
+}
+
+.tweet-author-handle {
+  @apply text-fg/50 text-sm;
+}
+
+.tweet-x-logo {
+  @apply ml-auto text-fg/40 w-5 h-5 flex-shrink-0;
+}
+
+.tweet-body {
+  @apply text-fg text-sm leading-relaxed mb-3 whitespace-pre-line;
+}
+
+.tweet-date {
+  @apply text-fg/40 text-xs;
+}
+
+/* ------------------------------------------------------------------ */
+/*  PersonPopup                                                        */
+/* ------------------------------------------------------------------ */
+
+.person-wrapper {
+  @apply relative inline;
+}
+
+.person-trigger {
+  @apply underline decoration-dotted decoration-ac underline-offset-2 cursor-pointer;
+}
+
+.person-popup {
+  @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2
+         invisible opacity-0 w-64 p-3 rounded-lg border border-bd bg-bg shadow-lg z-50
+         transition-[opacity,visibility] duration-150 pointer-events-none;
+}
+
+/* Hover intent: wrapper keeps popup visible while mouse moves between trigger and popup.
+   The wrapper spans both trigger + popup, so moving from trigger to popup stays "hovered." */
+.person-wrapper:hover .person-popup,
+.person-wrapper:focus-within .person-popup,
+.person-popup.active {
+  @apply visible opacity-100 pointer-events-auto;
+}
+
+/* Hit area bridge: extends below popup to cover the mb-2 gap to the trigger.
+   Without this, moving the mouse from trigger to popup crosses a gap that drops hover. */
+.person-popup::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 0.75rem; /* covers the mb-2 gap */
+}
+
+.person-popup-header {
+  @apply flex items-start gap-3 mb-2;
+}
+
+.person-popup-avatar {
+  @apply w-12 h-12 rounded-full bg-mt object-cover flex-shrink-0 border-0;
+}
+
+.person-popup-avatar-placeholder {
+  @apply w-12 h-12 rounded-full bg-mt flex items-center justify-center
+         text-fg/60 font-semibold flex-shrink-0;
+}
+
+.person-popup-info {
+  @apply flex flex-col;
+}
+
+.person-popup-name {
+  @apply text-fg font-semibold text-sm;
+}
+
+.person-popup-role {
+  @apply text-fg/60 text-xs;
+}
+
+.person-popup-links {
+  @apply flex gap-3 mt-2 text-xs border-t border-bd pt-2;
+}
+
+.person-popup-links a {
+  @apply text-ac hover:underline flex items-center gap-1;
+}
+
+/* ------------------------------------------------------------------ */
+/*  TimelineCards (vertical card-based)                                */
+/* ------------------------------------------------------------------ */
+
+.timeline-cards-wrapper {
+  @apply border border-bd rounded-lg overflow-hidden my-4;
+}
+
+.timeline-cards-summary {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm
+         border-b border-bd list-none cursor-pointer select-none;
+}
+.timeline-cards-summary::-webkit-details-marker {
+  display: none;
+}
+
+.timeline-cards-chevron::before {
+  content: "▾";
+  @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+}
+details:not([open]) .timeline-cards-chevron::before {
+  content: "▸";
+}
+
+.timeline-cards-summary-text {
+  @apply text-fg/70;
+}
+
+/* Card container — positions the vertical line centrally on desktop */
+.timeline-cards {
+  @apply relative py-6 px-4;
+}
+
+/* Vertical connecting line */
+.timeline-line {
+  @apply absolute top-0 bottom-0 w-0.5 bg-bd;
+  left: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .timeline-line {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Each event row: dot + card */
+.timeline-card-row {
+  @apply relative mb-6 last:mb-0;
+  /* Mobile: single column, cards always to the right of the line */
+  padding-left: 2.75rem;
+}
+
+/* Dot marker on the line */
+.timeline-dot {
+  @apply absolute w-3 h-3 rounded-full bg-ac;
+  top: 1rem;
+  left: 0.75rem;
+  box-shadow: 0 0 0 2px var(--background);
+}
+
+@media (min-width: 768px) {
+  .timeline-cards {
+    @apply px-0;
+  }
+
+  .timeline-card-row {
+    @apply w-1/2;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Left cards: sit on the left side */
+  .timeline-card-row.left {
+    margin-left: 0;
+    margin-right: auto;
+    padding-right: 2rem;
+    text-align: right;
+  }
+
+  /* Right cards: sit on the right side */
+  .timeline-card-row.right {
+    margin-left: auto;
+    margin-right: 0;
+    padding-left: 2rem;
+    text-align: left;
+  }
+
+  /* Dot repositioning for desktop — centered on the line */
+  .timeline-dot {
+    left: auto;
+    right: auto;
+  }
+
+  .timeline-card-row.left .timeline-dot {
+    right: -0.375rem;
+    left: auto;
+  }
+
+  .timeline-card-row.right .timeline-dot {
+    left: -0.375rem;
+    right: auto;
+  }
+}
+
+/* The card itself */
+.timeline-card {
+  @apply border border-bd rounded-lg bg-bg p-3;
+}
+
+/* Date badge pill */
+.timeline-card-date {
+  @apply inline-block text-xs font-mono font-semibold rounded-full px-2 py-0.5 mb-1.5;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+/* Card content area */
+.timeline-card-content {
+  @apply text-left;
+}
+
+.timeline-card-title {
+  @apply text-fg text-sm font-semibold;
+}
+.timeline-card-title a {
+  @apply text-fg no-underline hover:text-ac hover:underline underline-offset-2;
+}
+
+.timeline-card-desc {
+  @apply text-fg/60 text-xs mt-1;
+}
+
+/* ------------------------------------------------------------------ */
+/*  TimelineProcess (horizontal step flow)                             */
+/* ------------------------------------------------------------------ */
+
+.timeline-process {
+  @apply flex items-start gap-0 overflow-x-auto my-4 py-4 px-2;
+}
+
+.timeline-step-group {
+  @apply relative flex flex-col items-center text-center flex-shrink-0;
+  min-width: 5rem;
+  flex: 1;
+}
+
+/* Numbered circle */
+.timeline-step {
+  @apply w-10 h-10 rounded-full border-2 border-ac bg-bg
+         flex items-center justify-center mb-2;
+}
+
+.timeline-step-number {
+  @apply text-ac font-semibold text-sm;
+}
+
+/* Label below the circle */
+.timeline-step-label {
+  @apply text-fg text-xs font-medium max-w-[6rem] leading-tight;
+}
+
+.timeline-step-desc {
+  @apply text-fg/50 text-xs mt-0.5 max-w-[6rem] leading-tight;
+}
+
+/* Arrow connector between steps */
+.timeline-arrow {
+  @apply absolute;
+  top: 1.125rem;
+  left: calc(50% + 1.25rem + 0.25rem);
+  width: calc(100% - 2.5rem - 0.5rem);
+  height: 2px;
+  background: var(--border);
+}
+
+/* Arrow head (triangle) */
+.timeline-arrow::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid var(--accent);
+}
+
+/* On small screens, allow horizontal scroll */
+@media (max-width: 480px) {
+  .timeline-step-group {
+    min-width: 4rem;
+  }
+  .timeline-step {
+    @apply w-8 h-8;
+  }
+  .timeline-step-number {
+    @apply text-xs;
+  }
+  .timeline-arrow {
+    top: 0.875rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  HierarchySimple                                                    */
+/* ------------------------------------------------------------------ */
+
+.hierarchy-simple {
+  @apply max-w-[500px] mx-auto my-4;
+}
+
+.hierarchy-title {
+  @apply text-fg/70 text-sm font-semibold mb-3 text-center;
+}
+
+.hierarchy-summary {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm
+         border border-bd rounded-t-lg list-none cursor-pointer select-none;
+}
+.hierarchy-summary::-webkit-details-marker {
+  display: none;
+}
+
+.hierarchy-chevron::before {
+  content: "▾";
+  @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+}
+details:not([open]) .hierarchy-chevron::before {
+  content: "▸";
+}
+
+.hierarchy-summary-text {
+  @apply text-fg/70;
+}
+
+.hierarchy-body {
+  @apply flex flex-col items-center;
+}
+
+.hierarchy-node {
+  @apply w-full border border-bd rounded-lg bg-bg p-3;
+}
+
+.hierarchy-node-header {
+  @apply flex items-center justify-between gap-2;
+}
+
+.hierarchy-node-label {
+  @apply text-ac font-semibold text-sm;
+}
+
+.hierarchy-node-badge {
+  @apply bg-mt text-fg/60 text-xs rounded-full px-2 py-0.5 border border-bd;
+}
+
+.hierarchy-node-description {
+  @apply text-fg/50 text-xs mt-0.5;
+}
+
+.hierarchy-node-leaves {
+  @apply flex flex-row gap-2 flex-wrap mt-2 justify-center;
+}
+
+.hierarchy-leaf {
+  @apply bg-mt font-mono text-xs border border-bd rounded px-2 py-0.5 text-fg/80;
+}
+
+.hierarchy-connector {
+  @apply flex flex-col items-center;
+}
+
+.hierarchy-connector-line {
+  @apply w-0.5 h-3 bg-bd;
+}
+
+.hierarchy-connector-dot {
+  @apply w-2.5 h-2.5 rounded-full bg-ac;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Asciinema                                                          */
+/* ------------------------------------------------------------------ */
+
+.asciinema-wrapper {
+  @apply border border-bd rounded-lg overflow-hidden my-4;
+}
+
+.asciinema-title,
+.asciinema-title-static {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-mt text-fg text-sm border-b border-bd;
+}
+.asciinema-title {
+  @apply list-none cursor-pointer select-none;
+}
+.asciinema-title::-webkit-details-marker {
+  display: none;
+}
+
+.asciinema-chevron::before {
+  content: "▾";
+  @apply inline-block text-fg/50 text-xs transition-transform duration-150;
+}
+details:not([open]) .asciinema-chevron::before {
+  content: "▸";
+}
+
+.asciinema-title-text {
+  @apply text-fg/70;
+}
+
+.asciinema-container {
+  @apply w-full min-h-[200px] bg-mt/50;
+}

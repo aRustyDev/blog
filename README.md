@@ -1,157 +1,84 @@
 <div align="center">
 
-<img src="public/project.png" alt="Screenshot" />
+# aRustyDev's Blog
 
-<hr/>
+Technical notes on security, systems, and software engineering.
+
+[blog.arusty.dev](https://blog.arusty.dev/)
+
+![GitHub last commit](https://img.shields.io/github/last-commit/aRustyDev/blog)
+![GitHub repo size](https://img.shields.io/github/repo-size/aRustyDev/blog)
+![GitHub license](https://img.shields.io/github/license/aRustyDev/blog)
+![Node version](https://img.shields.io/badge/node-%3E%3D20.19.0-brightgreen)
+![Cloudflare Workers](https://img.shields.io/badge/deployed%20on-Cloudflare%20Workers-F38020?logo=cloudflare&logoColor=white)
 
 </div>
 
-## 📌 Table Of Contents
-
-1. [Features](#-Features)
-2. [Roadmap](#-Roadmap)
-3. [Stack](#-Stack)
-4. [Running-Locally](#-Running-Locally)
-5. [Configure](#-Configure)
-
-## 💪 Features:
+## Features
 
 <p align="center">
-  <a href="https://pagespeed.web.dev/analysis/https-blog-template-gray-vercel-app/7ovjfewos9?form_factor=mobile">
-    <img width="510" alt="openblog Lighthouse Score" src="public/openblog-lighthouse-score.svg">
-  <a>
+  <a href="https://pagespeed.web.dev/analysis/https-blog-arusty-dev/">
+    <img width="510" alt="Lighthouse Score" src="public/openblog-lighthouse-score.svg">
+  </a>
 </p>
-    
-- ✅ Minimal styling
 
-## 🛣️ Roadmap
+- Interactive graph visualization (Obsidian-style knowledge graph)
+- Full-text search via Pagefind
+- Dark/light theme with [brand.arusty.dev](https://brand.arusty.dev) integration
+- RSS feed
+- SEO optimized with dynamic OG images
+- Responsive design
+- View transitions
 
-- ❌ Update pagespeed.web.dev link to use this repo
-- ❌ Fix search when deployed to GH pages
-- ❌ Figure out Tina CMS (is it only available from local? does it break in GH Pages?)
-- ❌ Move most of this README to the wiki
-- ❌ Add Share Icon+Link for Email
-- ❌ Add Header Icon+Link for X (Fix sizing)
-- ❌ Add Header Icon+Link for HackTheBox
-- ❌ Add Header Icon+Link for LinkeIn
-- ❌ Add Header Icon+Link for Arxiv
-- ❌ Add Header Icon+Link for ACM
-- ❌ Add Header Icon+Link for HackerOne
-- ❌ Add Header Icon+Link for CVE (?)
+## Stack
 
-## ⚙️ Stack
+| Technology                                                                         | Purpose                     |
+| :--------------------------------------------------------------------------------- | :-------------------------- |
+| [Astro 5](https://astro.build/) + TypeScript                                       | Static site framework       |
+| [React](https://react.dev/)                                                        | Graph visualization islands |
+| [Tailwind CSS v4](https://tailwindcss.com/)                                        | Utility-first styling       |
+| [Sigma.js](https://www.sigmajs.org/) + [Graphology](https://graphology.github.io/) | Interactive graph rendering |
+| [Pagefind](https://pagefind.app/)                                                  | Static search               |
+| [Shiki](https://shiki.style/)                                                      | Syntax highlighting         |
+| [Cloudflare Workers](https://developers.cloudflare.com/workers/)                   | Deployment                  |
 
-- [**ASTRO** + **Typescript**](https://astro.build/) - Astro is the all-in-one web framework designed for speed.
-- [**Tailwind CSS** + **Tailwind-Merge** + **clsx**](https://tailwindcss.com/) - Tailwind CSS is a utility-first CSS framework.
-- [**Tabler Icons**](https://tabler-icons.io/i/) - A open source SVG icons.
-- [**Eslint**](https://eslint.org/) - ESLint is an open source project that helps you find and fix problems.
-- [**Prettier**](https://prettier.io/) - Code formatter.
-- [**Search Library**](https://pagefind.app/) - Static search library integration.
-- [**Motion**](https://motion.dev/) - Motion One is the smallest fully-featured animation library for the web.
-- [**Tina CMS**](https://tina.io/) - CMS.
+## Running Locally
 
-## 👨🏻‍💻 Running Locally
+**Prerequisites:** Node >= 20.19.0, npm (not pnpm)
 
-**Recommended extensions for VSCode:**
-
-- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss).
-- [Astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode).
-
-1. Clone or [fork](https://github.com/danielcgilibert/blog-template/fork) the repository:
+**Recommended VS Code extensions:** [Astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode), [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
 
 ```bash
-git@github.com:danielcgilibert/blog-template.git
+git clone git@github.com:aRustyDev/blog.git
+cd blog
+just install    # Install dependencies
+just dev        # Start dev server
+just build      # Production build
+just preview    # Preview production build
+just check      # Run format + lint checks
 ```
 
-2. Install dependencies:
+## Commands
 
-```bash
-pnpm install
-```
+All commands are run from the root of the project via [just](https://github.com/casey/just):
 
-3. Run the development server:
+| Command        | Action                                 |
+| :------------- | :------------------------------------- |
+| `just install` | Install dependencies                   |
+| `just dev`     | Start local dev server                 |
+| `just build`   | Production build to `./dist/`          |
+| `just preview` | Preview build locally                  |
+| `just check`   | Run format + lint checks               |
+| `just format`  | Format code with Prettier              |
+| `just lint`    | Lint with ESLint                       |
+| `just deploy`  | Build and deploy to Cloudflare Workers |
+| `just clean`   | Remove build artifacts                 |
+| `just sync`    | Generate Astro TypeScript types        |
 
-```bash
-pnpm dev
-```
+## Architecture
 
-## 📐 Configure
+See the [`docs/`](./docs/) directory for detailed documentation, including:
 
-- Edit the configuration file **src/data/site.config.ts** for the basic blog metadata.
-- Update the **astro.config.mjs** file at the root of the project with your own domain.
-- Modify the files in the **/public** folder:
-  - favicon
-  - robots.txt -> update the Sitemap url to your own domain
-  - open-graph -> the open-graph is the image that will be displayed when sharing the blog link. For posts, the preview image is the post cover.
-- Edit the social networks in the Header component - **src/components/Header.astro**, change the URL to your social network.
-
-## 🗂️ Adding a category
-
-To add a new category to your blog, simply go to the src/data/categories.ts file and add it to the array.
-
-Example:
-
-```ts
-export  const  CATEGORIES  =  [
-'JavaScript',
-'React',
-'new category here'  <---
-]  as  const
-```
-
-> 🚨 Zod checks whether the category is not correctly written or does not exist in the properties of the markdown document. **It will throw an error when building the application.** 🚨
-
-## 📄 Adding a post
-
-Adding a post is as simple as adding a .md or .mdx file to the blog folder at the path **src/content/blog**. The filename will be used to create the slug/URL of the page.
-
-For example, if you have a file named **jsx-and-react.md**, it will be transformed into: **http://yourdomain.com/post/jsx-and-react/**
-
-## 📝 Activating draft mode
-
-To activate draft mode, add the property **draft: true** to the file, and it will no longer be displayed on the blog.
-
-Example :
-
-```ts
-title: MacBook Pro 2022
-description: 'The new MacBook Pro 2022 is here. With the Apple M2 chip, a new design, and more, the new MacBook Pro is the best laptop Apple has ever made.'
-pubDate: 'Jul 02 2022'
-heroImage: '../../assets/bg.jpg'
-category: 'How2'
-tags: ['JavaScript', 'css', 'HTML5', 'GitHub']
-draft: true <---
-```
-
-## ⚡️ Frontmatter
-
-## Required properties:
-
-- Title
-- Description
-- pubDate
-- heroImage (post cover)
-- category (Choose a category from src/data/categories.ts)
-
-## Optional properties:
-
-- draft (no need to include it, by default it's false)
-- tags
-
-> The schema for posts is located at src/content/config.ts. You can modify any parameter, for example, by adding a maximum of 80 characters for titles: title: z.string().max(80).
-> For more information, refer to the zod documentation.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                 | Action                                                                                                                           |
-| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`          | Installs dependencies                                                                                                            |
-| `pnpm run dev`          | Starts local dev server at `localhost:3000`                                                                                      |
-| `pnpm run build`        | Build your production site to `./dist/`                                                                                          |
-| `pnpm run preview`      | Preview your build locally, before deploying                                                                                     |
-| `pnpm run format:check` | Check code format with Prettier                                                                                                  |
-| `pnpm run format`       | Format codes with Prettier                                                                                                       |
-| `pnpm run sync`         | Generates TypeScript types for all Astro modules. [Learn more](https://docs.astro.build/en/reference/cli-reference/#astro-sync). |
-| `pnpm run lint`         | Lint with ESLint                                                                                                                 |
+- [Architecture Decision Records](./docs/src/adrs/)
+- [Repository structure](./docs/src/repo/)
+- [Content publishing workflow](./docs/content-publishing-workflow.md)

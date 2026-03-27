@@ -1,0 +1,73 @@
+---
+/**
+ * Astro wrapper for CLISnippetAnimated.
+ *
+ * Build-time: Calls codeToHtml() with transformerTokenMetadata (no scope data —
+ * animation doesn't need TextMate scopes). Passes pre-rendered HTML to React.
+ *
+ * Dev-mode: Also passes code + lang for runtime Shiki fallback.
+ *
+ * Uses client:only="react" because the component depends on DOM APIs
+ * (getBoundingClientRect, rAF, style mutations) that are unavailable during SSR.
+ */
+import { getHighlighter } from "@/utils/shiki";
+import { transformerTokenMetadata } from "@/utils/shiki-transformer";
+import AnimatedReact from "./CLISnippetAnimated";
+import type { AnimationStep } from "./hooks/useAnimation";
+
+interface Props {
+  code: string;
+  lang: string;
+  title?: string;
+  steps: AnimationStep[];
+  autoPlay?: boolean;
+  speed?: number;
+  delay?: number;
+  showControls?: boolean;
+  class?: string;
+}
+
+const {
+  code,
+  lang,
+  title,
+  steps,
+  autoPlay,
+  speed,
+  delay,
+  showControls,
+  class: className,
+} = Astro.props;
+
+// Build-time Shiki highlighting with token metadata (no scope data needed)
+const highlighter = await getHighlighter();
+const highlightedHtml = highlighter.codeToHtml(code, {
+  lang,
+  themes: { light: "github-light", dark: "github-dark" },
+  defaultColor: false,
+  transformers: [transformerTokenMetadata({ includeScope: false })],
+});
+
+const isDev = import.meta.env.DEV;
+
+// Build props object — only include code/lang in dev mode for runtime fallback
+const reactProps: Record<string, unknown> = {
+  html: highlightedHtml,
+  title,
+  steps,
+  autoPlay,
+  speed,
+  delay,
+  showControls,
+  className,
+};
+if (isDev) {
+  reactProps.code = code;
+  reactProps.lang = lang;
+}
+---
+
+<AnimatedReact
+  client:only="react"
+  {...reactProps}
+/>

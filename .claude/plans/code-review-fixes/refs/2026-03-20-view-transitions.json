@@ -1,0 +1,28 @@
+{
+  "category": "view-transitions",
+  "reviewed_at": "2026-03-20T16:00:00Z",
+  "files_reviewed": [
+    "src/layouts/Layout.astro",
+    "src/scripts/theme.ts",
+    "src/pages/graph.astro",
+    "src/components/graph/GraphView.tsx",
+    "src/components/graph/GraphControllers.tsx",
+    "src/components/graph/LocalGraphWidget.tsx",
+    "src/components/graph/GraphModal.tsx",
+    "src/layouts/PostDetails.astro",
+    "src/components/Header.astro",
+    "src/components/BackToTopButton.astro"
+  ],
+  "findings": [
+    {"id":"VT-001","severity":"critical","confidence":95,"title":"theme-btn click listener accumulates on every navigation","file":"src/scripts/theme.ts","line":66,"current":"addEventListener('click') called in setThemeFeature() on every astro:after-swap with no removal","expected":"removeEventListener before re-adding, or use AbortController","fix_complexity":"small","depends_on":[],"adr_ref":null,"tags":["event-leak","theme"]},
+    {"id":"VT-002","severity":"critical","confidence":95,"title":"astro:after-swap scroll-to-top listener added unboundedly by data-astro-rerun script","file":"src/layouts/PostDetails.astro","line":292,"current":"document.addEventListener('astro:after-swap') inside data-astro-rerun — new listener every navigation","expected":"Move to regular script block or guard against duplicates","fix_complexity":"small","depends_on":[],"adr_ref":null,"tags":["event-leak","data-astro-rerun"]},
+    {"id":"VT-003","severity":"critical","confidence":95,"title":"Scroll progress listener accumulates on every navigation in PostDetails","file":"src/layouts/PostDetails.astro","line":201,"current":"updateScrollProgress() registers new scroll listener each data-astro-rerun execution","expected":"Use AbortController or guard flag to prevent duplicates","fix_complexity":"medium","depends_on":[],"adr_ref":null,"tags":["event-leak","data-astro-rerun"]},
+    {"id":"VT-004","severity":"critical","confidence":95,"title":"BackToTopButton scroll listener accumulates on every navigation","file":"src/components/BackToTopButton.astro","line":77,"current":"backToTop() registers scroll listener in data-astro-rerun with no cleanup","expected":"AbortController or guard flag","fix_complexity":"small","depends_on":[],"adr_ref":null,"tags":["event-leak","data-astro-rerun"]},
+    {"id":"VT-005","severity":"high","confidence":90,"title":"BackToTopButton click listener may stack on persistent elements","file":"src/components/BackToTopButton.astro","line":48,"current":"click listener added each data-astro-rerun — benign if element replaced, harmful if persisted","expected":"Use AbortController guard from VT-004","fix_complexity":"small","depends_on":["VT-004"],"adr_ref":null,"tags":["event-leak","data-astro-rerun"]},
+    {"id":"VT-006","severity":"high","confidence":88,"title":"graph.astro body overflow:hidden leaks into other pages after navigation","file":"src/pages/graph.astro","line":18,"current":":global(body) { overflow: hidden } — no cleanup on navigation away","expected":"Apply via JS effect with cleanup, or add astro:before-swap cleanup","fix_complexity":"medium","depends_on":[],"adr_ref":null,"tags":["body-style-leak","graph"]},
+    {"id":"VT-007","severity":"high","confidence":85,"title":"GraphView cleanup effect calls graph.clear() on externally-owned graph instance","file":"src/components/graph/GraphView.tsx","line":119,"current":"if (graph) graph.clear() — clears shared graph from GlobalGraphPage","expected":"Only clear if internally created: if (graph && !hasExternalData) graph.clear()","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["webgl-cleanup","react"]},
+    {"id":"VT-008","severity":"high","confidence":88,"title":"Layout data-astro-rerun script overwrites window.theme, discarding theme.ts extensions","file":"src/layouts/Layout.astro","line":181,"current":"window.theme = { ... } unconditionally replaces on every navigation","expected":"Use Object.assign(window.theme || {}, { ... }) to merge","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["theme","data-astro-rerun"]},
+    {"id":"VT-009","severity":"high","confidence":82,"title":"PostDetails progress bar duplicated on every navigation — no guard","file":"src/layouts/PostDetails.astro","line":196,"current":"createProgressBar() appends new div each data-astro-rerun execution","expected":"Guard: if (!document.querySelector('.progress-container')) createProgressBar()","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["dom-duplication","data-astro-rerun"]},
+    {"id":"VT-010","severity":"medium","confidence":80,"title":"ThemeObserver rAF not cancelled on unmount — races with rapid navigation","file":"src/components/graph/GraphControllers.tsx","line":117,"current":"requestAnimationFrame(updateColors) — if unmount before rAF fires, updateColors hits dead sigma","expected":"cancelAnimationFrame(rafId) in cleanup return","fix_complexity":"trivial","depends_on":[],"adr_ref":null,"tags":["webgl-cleanup","race-condition"]}
+  ]
+}
