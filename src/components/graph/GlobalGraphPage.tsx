@@ -1,6 +1,6 @@
 // src/components/graph/GlobalGraphPage.tsx
 
-import { useState, useEffect, type FC } from "react";
+import { useState, useEffect, useCallback, type FC } from "react";
 import GraphView from "./GraphView";
 import GraphFilters from "./GraphFilters";
 import { useGraphData } from "./useGraphData";
@@ -18,6 +18,10 @@ const GlobalGraphPage: FC = () => {
     "union" | "intersection" | "exclusion"
   >("union");
   const [focusNode, setFocusNode] = useState<string | undefined>(undefined);
+  const [filtersOpen, setFiltersOpen] = useState(
+    typeof window !== "undefined" && window.innerWidth >= 768
+  );
+  const toggleFilters = useCallback(() => setFiltersOpen(prev => !prev), []);
 
   // Single source of truth for graph data — eliminates double-fetch
   const { graph, graphData, loading, error, visibleNodes, hasActiveFilters } =
@@ -89,61 +93,105 @@ const GlobalGraphPage: FC = () => {
   }, []);
 
   return (
-    <div style={{ display: "flex", gap: "1rem", height: "calc(100vh - 80px)" }}>
-      {/* Sidebar */}
+    <div style={{ display: "flex", height: "calc(100vh - 80px)", position: "relative" }}>
+      {/* Filter toggle button — always visible */}
+      <button
+        onClick={toggleFilters}
+        aria-label={filtersOpen ? "Close filters" : "Open filters"}
+        aria-expanded={filtersOpen}
+        style={{
+          position: "absolute",
+          top: "0.5rem",
+          left: filtersOpen ? "241px" : "0",
+          zIndex: 20,
+          background: "var(--muted)",
+          border: "1px solid var(--border)",
+          borderRadius: "0 0.375rem 0.375rem 0",
+          padding: "0.375rem 0.5rem",
+          cursor: "pointer",
+          color: "var(--foreground)",
+          fontSize: "0.75rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.25rem",
+          transition: "left 0.2s ease",
+        }}
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+        </svg>
+        {!filtersOpen && <span>Filters</span>}
+      </button>
+
+      {/* Sidebar — collapsible */}
       <aside
         aria-label="Graph filters"
         style={{
-          width: "240px",
+          width: filtersOpen ? "240px" : "0",
           flexShrink: 0,
-          padding: "1rem",
-          borderRight: "1px solid var(--border)",
+          padding: filtersOpen ? "1rem" : "0",
+          borderRight: filtersOpen ? "1px solid var(--border)" : "none",
           overflowY: "auto",
+          overflowX: "hidden",
+          transition: "width 0.2s ease, padding 0.2s ease",
         }}
       >
-        <h2
-          style={{
-            fontSize: "1rem",
-            fontWeight: 700,
-            marginBottom: "1rem",
-            color: "var(--foreground)",
-          }}
-        >
-          Filters
-        </h2>
-        {metadata && (
+        {filtersOpen && (
           <>
-            <GraphFilters
-              availableTags={metadata.tags}
-              availableCategories={metadata.categories}
-              availableStatuses={metadata.statuses}
-              availableContentTypes={metadata.contentTypes}
-              availableLanguages={metadata.languages}
-              selectedTags={selectedTags}
-              selectedCategories={selectedCategories}
-              selectedTypes={selectedTypes}
-              selectedStatuses={selectedStatuses}
-              selectedContentTypes={selectedContentTypes}
-              selectedLanguages={selectedLanguages}
-              tagMode={tagMode}
-              onTagsChange={setSelectedTags}
-              onCategoriesChange={setSelectedCategories}
-              onTypesChange={setSelectedTypes}
-              onStatusesChange={setSelectedStatuses}
-              onContentTypesChange={setSelectedContentTypes}
-              onLanguagesChange={setSelectedLanguages}
-              onTagModeChange={setTagMode}
-            />
-            <div
+            <h2
               style={{
-                marginTop: "1.5rem",
-                fontSize: "0.7rem",
+                fontSize: "1rem",
+                fontWeight: 700,
+                marginBottom: "1rem",
                 color: "var(--foreground)",
-                opacity: 0.5,
               }}
             >
-              {metadata.nodeCount} nodes · {metadata.edgeCount} edges
-            </div>
+              Filters
+            </h2>
+            {metadata && (
+              <>
+                <GraphFilters
+                  availableTags={metadata.tags}
+                  availableCategories={metadata.categories}
+                  availableStatuses={metadata.statuses}
+                  availableContentTypes={metadata.contentTypes}
+                  availableLanguages={metadata.languages}
+                  selectedTags={selectedTags}
+                  selectedCategories={selectedCategories}
+                  selectedTypes={selectedTypes}
+                  selectedStatuses={selectedStatuses}
+                  selectedContentTypes={selectedContentTypes}
+                  selectedLanguages={selectedLanguages}
+                  tagMode={tagMode}
+                  onTagsChange={setSelectedTags}
+                  onCategoriesChange={setSelectedCategories}
+                  onTypesChange={setSelectedTypes}
+                  onStatusesChange={setSelectedStatuses}
+                  onContentTypesChange={setSelectedContentTypes}
+                  onLanguagesChange={setSelectedLanguages}
+                  onTagModeChange={setTagMode}
+                />
+                <div
+                  style={{
+                    marginTop: "1.5rem",
+                    fontSize: "0.7rem",
+                    color: "var(--foreground)",
+                    opacity: 0.5,
+                  }}
+                >
+                  {metadata.nodeCount} nodes · {metadata.edgeCount} edges
+                </div>
+              </>
+            )}
           </>
         )}
       </aside>
