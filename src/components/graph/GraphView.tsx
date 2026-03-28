@@ -18,6 +18,12 @@ import GraphToolbar from "./GraphToolbar";
 import GraphSearch from "./GraphSearch";
 
 // --- Main component ---
+export interface GraphActions {
+  recenter: () => void;
+  normalize: () => void;
+  openSearch: () => void;
+}
+
 export interface GraphViewProps {
   mode: "global" | "local";
   focusNode?: string;
@@ -40,6 +46,7 @@ export interface GraphViewProps {
   className?: string;
   showToolbar?: boolean;
   showWatermark?: boolean;
+  onActionsReady?: (actions: GraphActions) => void;
 }
 
 export default function GraphView({
@@ -62,6 +69,7 @@ export default function GraphView({
   className = "",
   showToolbar = false,
   showWatermark = false,
+  onActionsReady,
 }: GraphViewProps) {
   // Always call useGraphData (React rules), but skip fetch when external data provided
   const hasExternalData = externalGraph !== undefined;
@@ -239,6 +247,7 @@ export default function GraphView({
               <GraphToolbar
                 categories={[...visibleCategories].sort()}
                 onSearchOpen={() => setSearchOpen(true)}
+                onActionsReady={onActionsReady}
               />
               <GraphSearch
                 open={searchOpen}
