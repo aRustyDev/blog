@@ -208,66 +208,7 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
         </button>
       </div>
 
-      {/* Legend toggle */}
-      <button
-        onClick={() => setLegendOpen(!legendOpen)}
-        aria-expanded={legendOpen}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.375rem",
-          background: "none",
-          border: "none",
-          color: "inherit",
-          cursor: "pointer",
-          padding: "0.375rem 0.5rem",
-          fontSize: "0.7rem",
-          fontWeight: 600,
-          width: "100%",
-        }}
-      >
-        {legendOpen ? "▾" : "▸"} Legend
-      </button>
-
-      {/* Legend entries */}
-      {legendOpen && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.125rem",
-            padding: "0 0.5rem 0.5rem",
-            maxHeight: "300px",
-            overflowY: "auto",
-          }}
-        >
-          {categories
-            .filter(cat => CATEGORY_COLORS[cat])
-            .map(cat => (
-              <button
-                key={cat}
-                onClick={() => handleCategoryClick(cat)}
-                style={itemStyle}
-                onMouseEnter={e =>
-                  (e.currentTarget.style.background = "var(--border, #30363d)")
-                }
-                onMouseLeave={e => (e.currentTarget.style.background = "none")}
-              >
-                <span
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    backgroundColor: CATEGORY_COLORS[cat],
-                    display: "inline-block",
-                    flexShrink: 0,
-                  }}
-                />
-                {CATEGORY_LABELS[cat] || cat}
-              </button>
-            ))}
-        </div>
-      )}
+      {/* Legend moved to filter sidebar — see GlobalGraphPage.tsx */}
     </div>
   );
 };

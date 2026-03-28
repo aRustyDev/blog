@@ -1,9 +1,10 @@
 // src/components/graph/GlobalGraphPage.tsx
 
-import { useState, useEffect, useCallback, type FC } from "react";
+import { useState, useEffect, useCallback, useMemo, type FC } from "react";
 import GraphView from "./GraphView";
 import GraphFilters from "./GraphFilters";
 import { useGraphData } from "./useGraphData";
+import { CATEGORY_COLORS, CATEGORY_LABELS } from "./graph.shared";
 
 const GlobalGraphPage: FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -42,6 +43,17 @@ const GlobalGraphPage: FC = () => {
     });
 
   const metadata = graphData?.metadata ?? null;
+
+  // Compute visible categories for legend
+  const categories = useMemo(() => {
+    if (!graph) return [];
+    const cats = new Set<string>();
+    graph.forEachNode(node => {
+      const cat = graph.getNodeAttribute(node, "category") as string;
+      if (cat) cats.add(cat);
+    });
+    return [...cats].sort();
+  }, [graph]);
 
   // Sync filters to URL params
   useEffect(() => {
@@ -191,6 +203,57 @@ const GlobalGraphPage: FC = () => {
                   {metadata.nodeCount} nodes · {metadata.edgeCount} edges
                 </div>
               </>
+            )}
+
+            {/* Legend */}
+            {categories.length > 0 && (
+              <div style={{ marginTop: "1.5rem" }}>
+                <h3
+                  style={{
+                    fontSize: "0.8rem",
+                    fontWeight: 600,
+                    marginBottom: "0.5rem",
+                    color: "var(--foreground)",
+                  }}
+                >
+                  Legend
+                </h3>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.25rem",
+                  }}
+                >
+                  {categories
+                    .filter(cat => CATEGORY_COLORS[cat])
+                    .map(cat => (
+                      <div
+                        key={cat}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.375rem",
+                          fontSize: "0.7rem",
+                          color: "var(--foreground)",
+                          opacity: 0.8,
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: "50%",
+                            backgroundColor: CATEGORY_COLORS[cat],
+                            display: "inline-block",
+                            flexShrink: 0,
+                          }}
+                        />
+                        {CATEGORY_LABELS[cat] || cat}
+                      </div>
+                    ))}
+                </div>
+              </div>
             )}
           </>
         )}
