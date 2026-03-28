@@ -1,8 +1,9 @@
 // src/components/graph/GraphToolbar.tsx
 
-import { useCallback, useState, type FC } from "react";
+import { useCallback, useState, useEffect, type FC } from "react";
 import { useSigma } from "@react-sigma/core";
 import { CATEGORY_COLORS, CATEGORY_LABELS } from "./graph.shared";
+import type { GraphActions } from "./GraphView";
 
 /** Animation duration respecting prefers-reduced-motion */
 function animDuration(): number {
@@ -12,9 +13,10 @@ function animDuration(): number {
 interface GraphToolbarProps {
   categories: string[];
   onSearchOpen: () => void;
+  onActionsReady?: (actions: GraphActions) => void;
 }
 
-const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
+const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen, onActionsReady }) => {
   const [legendOpen, setLegendOpen] = useState(true);
   const sigma = useSigma();
 
@@ -85,6 +87,17 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
     sigma.getCamera().animate({ x: 0.5, y: 0.5, ratio: 1 }, { duration: animDuration() });
   }, [sigma]);
 
+  // Expose actions to parent (GlobalGraphPage sidebar)
+  useEffect(() => {
+    if (onActionsReady) {
+      onActionsReady({
+        recenter: handleResetView,
+        normalize: handleNormalize,
+        openSearch: onSearchOpen,
+      });
+    }
+  }, [onActionsReady, handleResetView, handleNormalize, onSearchOpen]);
+
   const handleCategoryClick = useCallback(
     (category: string) => {
       const graph = sigma.getGraph();
@@ -126,6 +139,12 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
     width: "100%",
   };
 
+  // When actions are exposed to sidebar, render nothing visible — just an action bridge
+  if (onActionsReady) {
+    return null;
+  }
+
+  // Fallback: render inline toolbar (for LocalGraphWidget or standalone usage)
   return (
     <div
       style={{
@@ -142,73 +161,36 @@ const GraphToolbar: FC<GraphToolbarProps> = ({ categories, onSearchOpen }) => {
         boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
       }}
     >
-      {/* Control buttons */}
       <div
         style={{
           display: "flex",
           gap: "0.25rem",
           padding: "0.375rem 0.5rem",
-          borderBottom: "1px solid var(--border, #30363d)",
         }}
       >
         <button
           onClick={handleResetView}
-          style={{
-            ...itemStyle,
-            width: "auto",
-            fontWeight: 600,
-            fontSize: "0.65rem",
-          }}
+          style={{ ...itemStyle, width: "auto", fontWeight: 600, fontSize: "0.65rem" }}
           title="Reset camera to center"
         >
           Re-center
         </button>
-        <span
-          style={{
-            width: 1,
-            alignSelf: "stretch",
-            background: "var(--border, #30363d)",
-            opacity: 0.5,
-          }}
-        />
         <button
           onClick={handleNormalize}
-          style={{
-            ...itemStyle,
-            width: "auto",
-            fontWeight: 600,
-            fontSize: "0.65rem",
-          }}
+          style={{ ...itemStyle, width: "auto", fontWeight: 600, fontSize: "0.65rem" }}
           title="Normalize sizes and re-layout"
         >
           Normalize
         </button>
-        <span
-          style={{
-            width: 1,
-            alignSelf: "stretch",
-            background: "var(--border, #30363d)",
-            opacity: 0.5,
-          }}
-        />
         <button
           onClick={onSearchOpen}
-          style={{
-            ...itemStyle,
-            width: "auto",
-            fontWeight: 600,
-            fontSize: "1.1rem",
-            lineHeight: 1,
-            padding: "0.1rem 0.375rem",
-          }}
+          style={{ ...itemStyle, width: "auto", fontWeight: 600, fontSize: "1.1rem", lineHeight: 1 }}
           title="Search nodes (Ctrl+K)"
           aria-label="Search nodes"
         >
           ⌕
         </button>
       </div>
-
-      {/* Legend moved to filter sidebar — see GlobalGraphPage.tsx */}
     </div>
   );
 };

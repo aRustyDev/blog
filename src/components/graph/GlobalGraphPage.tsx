@@ -1,7 +1,7 @@
 // src/components/graph/GlobalGraphPage.tsx
 
 import { useState, useEffect, useCallback, useMemo, type FC } from "react";
-import GraphView from "./GraphView";
+import GraphView, { type GraphActions } from "./GraphView";
 import GraphFilters from "./GraphFilters";
 import { useGraphData } from "./useGraphData";
 import { CATEGORY_COLORS, CATEGORY_LABELS } from "./graph.shared";
@@ -23,6 +23,7 @@ const GlobalGraphPage: FC = () => {
     typeof window !== "undefined" && window.innerWidth >= 768
   );
   const toggleFilters = useCallback(() => setFiltersOpen(prev => !prev), []);
+  const [graphActions, setGraphActions] = useState<GraphActions | null>(null);
 
   // Single source of truth for graph data — eliminates double-fetch
   const { graph, graphData, loading, error, visibleNodes, hasActiveFilters } =
@@ -159,6 +160,71 @@ const GlobalGraphPage: FC = () => {
       >
         {filtersOpen && (
           <>
+            {/* Graph controls */}
+            {graphActions && (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "0.375rem",
+                  marginBottom: "1rem",
+                  paddingBottom: "0.75rem",
+                  borderBottom: "1px solid var(--border)",
+                }}
+              >
+                <button
+                  onClick={graphActions.recenter}
+                  style={{
+                    flex: 1,
+                    padding: "0.375rem",
+                    fontSize: "0.7rem",
+                    fontWeight: 600,
+                    background: "var(--muted)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "0.25rem",
+                    color: "var(--foreground)",
+                    cursor: "pointer",
+                  }}
+                  title="Reset camera to center"
+                >
+                  Re-center
+                </button>
+                <button
+                  onClick={graphActions.normalize}
+                  style={{
+                    flex: 1,
+                    padding: "0.375rem",
+                    fontSize: "0.7rem",
+                    fontWeight: 600,
+                    background: "var(--muted)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "0.25rem",
+                    color: "var(--foreground)",
+                    cursor: "pointer",
+                  }}
+                  title="Normalize sizes and re-layout"
+                >
+                  Normalize
+                </button>
+                <button
+                  onClick={graphActions.openSearch}
+                  style={{
+                    padding: "0.375rem 0.5rem",
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    background: "var(--muted)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "0.25rem",
+                    color: "var(--foreground)",
+                    cursor: "pointer",
+                  }}
+                  title="Search nodes (Ctrl+K)"
+                  aria-label="Search nodes"
+                >
+                  ⌕
+                </button>
+              </div>
+            )}
+
             <h2
               style={{
                 fontSize: "1rem",
@@ -273,6 +339,7 @@ const GlobalGraphPage: FC = () => {
           height="calc(100vh - 80px)"
           showToolbar
           showWatermark
+          onActionsReady={setGraphActions}
         />
       </div>
     </div>
