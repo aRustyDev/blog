@@ -27,7 +27,8 @@ const GlobalGraphPage: FC = () => {
   // Search: close sidebar on mobile, then open search
   const handleSearchClick = useCallback(() => {
     if (isMobile) setFiltersOpen(false);
-    graphActions?.openSearch();
+    // Small delay to let sidebar close animation start before search opens
+    setTimeout(() => graphActions?.openSearch(), isMobile ? 100 : 0);
   }, [graphActions, isMobile]);
 
   // Single source of truth for graph data — eliminates double-fetch

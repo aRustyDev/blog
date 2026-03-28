@@ -130,32 +130,41 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
     [sigma, onClose]
   );
 
+  // Reset camera to default view when search closes without selecting
+  const handleClose = useCallback(() => {
+    sigma.getCamera().animate(
+      { x: 0.5, y: 0.5, ratio: 1 },
+      { duration: 200 }
+    );
+    onClose();
+  }, [sigma, onClose]);
+
   if (!open) return null;
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop — fixed to cover entire viewport including sidebar */}
       <div
-        onClick={onClose}
+        onClick={handleClose}
         style={{
-          position: "absolute",
+          position: "fixed",
           inset: 0,
-          zIndex: 20,
+          zIndex: 50,
           background: "rgba(0,0,0,0.4)",
         }}
       />
-      {/* Spotlight */}
+      {/* Spotlight — fixed, centered on viewport */}
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Search graph nodes"
         style={{
-          position: "absolute",
-          top: 24,
+          position: "fixed",
+          top: 80,
           left: "50%",
           transform: "translateX(-50%)",
-          zIndex: 21,
-          width: "min(460px, 85%)",
+          zIndex: 51,
+          width: "min(460px, 90vw)",
           background: "var(--muted, #161b22)",
           opacity: 0.95,
           backdropFilter: "blur(20px) saturate(1.4)",
@@ -186,7 +195,7 @@ const GraphSearch: FC<GraphSearchProps> = ({ open, onClose }) => {
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => {
               if (e.key === "Escape") {
-                onClose();
+                handleClose();
               } else if (e.key === "ArrowDown") {
                 e.preventDefault();
                 setSelectedIndex(prev =>
