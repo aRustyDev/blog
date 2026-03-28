@@ -246,7 +246,7 @@ export default function GraphView({
             <>
               <GraphToolbar
                 categories={[...visibleCategories].sort()}
-                onSearchOpen={() => setSearchOpen(true)}
+                onSearchOpen={() => setSearchOpen(prev => !prev)}
                 onActionsReady={onActionsReady}
               />
               <GraphSearch

@@ -22,8 +22,10 @@ import "@/styles/graph.css";
     const isGraphPage = !!document.querySelector("#main-content .graph-container");
     if (isGraphPage) {
       document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none"; // prevent page-level pinch zoom
     } else {
       document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     }
   });
 </script>

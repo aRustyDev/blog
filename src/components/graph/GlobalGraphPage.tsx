@@ -19,11 +19,16 @@ const GlobalGraphPage: FC = () => {
     "union" | "intersection" | "exclusion"
   >("union");
   const [focusNode, setFocusNode] = useState<string | undefined>(undefined);
-  const [filtersOpen, setFiltersOpen] = useState(
-    typeof window !== "undefined" && window.innerWidth >= 768
-  );
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const [filtersOpen, setFiltersOpen] = useState(!isMobile);
   const toggleFilters = useCallback(() => setFiltersOpen(prev => !prev), []);
   const [graphActions, setGraphActions] = useState<GraphActions | null>(null);
+
+  // Search: close sidebar on mobile, then open search
+  const handleSearchClick = useCallback(() => {
+    if (isMobile) setFiltersOpen(false);
+    graphActions?.openSearch();
+  }, [graphActions, isMobile]);
 
   // Single source of truth for graph data — eliminates double-fetch
   const { graph, graphData, loading, error, visibleNodes, hasActiveFilters } =
@@ -106,8 +111,16 @@ const GlobalGraphPage: FC = () => {
   }, []);
 
   return (
-    <div style={{ display: "flex", height: "calc(100vh - 80px)", position: "relative" }}>
-      {/* Filter toggle button — always visible */}
+    <div
+      style={{
+        display: "flex",
+        height: "calc(100vh - 80px)",
+        position: "relative",
+        overflow: "hidden",
+        touchAction: "manipulation", /* prevent page-level zoom */
+      }}
+    >
+      {/* Filter toggle button — always visible, on top of sidebar and graph */}
       <button
         onClick={toggleFilters}
         aria-label={filtersOpen ? "Close filters" : "Open filters"}
@@ -116,7 +129,7 @@ const GlobalGraphPage: FC = () => {
           position: "absolute",
           top: "0.5rem",
           left: filtersOpen ? "241px" : "0",
-          zIndex: 20,
+          zIndex: 30,
           background: "var(--muted)",
           border: "1px solid var(--border)",
           borderRadius: "0 0.375rem 0.375rem 0",
@@ -145,7 +158,20 @@ const GlobalGraphPage: FC = () => {
         {!filtersOpen && <span>Filters</span>}
       </button>
 
-      {/* Sidebar — collapsible */}
+      {/* Mobile: overlay backdrop when sidebar open */}
+      {filtersOpen && isMobile && (
+        <div
+          onClick={() => setFiltersOpen(false)}
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 19,
+            background: "rgba(0,0,0,0.4)",
+          }}
+        />
+      )}
+
+      {/* Sidebar — overlay on mobile, push on desktop */}
       <aside
         aria-label="Graph filters"
         style={{
@@ -156,6 +182,15 @@ const GlobalGraphPage: FC = () => {
           overflowY: "auto",
           overflowX: "hidden",
           transition: "width 0.2s ease, padding 0.2s ease",
+          background: "var(--background)",
+          // Mobile: overlay (absolute), Desktop: push (static in flex flow)
+          ...(isMobile ? {
+            position: "absolute" as const,
+            top: 0,
+            left: 0,
+            bottom: 0,
+            zIndex: 20,
+          } : {}),
         }}
       >
         {filtersOpen && (
@@ -206,7 +241,7 @@ const GlobalGraphPage: FC = () => {
                   Normalize
                 </button>
                 <button
-                  onClick={graphActions.openSearch}
+                  onClick={handleSearchClick}
                   style={{
                     padding: "0.375rem 0.5rem",
                     fontSize: "0.9rem",
@@ -325,8 +360,8 @@ const GlobalGraphPage: FC = () => {
         )}
       </aside>
 
-      {/* Graph — pass external data to avoid double-fetch */}
-      <div style={{ flex: 1 }} className="graph-container">
+      {/* Graph — always fills full width (sidebar overlays on mobile) */}
+      <div style={{ flex: 1, minWidth: 0 }} className="graph-container">
         <GraphView
           mode="global"
           graph={graph}
